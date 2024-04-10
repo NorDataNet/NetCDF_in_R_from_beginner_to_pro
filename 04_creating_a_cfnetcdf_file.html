@@ -1,0 +1,1357 @@
+
+
+<!DOCTYPE html>
+
+
+<html lang="en" >
+
+  <head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" /><meta name="generator" content="Docutils 0.18.1: http://docutils.sourceforge.net/" />
+
+    <title>04: Creating a CF-NetCDF file &#8212; NetCDF in R - from beginner to pro</title>
+  
+  
+  
+  <script data-cfasync="false">
+    document.documentElement.dataset.mode = localStorage.getItem("mode") || "";
+    document.documentElement.dataset.theme = localStorage.getItem("theme") || "light";
+  </script>
+  
+  <!-- Loaded before other Sphinx assets -->
+  <link href="_static/styles/theme.css?digest=365ca57ee442770a23c6" rel="stylesheet" />
+<link href="_static/styles/bootstrap.css?digest=365ca57ee442770a23c6" rel="stylesheet" />
+<link href="_static/styles/pydata-sphinx-theme.css?digest=365ca57ee442770a23c6" rel="stylesheet" />
+
+  
+  <link href="_static/vendor/fontawesome/6.1.2/css/all.min.css?digest=365ca57ee442770a23c6" rel="stylesheet" />
+  <link rel="preload" as="font" type="font/woff2" crossorigin href="_static/vendor/fontawesome/6.1.2/webfonts/fa-solid-900.woff2" />
+<link rel="preload" as="font" type="font/woff2" crossorigin href="_static/vendor/fontawesome/6.1.2/webfonts/fa-brands-400.woff2" />
+<link rel="preload" as="font" type="font/woff2" crossorigin href="_static/vendor/fontawesome/6.1.2/webfonts/fa-regular-400.woff2" />
+
+    <link rel="stylesheet" type="text/css" href="_static/pygments.css" />
+    <link rel="stylesheet" href="_static/styles/sphinx-book-theme.css?digest=14f4ca6b54d191a8c7657f6c759bf11a5fb86285" type="text/css" />
+    <link rel="stylesheet" type="text/css" href="_static/togglebutton.css" />
+    <link rel="stylesheet" type="text/css" href="_static/copybutton.css" />
+    <link rel="stylesheet" type="text/css" href="_static/mystnb.4510f1fc1dee50b3e5859aac5469c37c29e427902b24a333a5f9fcb2f0b3ac41.css" />
+    <link rel="stylesheet" type="text/css" href="_static/sphinx-thebe.css" />
+    <link rel="stylesheet" type="text/css" href="_static/design-style.4045f2051d55cab465a707391d5b2007.min.css" />
+  
+  <!-- Pre-loaded scripts that we'll load fully later -->
+  <link rel="preload" as="script" href="_static/scripts/bootstrap.js?digest=365ca57ee442770a23c6" />
+<link rel="preload" as="script" href="_static/scripts/pydata-sphinx-theme.js?digest=365ca57ee442770a23c6" />
+  <script src="_static/vendor/fontawesome/6.1.2/js/all.min.js?digest=365ca57ee442770a23c6"></script>
+
+    <script data-url_root="./" id="documentation_options" src="_static/documentation_options.js"></script>
+    <script src="_static/jquery.js"></script>
+    <script src="_static/underscore.js"></script>
+    <script src="_static/_sphinx_javascript_frameworks_compat.js"></script>
+    <script src="_static/doctools.js"></script>
+    <script src="_static/clipboard.min.js"></script>
+    <script src="_static/copybutton.js"></script>
+    <script src="_static/scripts/sphinx-book-theme.js?digest=5a5c038af52cf7bc1a1ec88eea08e6366ee68824"></script>
+    <script>let toggleHintShow = 'Click to show';</script>
+    <script>let toggleHintHide = 'Click to hide';</script>
+    <script>let toggleOpenOnPrint = 'true';</script>
+    <script src="_static/togglebutton.js"></script>
+    <script>var togglebuttonSelector = '.toggle, .admonition.dropdown';</script>
+    <script src="_static/design-tabs.js"></script>
+    <script>const THEBE_JS_URL = "https://unpkg.com/thebe@0.8.2/lib/index.js"
+const thebe_selector = ".thebe,.cell"
+const thebe_selector_input = "pre"
+const thebe_selector_output = ".output, .cell_output"
+</script>
+    <script async="async" src="_static/sphinx-thebe.js"></script>
+    <script>window.MathJax = {"options": {"processHtmlClass": "tex2jax_process|mathjax_process|math|output_area"}}</script>
+    <script defer="defer" src="https://cdn.jsdelivr.net/npm/mathjax@3/es5/tex-mml-chtml.js"></script>
+    <script>DOCUMENTATION_OPTIONS.pagename = '04_creating_a_cfnetcdf_file';</script>
+    <link rel="index" title="Index" href="genindex.html" />
+    <link rel="search" title="Search" href="search.html" />
+    <link rel="prev" title="03: Extracting data to different formats" href="03_extracting_data_to_different_formats.html" />
+  <meta name="viewport" content="width=device-width, initial-scale=1"/>
+  <meta name="docsearch:language" content="en"/>
+  </head>
+  
+  
+  <body data-bs-spy="scroll" data-bs-target=".bd-toc-nav" data-offset="180" data-bs-root-margin="0px 0px -60%" data-default-mode="">
+
+  
+  
+  <a class="skip-link" href="#main-content">Skip to main content</a>
+  
+  <div id="pst-scroll-pixel-helper"></div>
+
+  
+  <button type="button" class="btn rounded-pill" id="pst-back-to-top">
+    <i class="fa-solid fa-arrow-up"></i>
+    Back to top
+  </button>
+
+  
+  <input type="checkbox"
+          class="sidebar-toggle"
+          name="__primary"
+          id="__primary"/>
+  <label class="overlay overlay-primary" for="__primary"></label>
+  
+  <input type="checkbox"
+          class="sidebar-toggle"
+          name="__secondary"
+          id="__secondary"/>
+  <label class="overlay overlay-secondary" for="__secondary"></label>
+  
+  <div class="search-button__wrapper">
+    <div class="search-button__overlay"></div>
+    <div class="search-button__search-container">
+<form class="bd-search d-flex align-items-center"
+      action="search.html"
+      method="get">
+  <i class="fa-solid fa-magnifying-glass"></i>
+  <input type="search"
+         class="form-control"
+         name="q"
+         id="search-input"
+         placeholder="Search this book..."
+         aria-label="Search this book..."
+         autocomplete="off"
+         autocorrect="off"
+         autocapitalize="off"
+         spellcheck="false"/>
+  <span class="search-button__kbd-shortcut"><kbd class="kbd-shortcut__modifier">Ctrl</kbd>+<kbd>K</kbd></span>
+</form></div>
+  </div>
+  
+    <nav class="bd-header navbar navbar-expand-lg bd-navbar">
+    </nav>
+  
+  <div class="bd-container">
+    <div class="bd-container__inner bd-page-width">
+      
+      <div class="bd-sidebar-primary bd-sidebar">
+        
+
+  
+  <div class="sidebar-header-items sidebar-primary__section">
+    
+    
+    
+    
+  </div>
+  
+    <div class="sidebar-primary-items__start sidebar-primary__section">
+        <div class="sidebar-primary-item">
+  
+
+<a class="navbar-brand logo" href="intro.html">
+  
+  
+  
+  
+  
+    
+    
+      
+    
+    
+    <img src="_static/logo.png" class="logo__image only-light" alt="NetCDF in R - from beginner to pro - Home"/>
+    <script>document.write(`<img src="_static/logo.png" class="logo__image only-dark" alt="NetCDF in R - from beginner to pro - Home"/>`);</script>
+  
+  
+</a></div>
+        <div class="sidebar-primary-item"><nav class="bd-links" id="bd-docs-nav" aria-label="Main">
+    <div class="bd-toc-item navbar-nav active">
+        
+        <ul class="nav bd-sidenav bd-sidenav__home-link">
+            <li class="toctree-l1">
+                <a class="reference internal" href="intro.html">
+                    NetCDF in R: From beginner to pro
+                </a>
+            </li>
+        </ul>
+        <ul class="current nav bd-sidenav">
+<li class="toctree-l1"><a class="reference internal" href="01_opening_and_understanding.html">01: Opening and understanding</a></li>
+<li class="toctree-l1"><a class="reference internal" href="02_creating_plots.html">02: Creating Plots</a></li>
+<li class="toctree-l1"><a class="reference internal" href="03_extracting_data_to_different_formats.html">03: Extracting data to different formats</a></li>
+<li class="toctree-l1 current active"><a class="current reference internal" href="#">04: Creating a CF-NetCDF file</a></li>
+</ul>
+
+    </div>
+</nav></div>
+    </div>
+  
+  
+  <div class="sidebar-primary-items__end sidebar-primary__section">
+  </div>
+  
+  <div id="rtd-footer-container"></div>
+
+
+      </div>
+      
+      <main id="main-content" class="bd-main">
+        
+        
+
+<div class="sbt-scroll-pixel-helper"></div>
+
+          <div class="bd-content">
+            <div class="bd-article-container">
+              
+              <div class="bd-header-article">
+<div class="header-article-items header-article__inner">
+  
+    <div class="header-article-items__start">
+      
+        <div class="header-article-item"><label class="sidebar-toggle primary-toggle btn btn-sm" for="__primary" title="Toggle primary sidebar" data-bs-placement="bottom" data-bs-toggle="tooltip">
+  <span class="fa-solid fa-bars"></span>
+</label></div>
+      
+    </div>
+  
+  
+    <div class="header-article-items__end">
+      
+        <div class="header-article-item">
+
+<div class="article-header-buttons">
+
+
+
+
+
+<div class="dropdown dropdown-source-buttons">
+  <button class="btn dropdown-toggle" type="button" data-bs-toggle="dropdown" aria-expanded="false" aria-label="Source repositories">
+    <i class="fab fa-github"></i>
+  </button>
+  <ul class="dropdown-menu">
+      
+      
+      
+      <li><a href="https://github.com/lhmarsden/NetCDF_in_R_from_beginner_to_pro" target="_blank"
+   class="btn btn-sm btn-source-repository-button dropdown-item"
+   title="Source repository"
+   data-bs-placement="left" data-bs-toggle="tooltip"
+>
+  
+
+<span class="btn__icon-container">
+  <i class="fab fa-github"></i>
+  </span>
+<span class="btn__text-container">Repository</span>
+</a>
+</li>
+      
+      
+      
+      
+      <li><a href="https://github.com/lhmarsden/NetCDF_in_R_from_beginner_to_pro/issues/new?title=Issue%20on%20page%20%2F04_creating_a_cfnetcdf_file.html&body=Your%20issue%20content%20here." target="_blank"
+   class="btn btn-sm btn-source-issues-button dropdown-item"
+   title="Open an issue"
+   data-bs-placement="left" data-bs-toggle="tooltip"
+>
+  
+
+<span class="btn__icon-container">
+  <i class="fas fa-lightbulb"></i>
+  </span>
+<span class="btn__text-container">Open issue</span>
+</a>
+</li>
+      
+  </ul>
+</div>
+
+
+
+
+
+
+<div class="dropdown dropdown-download-buttons">
+  <button class="btn dropdown-toggle" type="button" data-bs-toggle="dropdown" aria-expanded="false" aria-label="Download this page">
+    <i class="fas fa-download"></i>
+  </button>
+  <ul class="dropdown-menu">
+      
+      
+      
+      <li><a href="_sources/04_creating_a_cfnetcdf_file.ipynb" target="_blank"
+   class="btn btn-sm btn-download-source-button dropdown-item"
+   title="Download source file"
+   data-bs-placement="left" data-bs-toggle="tooltip"
+>
+  
+
+<span class="btn__icon-container">
+  <i class="fas fa-file"></i>
+  </span>
+<span class="btn__text-container">.ipynb</span>
+</a>
+</li>
+      
+      
+      
+      
+      <li>
+<button onclick="window.print()"
+  class="btn btn-sm btn-download-pdf-button dropdown-item"
+  title="Print to PDF"
+  data-bs-placement="left" data-bs-toggle="tooltip"
+>
+  
+
+<span class="btn__icon-container">
+  <i class="fas fa-file-pdf"></i>
+  </span>
+<span class="btn__text-container">.pdf</span>
+</button>
+</li>
+      
+  </ul>
+</div>
+
+
+
+
+<button onclick="toggleFullScreen()"
+  class="btn btn-sm btn-fullscreen-button"
+  title="Fullscreen mode"
+  data-bs-placement="bottom" data-bs-toggle="tooltip"
+>
+  
+
+<span class="btn__icon-container">
+  <i class="fas fa-expand"></i>
+  </span>
+
+</button>
+
+
+<script>
+document.write(`
+  <button class="btn btn-sm navbar-btn theme-switch-button" title="light/dark" aria-label="light/dark" data-bs-placement="bottom" data-bs-toggle="tooltip">
+    <span class="theme-switch nav-link" data-mode="light"><i class="fa-solid fa-sun fa-lg"></i></span>
+    <span class="theme-switch nav-link" data-mode="dark"><i class="fa-solid fa-moon fa-lg"></i></span>
+    <span class="theme-switch nav-link" data-mode="auto"><i class="fa-solid fa-circle-half-stroke fa-lg"></i></span>
+  </button>
+`);
+</script>
+
+<script>
+document.write(`
+  <button class="btn btn-sm navbar-btn search-button search-button__button" title="Search" aria-label="Search" data-bs-placement="bottom" data-bs-toggle="tooltip">
+    <i class="fa-solid fa-magnifying-glass fa-lg"></i>
+  </button>
+`);
+</script>
+<label class="sidebar-toggle secondary-toggle btn btn-sm" for="__secondary"title="Toggle secondary sidebar" data-bs-placement="bottom" data-bs-toggle="tooltip">
+    <span class="fa-solid fa-list"></span>
+</label>
+</div></div>
+      
+    </div>
+  
+</div>
+</div>
+              
+              
+
+<div id="jb-print-docs-body" class="onlyprint">
+    <h1>04: Creating a CF-NetCDF file</h1>
+    <!-- Table of contents -->
+    <div id="print-main-content">
+        <div id="jb-print-toc">
+            
+            <div>
+                <h2> Contents </h2>
+            </div>
+            <nav aria-label="Page">
+                <ul class="visible nav section-nav flex-column">
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#initialising-your-file">Initialising your file</a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#dimensions-and-coordinate-variables">Dimensions and coordinate variables</a><ul class="nav section-nav flex-column">
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#dimension-depth">1 dimension - depth</a></li>
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#a-time-series-of-data">A time series of data</a></li>
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#multiple-dimensions">Multiple dimensions</a></li>
+</ul>
+</li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#data-variables">Data Variables</a><ul class="nav section-nav flex-column">
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#d-variable">1D variable</a></li>
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#id1">2D variable</a></li>
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#id2">3D variable</a></li>
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#d-data-from-data-frame">3D data from data frame</a></li>
+</ul>
+</li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#metadata-attributes">Metadata (attributes)</a><ul class="nav section-nav flex-column">
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#variable-attributes">Variable attributes</a></li>
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#global-attributes">Global attributes</a></li>
+</ul>
+</li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#checking-your-data">Checking your data</a></li>
+</ul>
+            </nav>
+        </div>
+    </div>
+</div>
+
+              
+                
+<div id="searchbox"></div>
+                <article class="bd-article" role="main">
+                  
+  <section class="tex2jax_ignore mathjax_ignore" id="creating-a-cf-netcdf-file">
+<h1>04: Creating a CF-NetCDF file<a class="headerlink" href="#creating-a-cf-netcdf-file" title="Permalink to this heading">#</a></h1>
+<p>In this session we will create a basic NetCDF file that compliant with the Attribute Convention for Data Discovery (ACDD) and Climate and Forecast (CF) convention.</p>
+<p>Firstly, let’s import the libraries that we will work with.</p>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-r notranslate"><div class="highlight"><pre><span></span><span class="nf">if </span><span class="p">(</span><span class="o">!</span><span class="nf">requireNamespace</span><span class="p">(</span><span class="s">&quot;RNetCDF&quot;</span><span class="p">,</span><span class="w"> </span><span class="n">quietly</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="kc">TRUE</span><span class="p">))</span><span class="w"> </span><span class="p">{</span>
+<span class="w">  </span><span class="nf">install.packages</span><span class="p">(</span><span class="s">&quot;RNetCDF&quot;</span><span class="p">)</span>
+<span class="p">}</span>
+<span class="nf">library</span><span class="p">(</span><span class="n">RNetCDF</span><span class="p">)</span>
+</pre></div>
+</div>
+</div>
+</div>
+<section id="initialising-your-file">
+<h2>Initialising your file<a class="headerlink" href="#initialising-your-file" title="Permalink to this heading">#</a></h2>
+<p>Let’s first create an empty object that we are going to use.</p>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-r notranslate"><div class="highlight"><pre><span></span><span class="n">ncds</span><span class="w"> </span><span class="o">&lt;-</span><span class="w"> </span><span class="nf">create.nc</span><span class="p">(</span><span class="s">&quot;../data/exported_from_notebooks/test.nc&quot;</span><span class="p">)</span>
+<span class="nf">print.nc</span><span class="p">(</span><span class="n">ncds</span><span class="p">)</span>
+</pre></div>
+</div>
+</div>
+<div class="cell_output docutils container">
+<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>netcdf classic {
+}
+</pre></div>
+</div>
+</div>
+</div>
+</section>
+<section id="dimensions-and-coordinate-variables">
+<h2>Dimensions and coordinate variables<a class="headerlink" href="#dimensions-and-coordinate-variables" title="Permalink to this heading">#</a></h2>
+<p>Dimensions define the shape of your data. Variables (your data) can be assigned one or more dimensions. A dimension in most cases is a spatial or temporal dimension (e.g. time, depth, latitude, longitude) but could also be something else (e.g. iteration, number of vertices for data representative of cells).</p>
+<p>Dimensions tell you how many points you have for each coordinate. Coordinate variables tell you what the values for those points are.</p>
+<p>Let’s imagine a few simple scenarios. I’ll initialise a new NetCDF dataset each time.</p>
+<section id="dimension-depth">
+<h3>1 dimension - depth<a class="headerlink" href="#dimension-depth" title="Permalink to this heading">#</a></h3>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-r notranslate"><div class="highlight"><pre><span></span><span class="n">ncds</span><span class="w"> </span><span class="o">&lt;-</span><span class="w"> </span><span class="nf">create.nc</span><span class="p">(</span><span class="s">&quot;../data/exported_from_notebooks/empty.nc&quot;</span><span class="p">)</span>
+<span class="n">depths</span><span class="w"> </span><span class="o">&lt;-</span><span class="w"> </span><span class="nf">c</span><span class="p">(</span><span class="m">0</span><span class="p">,</span><span class="m">10</span><span class="p">,</span><span class="m">20</span><span class="p">,</span><span class="m">30</span><span class="p">,</span><span class="m">50</span><span class="p">,</span><span class="m">100</span><span class="p">)</span>
+<span class="n">num_depths</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="nf">length</span><span class="p">(</span><span class="n">depths</span><span class="p">)</span>
+
+<span class="nf">dim.def.nc</span><span class="p">(</span><span class="n">ncds</span><span class="p">,</span><span class="s">&quot;depth&quot;</span><span class="p">,</span><span class="n">num_depths</span><span class="p">)</span>
+<span class="nf">print.nc</span><span class="p">(</span><span class="n">ncds</span><span class="p">)</span>
+</pre></div>
+</div>
+</div>
+<div class="cell_output docutils container">
+<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>netcdf classic {
+dimensions:
+	depth = 6 ;
+}
+</pre></div>
+</div>
+</div>
+</div>
+<p>You then need to add a coordinate variable (I’ll again call it <em>depth</em>) which has a dimension of <em>depth</em>. It is quite common for the dimension and coordinate variable to have the same name.</p>
+<p>First we define the variable. Below the first argument <em>ncds</em> is my NetCDF file, <em>depth</em> is the name I am giving to the dimension, <em>NC_INT</em> means the values will be integers, and the final argument <em>depth</em> says that this variable has one dimension call depth.</p>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-r notranslate"><div class="highlight"><pre><span></span><span class="nf">var.def.nc</span><span class="p">(</span><span class="n">ncds</span><span class="p">,</span><span class="s">&quot;depth&quot;</span><span class="p">,</span><span class="s">&quot;NC_INT&quot;</span><span class="p">,</span><span class="s">&quot;depth&quot;</span><span class="p">)</span>
+<span class="nf">print.nc</span><span class="p">(</span><span class="n">ncds</span><span class="p">)</span>
+</pre></div>
+</div>
+</div>
+<div class="cell_output docutils container">
+<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>netcdf classic {
+dimensions:
+	depth = 6 ;
+variables:
+	NC_INT depth(depth) ;
+}
+</pre></div>
+</div>
+</div>
+</div>
+<p>Only now can we add our values to the variables.</p>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-r notranslate"><div class="highlight"><pre><span></span><span class="nf">var.put.nc</span><span class="p">(</span><span class="n">ncds</span><span class="p">,</span><span class="s">&quot;depth&quot;</span><span class="p">,</span><span class="w"> </span><span class="n">depths</span><span class="p">)</span>
+<span class="nf">print.nc</span><span class="p">(</span><span class="n">ncds</span><span class="p">)</span>
+</pre></div>
+</div>
+</div>
+<div class="cell_output docutils container">
+<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>netcdf classic {
+dimensions:
+	depth = 6 ;
+variables:
+	NC_INT depth(depth) ;
+}
+</pre></div>
+</div>
+</div>
+</div>
+<p>A key feature of a NetCDF file is that there is a defined structure so your data and metadata will always be in the same place within the file. This makes it easier for a machine to read it. We will add more types of data and metadata as we go, but first a few more examples.</p>
+</section>
+<section id="a-time-series-of-data">
+<h3>A time series of data<a class="headerlink" href="#a-time-series-of-data" title="Permalink to this heading">#</a></h3>
+<p>I’ll create a list of timestamps for myself first.</p>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-r notranslate"><div class="highlight"><pre><span></span><span class="n">timestamps</span><span class="w"> </span><span class="o">&lt;-</span><span class="w"> </span><span class="nf">list</span><span class="p">(</span>
+<span class="w">  </span><span class="nf">as.POSIXct</span><span class="p">(</span><span class="s">&quot;2023-06-18 00:00:00&quot;</span><span class="p">,</span><span class="w"> </span><span class="n">tz</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="s">&quot;UTC&quot;</span><span class="p">),</span>
+<span class="w">  </span><span class="nf">as.POSIXct</span><span class="p">(</span><span class="s">&quot;2023-06-18 03:00:00&quot;</span><span class="p">,</span><span class="w"> </span><span class="n">tz</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="s">&quot;UTC&quot;</span><span class="p">),</span>
+<span class="w">  </span><span class="nf">as.POSIXct</span><span class="p">(</span><span class="s">&quot;2023-06-18 06:00:00&quot;</span><span class="p">,</span><span class="w"> </span><span class="n">tz</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="s">&quot;UTC&quot;</span><span class="p">),</span>
+<span class="w">  </span><span class="nf">as.POSIXct</span><span class="p">(</span><span class="s">&quot;2023-06-18 09:00:00&quot;</span><span class="p">,</span><span class="w"> </span><span class="n">tz</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="s">&quot;UTC&quot;</span><span class="p">),</span>
+<span class="w">  </span><span class="nf">as.POSIXct</span><span class="p">(</span><span class="s">&quot;2023-06-18 12:00:00&quot;</span><span class="p">,</span><span class="w"> </span><span class="n">tz</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="s">&quot;UTC&quot;</span><span class="p">),</span>
+<span class="w">  </span><span class="nf">as.POSIXct</span><span class="p">(</span><span class="s">&quot;2023-06-18 15:00:00&quot;</span><span class="p">,</span><span class="w"> </span><span class="n">tz</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="s">&quot;UTC&quot;</span><span class="p">),</span>
+<span class="w">  </span><span class="nf">as.POSIXct</span><span class="p">(</span><span class="s">&quot;2023-06-18 18:00:00&quot;</span><span class="p">,</span><span class="w"> </span><span class="n">tz</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="s">&quot;UTC&quot;</span><span class="p">),</span>
+<span class="w">  </span><span class="nf">as.POSIXct</span><span class="p">(</span><span class="s">&quot;2023-06-18 21:00:00&quot;</span><span class="p">,</span><span class="w"> </span><span class="n">tz</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="s">&quot;UTC&quot;</span><span class="p">)</span>
+<span class="p">)</span>
+
+<span class="nf">print</span><span class="p">(</span><span class="n">timestamps</span><span class="p">)</span>
+</pre></div>
+</div>
+</div>
+<div class="cell_output docutils container">
+<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>[[1]]
+[1] &quot;2023-06-18 UTC&quot;
+
+[[2]]
+[1] &quot;2023-06-18 03:00:00 UTC&quot;
+
+[[3]]
+[1] &quot;2023-06-18 06:00:00 UTC&quot;
+
+[[4]]
+[1] &quot;2023-06-18 09:00:00 UTC&quot;
+
+[[5]]
+[1] &quot;2023-06-18 12:00:00 UTC&quot;
+
+[[6]]
+[1] &quot;2023-06-18 15:00:00 UTC&quot;
+
+[[7]]
+[1] &quot;2023-06-18 18:00:00 UTC&quot;
+
+[[8]]
+[1] &quot;2023-06-18 21:00:00 UTC&quot;
+</pre></div>
+</div>
+</div>
+</div>
+<p>There are specific recommendations on how time should be stored in NetCDF-CF files. I will try to explain briefly here, and there is a nice explanation here too: <a class="reference external" href="https://www.unidata.ucar.edu/software/netcdf/time/recs.html">https://www.unidata.ucar.edu/software/netcdf/time/recs.html</a></p>
+<p>It is most common to have a dimension named “time” as well as a coordinate variable with the same name. Let’s discuss the variable first.</p>
+<p>The “time” variable has units that count from a user defined origin, for example “hours since 2020-01-01 00:00 UTC” or “days since 2014-01-01”. The units may be in years, days, seconds, nanoseconds, etc. Whilst this approach may seem strange at a glance, it allows the times to be stored in conventional numerical formats such as integers or floats, and to our desired precision. This is much more efficient than using a long timestamp string for each coordinate.</p>
+<p>Some softwares (e.g. xarray in Python, Panoply) know how to interpret this and will convert the data into timestamps in when you extract the data from a CF-NetCDF file. Unfortunately, at the time of writing, RNetCDF can not do this.</p>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-r notranslate"><div class="highlight"><pre><span></span><span class="c1"># Calculate the time differences in hours since the first timestamp</span>
+<span class="n">time_diff_hours</span><span class="w"> </span><span class="o">&lt;-</span><span class="w"> </span><span class="nf">sapply</span><span class="p">(</span><span class="n">timestamps</span><span class="p">,</span><span class="w"> </span><span class="nf">function</span><span class="p">(</span><span class="n">ts</span><span class="p">)</span><span class="w"> </span><span class="nf">as.integer</span><span class="p">(</span><span class="nf">difftime</span><span class="p">(</span><span class="n">ts</span><span class="p">,</span><span class="w"> </span><span class="n">timestamps</span><span class="p">[[</span><span class="m">1</span><span class="p">]],</span><span class="w"> </span><span class="n">units</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="s">&quot;hours&quot;</span><span class="p">)))</span>
+<span class="nf">print</span><span class="p">(</span><span class="n">time_diff_hours</span><span class="p">)</span>
+</pre></div>
+</div>
+</div>
+<div class="cell_output docutils container">
+<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>[1]  0  3  6  9 12 15 18 21
+</pre></div>
+</div>
+</div>
+</div>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-r notranslate"><div class="highlight"><pre><span></span><span class="n">num_times</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="nf">length</span><span class="p">(</span><span class="n">time_diff_hours</span><span class="p">)</span>
+
+<span class="n">ncds</span><span class="w"> </span><span class="o">&lt;-</span><span class="w"> </span><span class="nf">create.nc</span><span class="p">(</span><span class="s">&quot;../data/exported_from_notebooks/1d.nc&quot;</span><span class="p">)</span>
+<span class="nf">dim.def.nc</span><span class="p">(</span><span class="n">ncds</span><span class="p">,</span><span class="s">&quot;time&quot;</span><span class="p">,</span><span class="n">num_times</span><span class="p">)</span>
+<span class="nf">var.def.nc</span><span class="p">(</span><span class="n">ncds</span><span class="p">,</span><span class="s">&quot;time&quot;</span><span class="p">,</span><span class="s">&quot;NC_INT&quot;</span><span class="p">,</span><span class="s">&quot;time&quot;</span><span class="p">)</span>
+<span class="nf">var.put.nc</span><span class="p">(</span><span class="n">ncds</span><span class="p">,</span><span class="s">&quot;time&quot;</span><span class="p">,</span><span class="w"> </span><span class="n">time_diff_hours</span><span class="p">)</span>
+<span class="nf">print.nc</span><span class="p">(</span><span class="n">ncds</span><span class="p">)</span>
+</pre></div>
+</div>
+</div>
+<div class="cell_output docutils container">
+<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>netcdf classic {
+dimensions:
+	time = 8 ;
+variables:
+	NC_INT time(time) ;
+}
+</pre></div>
+</div>
+</div>
+</div>
+</section>
+<section id="multiple-dimensions">
+<h3>Multiple dimensions<a class="headerlink" href="#multiple-dimensions" title="Permalink to this heading">#</a></h3>
+<p>Now let’s create a NetCDF file with multiple dimensions.</p>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-r notranslate"><div class="highlight"><pre><span></span><span class="n">ncds</span><span class="w"> </span><span class="o">&lt;-</span><span class="w"> </span><span class="nf">create.nc</span><span class="p">(</span><span class="s">&quot;../data/exported_from_notebooks/3d.nc&quot;</span><span class="p">)</span>
+<span class="n">depths</span><span class="w"> </span><span class="o">&lt;-</span><span class="w"> </span><span class="nf">c</span><span class="p">(</span><span class="m">0</span><span class="p">,</span><span class="m">10</span><span class="p">,</span><span class="m">20</span><span class="p">,</span><span class="m">30</span><span class="p">,</span><span class="m">50</span><span class="p">,</span><span class="m">100</span><span class="p">)</span>
+<span class="n">latitudes</span><span class="w"> </span><span class="o">&lt;-</span><span class="w"> </span><span class="nf">c</span><span class="p">(</span><span class="m">78.5271</span><span class="p">,</span><span class="m">79.2316</span><span class="p">,</span><span class="m">80.3261</span><span class="p">)</span>
+<span class="n">longitudes</span><span class="w"> </span><span class="o">&lt;-</span><span class="w"> </span><span class="nf">c</span><span class="p">(</span><span class="m">30.1515</span><span class="p">,</span><span class="m">28.5810</span><span class="p">)</span>
+
+<span class="nf">dim.def.nc</span><span class="p">(</span><span class="n">ncds</span><span class="p">,</span><span class="s">&quot;depth&quot;</span><span class="p">,</span><span class="nf">length</span><span class="p">(</span><span class="n">depths</span><span class="p">))</span>
+<span class="nf">dim.def.nc</span><span class="p">(</span><span class="n">ncds</span><span class="p">,</span><span class="s">&quot;latitude&quot;</span><span class="p">,</span><span class="nf">length</span><span class="p">(</span><span class="n">latitudes</span><span class="p">))</span>
+<span class="nf">dim.def.nc</span><span class="p">(</span><span class="n">ncds</span><span class="p">,</span><span class="s">&quot;longitude&quot;</span><span class="p">,</span><span class="nf">length</span><span class="p">(</span><span class="n">longitudes</span><span class="p">))</span>
+
+<span class="nf">var.def.nc</span><span class="p">(</span><span class="n">ncds</span><span class="p">,</span><span class="s">&quot;depth&quot;</span><span class="p">,</span><span class="s">&quot;NC_INT&quot;</span><span class="p">,</span><span class="s">&quot;depth&quot;</span><span class="p">)</span>
+<span class="nf">var.def.nc</span><span class="p">(</span><span class="n">ncds</span><span class="p">,</span><span class="s">&quot;latitude&quot;</span><span class="p">,</span><span class="s">&quot;NC_DOUBLE&quot;</span><span class="p">,</span><span class="s">&quot;latitude&quot;</span><span class="p">)</span><span class="w"> </span><span class="c1"># Values have decimal places, so NC_DOUBLE</span>
+<span class="nf">var.def.nc</span><span class="p">(</span><span class="n">ncds</span><span class="p">,</span><span class="s">&quot;longitude&quot;</span><span class="p">,</span><span class="s">&quot;NC_DOUBLE&quot;</span><span class="p">,</span><span class="s">&quot;longitude&quot;</span><span class="p">)</span><span class="w"> </span><span class="c1"># Values have decimal places, so NC_DOUBLE</span>
+
+<span class="nf">var.put.nc</span><span class="p">(</span><span class="n">ncds</span><span class="p">,</span><span class="w"> </span><span class="s">&quot;depth&quot;</span><span class="p">,</span><span class="w"> </span><span class="n">depths</span><span class="p">)</span>
+<span class="nf">var.put.nc</span><span class="p">(</span><span class="n">ncds</span><span class="p">,</span><span class="w"> </span><span class="s">&quot;latitude&quot;</span><span class="p">,</span><span class="w"> </span><span class="n">latitudes</span><span class="p">)</span>
+<span class="nf">var.put.nc</span><span class="p">(</span><span class="n">ncds</span><span class="p">,</span><span class="w"> </span><span class="s">&quot;longitude&quot;</span><span class="p">,</span><span class="w"> </span><span class="n">longitudes</span><span class="p">)</span>
+<span class="nf">print.nc</span><span class="p">(</span><span class="n">ncds</span><span class="p">)</span>
+</pre></div>
+</div>
+</div>
+<div class="cell_output docutils container">
+<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>netcdf classic {
+dimensions:
+	depth = 6 ;
+	latitude = 3 ;
+	longitude = 2 ;
+variables:
+	NC_INT depth(depth) ;
+	NC_DOUBLE latitude(latitude) ;
+	NC_DOUBLE longitude(longitude) ;
+}
+</pre></div>
+</div>
+</div>
+</div>
+</section>
+</section>
+<section id="data-variables">
+<h2>Data Variables<a class="headerlink" href="#data-variables" title="Permalink to this heading">#</a></h2>
+<p>Now let’s add some data variables. Starting from the NetCDF file created directly above that has multiple dimensions.</p>
+<p>You can choose what name you assign for each variable. This is not standardised, but be sensible and clear. I will show you how to make your data variables conform to the CF conventions using variable attributes in the next section.</p>
+<section id="d-variable">
+<h3>1D variable<a class="headerlink" href="#d-variable" title="Permalink to this heading">#</a></h3>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-r notranslate"><div class="highlight"><pre><span></span><span class="n">depths</span><span class="w"> </span><span class="o">&lt;-</span><span class="w"> </span><span class="nf">c</span><span class="p">(</span><span class="m">0</span><span class="p">,</span><span class="m">10</span><span class="p">,</span><span class="m">20</span><span class="p">,</span><span class="m">30</span><span class="p">,</span><span class="m">50</span><span class="p">,</span><span class="m">100</span><span class="p">)</span>
+<span class="n">chlorophyll_a</span><span class="w"> </span><span class="o">&lt;-</span><span class="w"> </span><span class="nf">c</span><span class="p">(</span><span class="m">21.5</span><span class="p">,</span><span class="w"> </span><span class="m">18.5</span><span class="p">,</span><span class="w"> </span><span class="m">17.6</span><span class="p">,</span><span class="w"> </span><span class="m">16.8</span><span class="p">,</span><span class="w"> </span><span class="m">15.2</span><span class="p">,</span><span class="w"> </span><span class="m">14.8</span><span class="p">)</span><span class="w"> </span><span class="c1"># Must be same length as the dimension</span>
+
+<span class="n">ncds</span><span class="w"> </span><span class="o">&lt;-</span><span class="w"> </span><span class="nf">create.nc</span><span class="p">(</span><span class="s">&quot;../data/exported_from_notebooks/1d_chla.nc&quot;</span><span class="p">)</span>
+
+<span class="c1"># Dimension and coordinate variable</span>
+<span class="nf">dim.def.nc</span><span class="p">(</span><span class="n">ncds</span><span class="p">,</span><span class="s">&quot;depth&quot;</span><span class="p">,</span><span class="nf">length</span><span class="p">(</span><span class="n">depths</span><span class="p">))</span>
+<span class="nf">var.def.nc</span><span class="p">(</span><span class="n">ncds</span><span class="p">,</span><span class="s">&quot;depth&quot;</span><span class="p">,</span><span class="s">&quot;NC_INT&quot;</span><span class="p">,</span><span class="s">&quot;depth&quot;</span><span class="p">)</span>
+<span class="nf">var.put.nc</span><span class="p">(</span><span class="n">ncds</span><span class="p">,</span><span class="w"> </span><span class="s">&quot;depth&quot;</span><span class="p">,</span><span class="w"> </span><span class="n">depths</span><span class="p">)</span>
+
+<span class="c1"># Data variable with 1 dimension</span>
+<span class="nf">var.def.nc</span><span class="p">(</span><span class="n">ncds</span><span class="p">,</span><span class="s">&quot;chlorophyll_a&quot;</span><span class="p">,</span><span class="w"> </span><span class="s">&quot;NC_DOUBLE&quot;</span><span class="p">,</span><span class="w"> </span><span class="s">&quot;depth&quot;</span><span class="p">)</span>
+<span class="nf">var.put.nc</span><span class="p">(</span><span class="n">ncds</span><span class="p">,</span><span class="s">&quot;chlorophyll_a&quot;</span><span class="p">,</span><span class="w"> </span><span class="n">chlorophyll_a</span><span class="p">)</span>
+<span class="nf">print.nc</span><span class="p">(</span><span class="n">ncds</span><span class="p">)</span>
+<span class="nf">print</span><span class="p">(</span><span class="nf">var.get.nc</span><span class="p">(</span><span class="n">ncds</span><span class="p">,</span><span class="s">&quot;chlorophyll_a&quot;</span><span class="p">))</span>
+</pre></div>
+</div>
+</div>
+<div class="cell_output docutils container">
+<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>netcdf classic {
+dimensions:
+	depth = 6 ;
+variables:
+	NC_INT depth(depth) ;
+	NC_DOUBLE chlorophyll_a(depth) ;
+}
+</pre></div>
+</div>
+<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>[1] 21.5 18.5 17.6 16.8 15.2 14.8
+</pre></div>
+</div>
+</div>
+</div>
+</section>
+<section id="id1">
+<h3>2D variable<a class="headerlink" href="#id1" title="Permalink to this heading">#</a></h3>
+<p>Now a 2D variable, e.g. a grid of longitude and latitudes</p>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-r notranslate"><div class="highlight"><pre><span></span><span class="n">latitudes</span><span class="w"> </span><span class="o">&lt;-</span><span class="w"> </span><span class="nf">c</span><span class="p">(</span><span class="m">78.5271</span><span class="p">,</span><span class="m">79.2316</span><span class="p">,</span><span class="m">80.3261</span><span class="p">)</span>
+<span class="n">longitudes</span><span class="w"> </span><span class="o">&lt;-</span><span class="w"> </span><span class="nf">c</span><span class="p">(</span><span class="m">30.1515</span><span class="p">,</span><span class="m">28.5810</span><span class="p">)</span>
+
+<span class="c1"># Create random wind speed values</span>
+<span class="n">wind_speed</span><span class="w"> </span><span class="o">&lt;-</span><span class="w"> </span><span class="nf">runif</span><span class="p">(</span><span class="nf">length</span><span class="p">(</span><span class="n">latitudes</span><span class="p">)</span><span class="w"> </span><span class="o">*</span><span class="w"> </span><span class="nf">length</span><span class="p">(</span><span class="n">longitudes</span><span class="p">),</span><span class="w"> </span><span class="n">min</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="m">0</span><span class="p">,</span><span class="w"> </span><span class="n">max</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="m">10</span><span class="p">)</span>
+<span class="c1"># Reshape the wind speed values to match the latitude and longitude dimensions</span>
+<span class="n">wind_speed</span><span class="w"> </span><span class="o">&lt;-</span><span class="w"> </span><span class="nf">array</span><span class="p">(</span><span class="n">wind_speed</span><span class="p">,</span><span class="w"> </span><span class="n">dim</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="nf">c</span><span class="p">(</span><span class="nf">length</span><span class="p">(</span><span class="n">latitudes</span><span class="p">),</span><span class="w"> </span><span class="nf">length</span><span class="p">(</span><span class="n">longitudes</span><span class="p">)))</span>
+<span class="nf">print</span><span class="p">(</span><span class="n">wind_speed</span><span class="p">)</span>
+</pre></div>
+</div>
+</div>
+<div class="cell_output docutils container">
+<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>         [,1]     [,2]
+[1,] 9.212589 5.026005
+[2,] 8.471763 5.978745
+[3,] 3.050889 9.638081
+</pre></div>
+</div>
+</div>
+</div>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-r notranslate"><div class="highlight"><pre><span></span><span class="n">ncds</span><span class="w"> </span><span class="o">&lt;-</span><span class="w"> </span><span class="nf">create.nc</span><span class="p">(</span><span class="s">&quot;../data/exported_from_notebooks/2d_wind_speed.nc&quot;</span><span class="p">)</span>
+
+<span class="c1"># Dimensions and coordinate variables</span>
+<span class="nf">dim.def.nc</span><span class="p">(</span><span class="n">ncds</span><span class="p">,</span><span class="s">&quot;latitude&quot;</span><span class="p">,</span><span class="nf">length</span><span class="p">(</span><span class="n">latitudes</span><span class="p">))</span>
+<span class="nf">dim.def.nc</span><span class="p">(</span><span class="n">ncds</span><span class="p">,</span><span class="s">&quot;longitude&quot;</span><span class="p">,</span><span class="nf">length</span><span class="p">(</span><span class="n">longitudes</span><span class="p">))</span>
+<span class="nf">var.def.nc</span><span class="p">(</span><span class="n">ncds</span><span class="p">,</span><span class="s">&quot;latitude&quot;</span><span class="p">,</span><span class="s">&quot;NC_DOUBLE&quot;</span><span class="p">,</span><span class="s">&quot;latitude&quot;</span><span class="p">)</span>
+<span class="nf">var.def.nc</span><span class="p">(</span><span class="n">ncds</span><span class="p">,</span><span class="s">&quot;longitude&quot;</span><span class="p">,</span><span class="s">&quot;NC_DOUBLE&quot;</span><span class="p">,</span><span class="s">&quot;longitude&quot;</span><span class="p">)</span>
+<span class="nf">var.put.nc</span><span class="p">(</span><span class="n">ncds</span><span class="p">,</span><span class="w"> </span><span class="s">&quot;latitude&quot;</span><span class="p">,</span><span class="w"> </span><span class="n">latitudes</span><span class="p">)</span>
+<span class="nf">var.put.nc</span><span class="p">(</span><span class="n">ncds</span><span class="p">,</span><span class="w"> </span><span class="s">&quot;longitude&quot;</span><span class="p">,</span><span class="w"> </span><span class="n">longitudes</span><span class="p">)</span>
+
+<span class="c1"># Data variable with 2 dimensions</span>
+<span class="nf">var.def.nc</span><span class="p">(</span><span class="n">ncds</span><span class="p">,</span><span class="w"> </span><span class="s">&quot;wind_speed&quot;</span><span class="p">,</span><span class="w"> </span><span class="s">&quot;NC_DOUBLE&quot;</span><span class="p">,</span><span class="w"> </span><span class="nf">c</span><span class="p">(</span><span class="s">&quot;latitude&quot;</span><span class="p">,</span><span class="w"> </span><span class="s">&quot;longitude&quot;</span><span class="p">))</span>
+<span class="nf">var.put.nc</span><span class="p">(</span><span class="n">ncds</span><span class="p">,</span><span class="w"> </span><span class="s">&quot;wind_speed&quot;</span><span class="p">,</span><span class="w"> </span><span class="n">wind_speed</span><span class="p">)</span>
+<span class="nf">print.nc</span><span class="p">(</span><span class="n">ncds</span><span class="p">)</span>
+<span class="nf">print</span><span class="p">(</span><span class="nf">var.get.nc</span><span class="p">(</span><span class="n">ncds</span><span class="p">,</span><span class="w"> </span><span class="s">&quot;wind_speed&quot;</span><span class="p">))</span>
+</pre></div>
+</div>
+</div>
+<div class="cell_output docutils container">
+<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>netcdf classic {
+dimensions:
+	latitude = 3 ;
+	longitude = 2 ;
+variables:
+	NC_DOUBLE latitude(latitude) ;
+	NC_DOUBLE longitude(longitude) ;
+	NC_DOUBLE wind_speed(latitude, longitude) ;
+}
+</pre></div>
+</div>
+<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>         [,1]     [,2]
+[1,] 9.212589 5.026005
+[2,] 8.471763 5.978745
+[3,] 3.050889 9.638081
+</pre></div>
+</div>
+</div>
+</div>
+<p>Now you can see that the wind_speed variable has two dimensions; latitude and longitude. This is another major advantage of NetCDF files over tabular data formats like CSV or XLSX, which are limited in their ability to store multi-dimensional data. This multidimensional array can be used by code and software as it is without having to do any pre-processing.</p>
+</section>
+<section id="id2">
+<h3>3D variable<a class="headerlink" href="#id2" title="Permalink to this heading">#</a></h3>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-r notranslate"><div class="highlight"><pre><span></span><span class="n">depths</span><span class="w"> </span><span class="o">&lt;-</span><span class="w"> </span><span class="nf">c</span><span class="p">(</span><span class="m">0</span><span class="p">,</span><span class="m">10</span><span class="p">,</span><span class="m">20</span><span class="p">,</span><span class="m">30</span><span class="p">,</span><span class="m">50</span><span class="p">,</span><span class="m">100</span><span class="p">)</span>
+<span class="n">latitudes</span><span class="w"> </span><span class="o">&lt;-</span><span class="w"> </span><span class="nf">c</span><span class="p">(</span><span class="m">78.5271</span><span class="p">,</span><span class="m">79.2316</span><span class="p">,</span><span class="m">80.3261</span><span class="p">)</span>
+<span class="n">longitudes</span><span class="w"> </span><span class="o">&lt;-</span><span class="w"> </span><span class="nf">c</span><span class="p">(</span><span class="m">30.1515</span><span class="p">,</span><span class="m">28.5810</span><span class="p">)</span>
+<span class="n">sea_water_temperature</span><span class="w"> </span><span class="o">&lt;-</span><span class="w"> </span><span class="nf">runif</span><span class="p">(</span><span class="nf">length</span><span class="p">(</span><span class="n">depths</span><span class="p">)</span><span class="w"> </span><span class="o">*</span><span class="w"> </span><span class="nf">length</span><span class="p">(</span><span class="n">latitudes</span><span class="p">)</span><span class="w"> </span><span class="o">*</span><span class="w"> </span><span class="nf">length</span><span class="p">(</span><span class="n">longitudes</span><span class="p">),</span><span class="w"> </span><span class="n">min</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="m">0</span><span class="p">,</span><span class="w"> </span><span class="n">max</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="m">2</span><span class="p">)</span>
+
+<span class="c1"># Reshape the sea water temperature values to match the depth, latitude, and longitude dimensions</span>
+<span class="n">sea_water_temperature</span><span class="w"> </span><span class="o">&lt;-</span><span class="w"> </span><span class="nf">array</span><span class="p">(</span><span class="n">sea_water_temperature</span><span class="p">,</span><span class="w"> </span><span class="n">dim</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="nf">c</span><span class="p">(</span><span class="nf">length</span><span class="p">(</span><span class="n">depths</span><span class="p">),</span><span class="w"> </span><span class="nf">length</span><span class="p">(</span><span class="n">latitudes</span><span class="p">),</span><span class="w"> </span><span class="nf">length</span><span class="p">(</span><span class="n">longitudes</span><span class="p">)))</span>
+<span class="nf">print</span><span class="p">(</span><span class="n">sea_water_temperature</span><span class="p">)</span>
+
+<span class="n">ncds</span><span class="w"> </span><span class="o">&lt;-</span><span class="w"> </span><span class="nf">create.nc</span><span class="p">(</span><span class="s">&quot;../data/exported_from_notebooks/3d_sea_water_temperature.nc&quot;</span><span class="p">)</span>
+
+<span class="c1"># Dimensions and coordinate variables</span>
+<span class="nf">dim.def.nc</span><span class="p">(</span><span class="n">ncds</span><span class="p">,</span><span class="s">&quot;depth&quot;</span><span class="p">,</span><span class="nf">length</span><span class="p">(</span><span class="n">depths</span><span class="p">))</span>
+<span class="nf">dim.def.nc</span><span class="p">(</span><span class="n">ncds</span><span class="p">,</span><span class="s">&quot;latitude&quot;</span><span class="p">,</span><span class="nf">length</span><span class="p">(</span><span class="n">latitudes</span><span class="p">))</span>
+<span class="nf">dim.def.nc</span><span class="p">(</span><span class="n">ncds</span><span class="p">,</span><span class="s">&quot;longitude&quot;</span><span class="p">,</span><span class="nf">length</span><span class="p">(</span><span class="n">longitudes</span><span class="p">))</span>
+
+<span class="nf">var.def.nc</span><span class="p">(</span><span class="n">ncds</span><span class="p">,</span><span class="s">&quot;depth&quot;</span><span class="p">,</span><span class="s">&quot;NC_INT&quot;</span><span class="p">,</span><span class="s">&quot;depth&quot;</span><span class="p">)</span>
+<span class="nf">var.def.nc</span><span class="p">(</span><span class="n">ncds</span><span class="p">,</span><span class="s">&quot;latitude&quot;</span><span class="p">,</span><span class="s">&quot;NC_DOUBLE&quot;</span><span class="p">,</span><span class="s">&quot;latitude&quot;</span><span class="p">)</span>
+<span class="nf">var.def.nc</span><span class="p">(</span><span class="n">ncds</span><span class="p">,</span><span class="s">&quot;longitude&quot;</span><span class="p">,</span><span class="s">&quot;NC_DOUBLE&quot;</span><span class="p">,</span><span class="s">&quot;longitude&quot;</span><span class="p">)</span>
+
+<span class="nf">var.put.nc</span><span class="p">(</span><span class="n">ncds</span><span class="p">,</span><span class="w"> </span><span class="s">&quot;depth&quot;</span><span class="p">,</span><span class="w"> </span><span class="n">depths</span><span class="p">)</span>
+<span class="nf">var.put.nc</span><span class="p">(</span><span class="n">ncds</span><span class="p">,</span><span class="w"> </span><span class="s">&quot;latitude&quot;</span><span class="p">,</span><span class="w"> </span><span class="n">latitudes</span><span class="p">)</span>
+<span class="nf">var.put.nc</span><span class="p">(</span><span class="n">ncds</span><span class="p">,</span><span class="w"> </span><span class="s">&quot;longitude&quot;</span><span class="p">,</span><span class="w"> </span><span class="n">longitudes</span><span class="p">)</span>
+
+<span class="c1"># Data variable with 3 dimensions</span>
+<span class="nf">var.def.nc</span><span class="p">(</span><span class="n">ncds</span><span class="p">,</span><span class="w"> </span><span class="s">&quot;sea_water_temperature&quot;</span><span class="p">,</span><span class="w"> </span><span class="s">&quot;NC_DOUBLE&quot;</span><span class="p">,</span><span class="w"> </span><span class="nf">c</span><span class="p">(</span><span class="s">&quot;depth&quot;</span><span class="p">,</span><span class="w"> </span><span class="s">&quot;latitude&quot;</span><span class="p">,</span><span class="w"> </span><span class="s">&quot;longitude&quot;</span><span class="p">))</span>
+<span class="nf">var.put.nc</span><span class="p">(</span><span class="n">ncds</span><span class="p">,</span><span class="w"> </span><span class="s">&quot;sea_water_temperature&quot;</span><span class="p">,</span><span class="w"> </span><span class="n">sea_water_temperature</span><span class="p">)</span>
+
+<span class="nf">print.nc</span><span class="p">(</span><span class="n">ncds</span><span class="p">)</span>
+</pre></div>
+</div>
+</div>
+<div class="cell_output docutils container">
+<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>, , 1
+
+          [,1]       [,2]      [,3]
+[1,] 1.7859599 0.59514657 0.4769305
+[2,] 0.9574247 0.63540539 1.1003224
+[3,] 1.2509184 0.34107183 1.0792726
+[4,] 0.7817579 0.90644264 0.2817699
+[5,] 1.1759766 0.19531035 1.3750288
+[6,] 0.4095871 0.01415364 0.9118495
+
+, , 2
+
+           [,1]       [,2]      [,3]
+[1,] 0.72243995 1.29849440 1.7187927
+[2,] 0.21353991 1.10099063 1.2749080
+[3,] 0.92230111 0.09119235 0.1529465
+[4,] 0.02402501 1.53193675 1.1393699
+[5,] 1.73567484 0.86651988 1.7026964
+[6,] 1.48881655 1.80814578 1.2968347
+</pre></div>
+</div>
+<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>netcdf classic {
+dimensions:
+	depth = 6 ;
+	latitude = 3 ;
+	longitude = 2 ;
+variables:
+	NC_INT depth(depth) ;
+	NC_DOUBLE latitude(latitude) ;
+	NC_DOUBLE longitude(longitude) ;
+	NC_DOUBLE sea_water_temperature(depth, latitude, longitude) ;
+}
+</pre></div>
+</div>
+</div>
+</div>
+</section>
+<section id="d-data-from-data-frame">
+<h3>3D data from data frame<a class="headerlink" href="#d-data-from-data-frame" title="Permalink to this heading">#</a></h3>
+<p>What if you have your data in Excel or a CSV file or some other tabular format? We can load in the data to a dataframe (above) and then convert the data to a 3D array.</p>
+<p>I’ll create a dummy dataframe here.</p>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-r notranslate"><div class="highlight"><pre><span></span><span class="n">depths</span><span class="w"> </span><span class="o">&lt;-</span><span class="w"> </span><span class="nf">c</span><span class="p">(</span><span class="m">0</span><span class="p">,</span><span class="m">10</span><span class="p">,</span><span class="m">20</span><span class="p">,</span><span class="m">30</span><span class="p">,</span><span class="m">50</span><span class="p">,</span><span class="m">100</span><span class="p">)</span>
+<span class="n">latitudes</span><span class="w"> </span><span class="o">&lt;-</span><span class="w"> </span><span class="nf">c</span><span class="p">(</span><span class="m">78.5271</span><span class="p">,</span><span class="m">79.2316</span><span class="p">,</span><span class="m">80.3261</span><span class="p">)</span>
+<span class="n">longitudes</span><span class="w"> </span><span class="o">&lt;-</span><span class="w"> </span><span class="nf">c</span><span class="p">(</span><span class="m">30.1515</span><span class="p">,</span><span class="m">28.5810</span><span class="p">)</span>
+
+<span class="c1"># Create lists to store the coordinates and salinity values</span>
+<span class="n">depth_coordinates</span><span class="w"> </span><span class="o">&lt;-</span><span class="w"> </span><span class="nf">c</span><span class="p">()</span>
+<span class="n">latitude_coordinates</span><span class="w"> </span><span class="o">&lt;-</span><span class="w"> </span><span class="nf">c</span><span class="p">()</span>
+<span class="n">longitude_coordinates</span><span class="w"> </span><span class="o">&lt;-</span><span class="w"> </span><span class="nf">c</span><span class="p">()</span>
+<span class="n">salinity_values</span><span class="w"> </span><span class="o">&lt;-</span><span class="w"> </span><span class="nf">c</span><span class="p">()</span>
+
+<span class="c1"># Generate the coordinates and salinity values for the grid</span>
+<span class="nf">for </span><span class="p">(</span><span class="n">d</span><span class="w"> </span><span class="n">in</span><span class="w"> </span><span class="n">depths</span><span class="p">)</span><span class="w"> </span><span class="p">{</span>
+<span class="w">  </span><span class="nf">for </span><span class="p">(</span><span class="n">lat</span><span class="w"> </span><span class="n">in</span><span class="w"> </span><span class="n">latitudes</span><span class="p">)</span><span class="w"> </span><span class="p">{</span>
+<span class="w">    </span><span class="nf">for </span><span class="p">(</span><span class="n">lon</span><span class="w"> </span><span class="n">in</span><span class="w"> </span><span class="n">longitudes</span><span class="p">)</span><span class="w"> </span><span class="p">{</span>
+<span class="w">      </span><span class="n">depth_coordinates</span><span class="w"> </span><span class="o">&lt;-</span><span class="w"> </span><span class="nf">c</span><span class="p">(</span><span class="n">depth_coordinates</span><span class="p">,</span><span class="w"> </span><span class="nf">rep</span><span class="p">(</span><span class="n">d</span><span class="p">,</span><span class="w"> </span><span class="m">1</span><span class="p">))</span>
+<span class="w">      </span><span class="n">latitude_coordinates</span><span class="w"> </span><span class="o">&lt;-</span><span class="w"> </span><span class="nf">c</span><span class="p">(</span><span class="n">latitude_coordinates</span><span class="p">,</span><span class="w"> </span><span class="nf">rep</span><span class="p">(</span><span class="n">lat</span><span class="p">,</span><span class="w"> </span><span class="m">1</span><span class="p">))</span>
+<span class="w">      </span><span class="n">longitude_coordinates</span><span class="w"> </span><span class="o">&lt;-</span><span class="w"> </span><span class="nf">c</span><span class="p">(</span><span class="n">longitude_coordinates</span><span class="p">,</span><span class="w"> </span><span class="nf">rep</span><span class="p">(</span><span class="n">lon</span><span class="p">,</span><span class="w"> </span><span class="m">1</span><span class="p">))</span>
+<span class="w">      </span><span class="n">salinity</span><span class="w"> </span><span class="o">&lt;-</span><span class="w"> </span><span class="nf">runif</span><span class="p">(</span><span class="m">1</span><span class="p">,</span><span class="w"> </span><span class="n">min</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="m">30</span><span class="p">,</span><span class="w"> </span><span class="n">max</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="m">35</span><span class="p">)</span><span class="w">  </span><span class="c1"># Random salinity value between 30 and 35</span>
+<span class="w">      </span><span class="n">salinity_values</span><span class="w"> </span><span class="o">&lt;-</span><span class="w"> </span><span class="nf">c</span><span class="p">(</span><span class="n">salinity_values</span><span class="p">,</span><span class="w"> </span><span class="n">salinity</span><span class="p">)</span>
+<span class="w">    </span><span class="p">}</span>
+<span class="w">  </span><span class="p">}</span>
+<span class="p">}</span>
+
+<span class="c1"># Create a DataFrame</span>
+<span class="n">data</span><span class="w"> </span><span class="o">&lt;-</span><span class="w"> </span><span class="nf">data.frame</span><span class="p">(</span>
+<span class="w">  </span><span class="n">Depth</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="n">depth_coordinates</span><span class="p">,</span>
+<span class="w">  </span><span class="n">Latitude</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="n">latitude_coordinates</span><span class="p">,</span>
+<span class="w">  </span><span class="n">Longitude</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="n">longitude_coordinates</span><span class="p">,</span>
+<span class="w">  </span><span class="n">Salinity</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="n">salinity_values</span>
+<span class="p">)</span>
+
+<span class="nf">head</span><span class="p">(</span><span class="n">data</span><span class="p">)</span>
+</pre></div>
+</div>
+</div>
+<div class="cell_output docutils container">
+<div class="output text_html"><table class="dataframe">
+<caption>A data.frame: 6 × 4</caption>
+<thead>
+	<tr><th></th><th scope=col>Depth</th><th scope=col>Latitude</th><th scope=col>Longitude</th><th scope=col>Salinity</th></tr>
+	<tr><th></th><th scope=col>&lt;dbl&gt;</th><th scope=col>&lt;dbl&gt;</th><th scope=col>&lt;dbl&gt;</th><th scope=col>&lt;dbl&gt;</th></tr>
+</thead>
+<tbody>
+	<tr><th scope=row>1</th><td>0</td><td>78.5271</td><td>30.1515</td><td>34.73382</td></tr>
+	<tr><th scope=row>2</th><td>0</td><td>78.5271</td><td>28.5810</td><td>34.13154</td></tr>
+	<tr><th scope=row>3</th><td>0</td><td>79.2316</td><td>30.1515</td><td>33.49341</td></tr>
+	<tr><th scope=row>4</th><td>0</td><td>79.2316</td><td>28.5810</td><td>30.47204</td></tr>
+	<tr><th scope=row>5</th><td>0</td><td>80.3261</td><td>30.1515</td><td>31.56864</td></tr>
+	<tr><th scope=row>6</th><td>0</td><td>80.3261</td><td>28.5810</td><td>34.84745</td></tr>
+</tbody>
+</table>
+</div></div>
+</div>
+<p>Now, let’s create a multidimensional grid for our salinity variable. We need to be a bit careful with the order here. The dataframe is sorted first by depth (6 depths), then by latitude (3 latitudes), then by longitude (2 longitudes). We should mirror that order.</p>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-r notranslate"><div class="highlight"><pre><span></span><span class="n">salinity_3d_array</span><span class="w"> </span><span class="o">&lt;-</span><span class="w"> </span><span class="nf">array</span><span class="p">(</span><span class="n">data</span><span class="o">$</span><span class="n">Salinity</span><span class="p">,</span><span class="w"> </span><span class="n">dim</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="nf">c</span><span class="p">(</span><span class="nf">length</span><span class="p">(</span><span class="n">depths</span><span class="p">),</span><span class="w"> </span><span class="nf">length</span><span class="p">(</span><span class="n">latitudes</span><span class="p">),</span><span class="w">  </span><span class="nf">length</span><span class="p">(</span><span class="n">longitudes</span><span class="p">)))</span>
+<span class="nf">print</span><span class="p">(</span><span class="n">salinity_3d_array</span><span class="p">)</span>
+</pre></div>
+</div>
+</div>
+<div class="cell_output docutils container">
+<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>, , 1
+
+         [,1]     [,2]     [,3]
+[1,] 34.73382 30.58824 32.32904
+[2,] 34.13154 31.58758 33.36115
+[3,] 33.49341 34.96876 31.90846
+[4,] 30.47204 33.07224 33.16176
+[5,] 31.56864 31.09276 30.22359
+[6,] 34.84745 31.40883 34.35213
+
+, , 2
+
+         [,1]     [,2]     [,3]
+[1,] 32.35198 31.30970 33.75734
+[2,] 30.45768 32.95762 33.12251
+[3,] 31.64902 30.54158 34.18983
+[4,] 33.26840 32.34253 31.04502
+[5,] 30.84327 33.77659 31.10112
+[6,] 33.61300 34.29882 30.64897
+</pre></div>
+</div>
+</div>
+</div>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-r notranslate"><div class="highlight"><pre><span></span><span class="n">ncds</span><span class="w"> </span><span class="o">&lt;-</span><span class="w"> </span><span class="nf">create.nc</span><span class="p">(</span><span class="s">&quot;../data/exported_from_notebooks/3d_sea_water_salinity.nc&quot;</span><span class="p">)</span>
+
+<span class="c1"># Dimensions and coordinate variables</span>
+<span class="nf">dim.def.nc</span><span class="p">(</span><span class="n">ncds</span><span class="p">,</span><span class="s">&quot;depth&quot;</span><span class="p">,</span><span class="nf">length</span><span class="p">(</span><span class="n">depths</span><span class="p">))</span>
+<span class="nf">dim.def.nc</span><span class="p">(</span><span class="n">ncds</span><span class="p">,</span><span class="s">&quot;latitude&quot;</span><span class="p">,</span><span class="nf">length</span><span class="p">(</span><span class="n">latitudes</span><span class="p">))</span>
+<span class="nf">dim.def.nc</span><span class="p">(</span><span class="n">ncds</span><span class="p">,</span><span class="s">&quot;longitude&quot;</span><span class="p">,</span><span class="nf">length</span><span class="p">(</span><span class="n">longitudes</span><span class="p">))</span>
+
+<span class="nf">var.def.nc</span><span class="p">(</span><span class="n">ncds</span><span class="p">,</span><span class="s">&quot;depth&quot;</span><span class="p">,</span><span class="s">&quot;NC_INT&quot;</span><span class="p">,</span><span class="s">&quot;depth&quot;</span><span class="p">)</span>
+<span class="nf">var.def.nc</span><span class="p">(</span><span class="n">ncds</span><span class="p">,</span><span class="s">&quot;latitude&quot;</span><span class="p">,</span><span class="s">&quot;NC_DOUBLE&quot;</span><span class="p">,</span><span class="s">&quot;latitude&quot;</span><span class="p">)</span>
+<span class="nf">var.def.nc</span><span class="p">(</span><span class="n">ncds</span><span class="p">,</span><span class="s">&quot;longitude&quot;</span><span class="p">,</span><span class="s">&quot;NC_DOUBLE&quot;</span><span class="p">,</span><span class="s">&quot;longitude&quot;</span><span class="p">)</span>
+
+<span class="nf">var.put.nc</span><span class="p">(</span><span class="n">ncds</span><span class="p">,</span><span class="w"> </span><span class="s">&quot;depth&quot;</span><span class="p">,</span><span class="w"> </span><span class="n">depths</span><span class="p">)</span>
+<span class="nf">var.put.nc</span><span class="p">(</span><span class="n">ncds</span><span class="p">,</span><span class="w"> </span><span class="s">&quot;latitude&quot;</span><span class="p">,</span><span class="w"> </span><span class="n">latitudes</span><span class="p">)</span>
+<span class="nf">var.put.nc</span><span class="p">(</span><span class="n">ncds</span><span class="p">,</span><span class="w"> </span><span class="s">&quot;longitude&quot;</span><span class="p">,</span><span class="w"> </span><span class="n">longitudes</span><span class="p">)</span>
+
+<span class="c1"># Data variable with 3 dimensions</span>
+<span class="nf">var.def.nc</span><span class="p">(</span><span class="n">ncds</span><span class="p">,</span><span class="w"> </span><span class="s">&quot;salinity&quot;</span><span class="p">,</span><span class="w"> </span><span class="s">&quot;NC_DOUBLE&quot;</span><span class="p">,</span><span class="w"> </span><span class="nf">c</span><span class="p">(</span><span class="s">&quot;depth&quot;</span><span class="p">,</span><span class="w"> </span><span class="s">&quot;latitude&quot;</span><span class="p">,</span><span class="w"> </span><span class="s">&quot;longitude&quot;</span><span class="p">))</span>
+<span class="nf">var.put.nc</span><span class="p">(</span><span class="n">ncds</span><span class="p">,</span><span class="w"> </span><span class="s">&quot;salinity&quot;</span><span class="p">,</span><span class="w"> </span><span class="n">salinity_3d_array</span><span class="p">)</span>
+
+<span class="nf">print.nc</span><span class="p">(</span><span class="n">ncds</span><span class="p">)</span>
+</pre></div>
+</div>
+</div>
+<div class="cell_output docutils container">
+<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>netcdf classic {
+dimensions:
+	depth = 6 ;
+	latitude = 3 ;
+	longitude = 2 ;
+variables:
+	NC_INT depth(depth) ;
+	NC_DOUBLE latitude(latitude) ;
+	NC_DOUBLE longitude(longitude) ;
+	NC_DOUBLE salinity(depth, latitude, longitude) ;
+}
+</pre></div>
+</div>
+</div>
+</div>
+</section>
+</section>
+<section id="metadata-attributes">
+<h2>Metadata (attributes)<a class="headerlink" href="#metadata-attributes" title="Permalink to this heading">#</a></h2>
+<p>Hurrah! Your data are in the xarray dataset object. But are you ready to export a NetCDF file? Will that file be compliant with the FAIR principles? No! We need metadata.</p>
+<p>Variable attributes are metadata that describe the variables. Global attributes are metadata that describe the file as a whole. You can find a list of attributes here provided by the Climate &amp; Forecast (CF) conventions:
+<a class="reference external" href="https://cfconventions.org/Data/cf-conventions/cf-conventions-1.11/cf-conventions.html#attribute-appendix">https://cfconventions.org/Data/cf-conventions/cf-conventions-1.11/cf-conventions.html#attribute-appendix</a></p>
+<p>The table in the link above specifies which attributes can be used as global attributes and which can be used as variable attributes. Some attributes can be used as either.</p>
+<p>The CF conventions are light on discovery metadata. Discovery metadata are metadata that can be used to find data. For example, when and where the data were collected and by whom, some keywords etc. So we also use the ACDD convention - The Attribute Convention for Data Discovery.
+<a class="reference external" href="https://wiki.esipfed.org/Attribute_Convention_for_Data_Discovery_1-3">https://wiki.esipfed.org/Attribute_Convention_for_Data_Discovery_1-3</a></p>
+<p>This is a list of recommendations. SIOS advises that people follow the requirements of the Arctic Data Centre, here. Requirements are a more effective way to encourage consistency than recommendations. These requirements are compliant with the ACDD conventions:
+<a class="reference external" href="https://adc.met.no/node/4">https://adc.met.no/node/4</a></p>
+<section id="variable-attributes">
+<h3>Variable attributes<a class="headerlink" href="#variable-attributes" title="Permalink to this heading">#</a></h3>
+<p>The CF conventions provide examples of which variable attributes you should be including in your CF-NetCDF file. For example for latitude:
+<a class="reference external" href="https://cfconventions.org/Data/cf-conventions/cf-conventions-1.10/cf-conventions.html#latitude-coordinate">https://cfconventions.org/Data/cf-conventions/cf-conventions-1.10/cf-conventions.html#latitude-coordinate</a></p>
+<p>Let’s replicate that setup.</p>
+<p>Additionally, the ACDD convention recommends that and attribute <em>coverage_content_type</em> is also added, which is used to state whether the data are <em>modelResult</em>, <em>physicalMeasurement</em> or something else, see the list here:
+<a class="reference external" href="https://wiki.esipfed.org/Attribute_Convention_for_Data_Discovery_1-3#Highly_Recommended_Variable_Attributes">https://wiki.esipfed.org/Attribute_Convention_for_Data_Discovery_1-3#Highly_Recommended_Variable_Attributes</a></p>
+<p>And remember we might want to select additional applicable attributes for our variables from this section of the CF conventions:
+<a class="reference external" href="https://cfconventions.org/Data/cf-conventions/cf-conventions-1.11/cf-conventions.html#attribute-appendix">https://cfconventions.org/Data/cf-conventions/cf-conventions-1.11/cf-conventions.html#attribute-appendix</a></p>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-r notranslate"><div class="highlight"><pre><span></span><span class="nf">att.put.nc</span><span class="p">(</span><span class="n">ncds</span><span class="p">,</span><span class="w"> </span><span class="s">&quot;latitude&quot;</span><span class="p">,</span><span class="w"> </span><span class="s">&quot;standard_name&quot;</span><span class="p">,</span><span class="w"> </span><span class="s">&quot;NC_CHAR&quot;</span><span class="p">,</span><span class="w"> </span><span class="s">&quot;latitude&quot;</span><span class="p">)</span>
+<span class="nf">att.put.nc</span><span class="p">(</span><span class="n">ncds</span><span class="p">,</span><span class="w"> </span><span class="s">&quot;latitude&quot;</span><span class="p">,</span><span class="w"> </span><span class="s">&quot;long_name&quot;</span><span class="p">,</span><span class="w"> </span><span class="s">&quot;NC_CHAR&quot;</span><span class="p">,</span><span class="w"> </span><span class="s">&quot;latitude&quot;</span><span class="p">)</span>
+<span class="nf">att.put.nc</span><span class="p">(</span><span class="n">ncds</span><span class="p">,</span><span class="w"> </span><span class="s">&quot;latitude&quot;</span><span class="p">,</span><span class="w"> </span><span class="s">&quot;units&quot;</span><span class="p">,</span><span class="w"> </span><span class="s">&quot;NC_CHAR&quot;</span><span class="p">,</span><span class="w"> </span><span class="s">&quot;degrees_north&quot;</span><span class="p">)</span>
+<span class="nf">att.put.nc</span><span class="p">(</span><span class="n">ncds</span><span class="p">,</span><span class="w"> </span><span class="s">&quot;latitude&quot;</span><span class="p">,</span><span class="w"> </span><span class="s">&quot;coverage_content_type&quot;</span><span class="p">,</span><span class="w"> </span><span class="s">&quot;NC_CHAR&quot;</span><span class="p">,</span><span class="w"> </span><span class="s">&quot;coordinate&quot;</span><span class="p">)</span>
+
+<span class="nf">att.put.nc</span><span class="p">(</span><span class="n">ncds</span><span class="p">,</span><span class="w"> </span><span class="s">&quot;longitude&quot;</span><span class="p">,</span><span class="w"> </span><span class="s">&quot;standard_name&quot;</span><span class="p">,</span><span class="w"> </span><span class="s">&quot;NC_CHAR&quot;</span><span class="p">,</span><span class="w"> </span><span class="s">&quot;longitude&quot;</span><span class="p">)</span>
+<span class="nf">att.put.nc</span><span class="p">(</span><span class="n">ncds</span><span class="p">,</span><span class="w"> </span><span class="s">&quot;longitude&quot;</span><span class="p">,</span><span class="w"> </span><span class="s">&quot;long_name&quot;</span><span class="p">,</span><span class="w"> </span><span class="s">&quot;NC_CHAR&quot;</span><span class="p">,</span><span class="w"> </span><span class="s">&quot;longitude&quot;</span><span class="p">)</span>
+<span class="nf">att.put.nc</span><span class="p">(</span><span class="n">ncds</span><span class="p">,</span><span class="w"> </span><span class="s">&quot;longitude&quot;</span><span class="p">,</span><span class="w"> </span><span class="s">&quot;units&quot;</span><span class="p">,</span><span class="w"> </span><span class="s">&quot;NC_CHAR&quot;</span><span class="p">,</span><span class="w"> </span><span class="s">&quot;degrees_east&quot;</span><span class="p">)</span>
+<span class="nf">att.put.nc</span><span class="p">(</span><span class="n">ncds</span><span class="p">,</span><span class="w"> </span><span class="s">&quot;longitude&quot;</span><span class="p">,</span><span class="w"> </span><span class="s">&quot;coverage_content_type&quot;</span><span class="p">,</span><span class="w"> </span><span class="s">&quot;NC_CHAR&quot;</span><span class="p">,</span><span class="w"> </span><span class="s">&quot;coordinate&quot;</span><span class="p">)</span>
+
+<span class="nf">att.put.nc</span><span class="p">(</span><span class="n">ncds</span><span class="p">,</span><span class="w"> </span><span class="s">&quot;depth&quot;</span><span class="p">,</span><span class="w"> </span><span class="s">&quot;standard_name&quot;</span><span class="p">,</span><span class="w"> </span><span class="s">&quot;NC_CHAR&quot;</span><span class="p">,</span><span class="w"> </span><span class="s">&quot;depth&quot;</span><span class="p">)</span>
+<span class="nf">att.put.nc</span><span class="p">(</span><span class="n">ncds</span><span class="p">,</span><span class="w"> </span><span class="s">&quot;depth&quot;</span><span class="p">,</span><span class="w"> </span><span class="s">&quot;long_name&quot;</span><span class="p">,</span><span class="w"> </span><span class="s">&quot;NC_CHAR&quot;</span><span class="p">,</span><span class="w"> </span><span class="s">&quot;depth below sea level&quot;</span><span class="p">)</span>
+<span class="nf">att.put.nc</span><span class="p">(</span><span class="n">ncds</span><span class="p">,</span><span class="w"> </span><span class="s">&quot;depth&quot;</span><span class="p">,</span><span class="w"> </span><span class="s">&quot;units&quot;</span><span class="p">,</span><span class="w"> </span><span class="s">&quot;NC_CHAR&quot;</span><span class="p">,</span><span class="w"> </span><span class="s">&quot;meters&quot;</span><span class="p">)</span>
+<span class="nf">att.put.nc</span><span class="p">(</span><span class="n">ncds</span><span class="p">,</span><span class="w"> </span><span class="s">&quot;depth&quot;</span><span class="p">,</span><span class="w"> </span><span class="s">&quot;coverage_content_type&quot;</span><span class="p">,</span><span class="w"> </span><span class="s">&quot;NC_CHAR&quot;</span><span class="p">,</span><span class="w"> </span><span class="s">&quot;coordinate&quot;</span><span class="p">)</span>
+<span class="nf">att.put.nc</span><span class="p">(</span><span class="n">ncds</span><span class="p">,</span><span class="w"> </span><span class="s">&quot;depth&quot;</span><span class="p">,</span><span class="w"> </span><span class="s">&quot;positive&quot;</span><span class="p">,</span><span class="w"> </span><span class="s">&quot;NC_CHAR&quot;</span><span class="p">,</span><span class="w"> </span><span class="s">&quot;down&quot;</span><span class="p">)</span>
+
+<span class="nf">att.put.nc</span><span class="p">(</span><span class="n">ncds</span><span class="p">,</span><span class="w"> </span><span class="s">&quot;salinity&quot;</span><span class="p">,</span><span class="w"> </span><span class="s">&quot;standard_name&quot;</span><span class="p">,</span><span class="w"> </span><span class="s">&quot;NC_CHAR&quot;</span><span class="p">,</span><span class="w"> </span><span class="s">&quot;sea_water_salinity&quot;</span><span class="p">)</span>
+<span class="nf">att.put.nc</span><span class="p">(</span><span class="n">ncds</span><span class="p">,</span><span class="w"> </span><span class="s">&quot;salinity&quot;</span><span class="p">,</span><span class="w"> </span><span class="s">&quot;long_name&quot;</span><span class="p">,</span><span class="w"> </span><span class="s">&quot;NC_CHAR&quot;</span><span class="p">,</span><span class="w"> </span><span class="s">&quot;a description about the variable in your own words&quot;</span><span class="p">)</span>
+<span class="nf">att.put.nc</span><span class="p">(</span><span class="n">ncds</span><span class="p">,</span><span class="w"> </span><span class="s">&quot;salinity&quot;</span><span class="p">,</span><span class="w"> </span><span class="s">&quot;units&quot;</span><span class="p">,</span><span class="w"> </span><span class="s">&quot;NC_CHAR&quot;</span><span class="p">,</span><span class="w"> </span><span class="s">&quot;psu&quot;</span><span class="p">)</span>
+<span class="nf">att.put.nc</span><span class="p">(</span><span class="n">ncds</span><span class="p">,</span><span class="w"> </span><span class="s">&quot;salinity&quot;</span><span class="p">,</span><span class="w"> </span><span class="s">&quot;coverage_content_type&quot;</span><span class="p">,</span><span class="w"> </span><span class="s">&quot;NC_CHAR&quot;</span><span class="p">,</span><span class="w"> </span><span class="s">&quot;modelResult&quot;</span><span class="p">)</span>
+
+<span class="nf">print.nc</span><span class="p">(</span><span class="n">ncds</span><span class="p">)</span>
+</pre></div>
+</div>
+</div>
+<div class="cell_output docutils container">
+<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>netcdf classic {
+dimensions:
+	depth = 6 ;
+	latitude = 3 ;
+	longitude = 2 ;
+variables:
+	NC_INT depth(depth) ;
+		NC_CHAR depth:standard_name = &quot;depth&quot; ;
+		NC_CHAR depth:long_name = &quot;depth below sea level&quot; ;
+		NC_CHAR depth:units = &quot;meters&quot; ;
+		NC_CHAR depth:coverage_content_type = &quot;coordinate&quot; ;
+		NC_CHAR depth:positive = &quot;down&quot; ;
+	NC_DOUBLE latitude(latitude) ;
+		NC_CHAR latitude:standard_name = &quot;latitude&quot; ;
+		NC_CHAR latitude:long_name = &quot;latitude&quot; ;
+		NC_CHAR latitude:units = &quot;degrees_north&quot; ;
+		NC_CHAR latitude:coverage_content_type = &quot;coordinate&quot; ;
+	NC_DOUBLE longitude(longitude) ;
+		NC_CHAR longitude:standard_name = &quot;longitude&quot; ;
+		NC_CHAR longitude:long_name = &quot;longitude&quot; ;
+		NC_CHAR longitude:units = &quot;degrees_east&quot; ;
+		NC_CHAR longitude:coverage_content_type = &quot;coordinate&quot; ;
+	NC_DOUBLE salinity(depth, latitude, longitude) ;
+		NC_CHAR salinity:standard_name = &quot;sea_water_salinity&quot; ;
+		NC_CHAR salinity:long_name = &quot;a description about the variable in your own words&quot; ;
+		NC_CHAR salinity:units = &quot;psu&quot; ;
+		NC_CHAR salinity:coverage_content_type = &quot;modelResult&quot; ;
+}
+</pre></div>
+</div>
+</div>
+</div>
+</section>
+<section id="global-attributes">
+<h3>Global attributes<a class="headerlink" href="#global-attributes" title="Permalink to this heading">#</a></h3>
+<p>As mentioned above, the requirements of the Arctic Data Centre for global attributes (based on the ACDD convention) can serve as a guide for which global attributes you should be including. <a class="reference external" href="https://adc.met.no/node/4">https://adc.met.no/node/4</a></p>
+<p>And remember we might want to select additional applicable global attributes from this section of the CF conventions:
+<a class="reference external" href="https://cfconventions.org/Data/cf-conventions/cf-conventions-1.11/cf-conventions.html#attribute-appendix">https://cfconventions.org/Data/cf-conventions/cf-conventions-1.11/cf-conventions.html#attribute-appendix</a></p>
+<p>Go through and add each required attribute and any others you wish to. You are also welcome to add any custom attributes on top of these requirements.</p>
+<p>In RNetCDF, the syntax for adding a global attribute is the same as for adding a variable attribute, but we use a special variable name <em>NC_GLOBAL</em>.</p>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-r notranslate"><div class="highlight"><pre><span></span><span class="c1"># Define the global attributes as an R list</span>
+<span class="n">attributes</span><span class="w"> </span><span class="o">&lt;-</span><span class="w"> </span><span class="nf">list</span><span class="p">(</span>
+<span class="w">  </span><span class="n">id</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="s">&quot;your_unique_id_here&quot;</span><span class="p">,</span>
+<span class="w">  </span><span class="n">naming_authority</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="s">&quot;institution that provides the id&quot;</span><span class="p">,</span>
+<span class="w">  </span><span class="n">title</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="s">&quot;my title&quot;</span><span class="p">,</span>
+<span class="w">  </span><span class="n">summary</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="s">&quot;analagous to an abstract in the paper, describing the data and how they were collected and processed&quot;</span><span class="p">,</span>
+<span class="w">  </span><span class="n">creator_type</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="s">&quot;person&quot;</span><span class="p">,</span>
+<span class="w">  </span><span class="n">creator_name</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="s">&quot;John Smith; Luke Marsden&quot;</span><span class="p">,</span><span class="w"> </span><span class="c1"># Who collected and processed the data up to this point</span>
+<span class="w">  </span><span class="n">creator_email</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="s">&quot;johns@unis.no; lukem@met.no&quot;</span><span class="p">,</span>
+<span class="w">  </span><span class="n">creator_institution</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="s">&quot;The University Centre in Svalbard (UNIS); Norwegian Meteorological Institute (MET)&quot;</span><span class="p">,</span>
+<span class="w">  </span><span class="n">creator_url</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="s">&quot;; https://orcid.org/0000-0002-9746-544X&quot;</span><span class="p">,</span><span class="w"> </span><span class="c1"># OrcID is best practice if possible. Other URLs okay, or leave blank for authors that don&#39;t have one.</span>
+<span class="w">  </span><span class="n">time_coverage_start</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="s">&quot;2020-05-10T08:14:58Z&quot;</span><span class="p">,</span>
+<span class="w">  </span><span class="n">time_coverage_end</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="s">&quot;2020-05-10T11:51:12Z&quot;</span><span class="p">,</span>
+<span class="w">  </span><span class="n">keywords</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="s">&quot;sea_water_salinity&quot;</span><span class="p">,</span>
+<span class="w">  </span><span class="n">keywords_vocabulary</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="s">&quot;CF:NetCDF COARDS Climate and Forecast Standard Names&quot;</span><span class="p">,</span>
+<span class="w">  </span><span class="n">institution</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="s">&quot;Your Institution&quot;</span><span class="p">,</span>
+<span class="w">  </span><span class="n">publisher_name</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="s">&quot;Publisher Name&quot;</span><span class="p">,</span><span class="w"> </span><span class="c1"># Data centre where your data will be published</span>
+<span class="w">  </span><span class="n">publisher_email</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="s">&quot;publisher@email.com&quot;</span><span class="p">,</span>
+<span class="w">  </span><span class="n">publisher_url</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="s">&quot;publisher_url_here&quot;</span><span class="p">,</span>
+<span class="w">  </span><span class="n">license</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="s">&quot;https://creativecommons.org/licenses/by/4.0/&quot;</span><span class="p">,</span>
+<span class="w">  </span><span class="n">Conventions</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="s">&quot;ACDD-1.3, CF-1.8&quot;</span><span class="p">,</span><span class="w"> </span><span class="c1"># Choose which ever version you will check your file against using a compliance checker</span>
+<span class="w">  </span><span class="n">project</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="s">&quot;Your project name&quot;</span>
+<span class="p">)</span>
+
+<span class="c1"># Loop through the attributes and add them to the NetCDF file. </span>
+<span class="nf">for </span><span class="p">(</span><span class="n">key</span><span class="w"> </span><span class="n">in</span><span class="w"> </span><span class="nf">names</span><span class="p">(</span><span class="n">attributes</span><span class="p">))</span><span class="w"> </span><span class="p">{</span>
+<span class="w">  </span><span class="nf">att.put.nc</span><span class="p">(</span><span class="n">ncds</span><span class="p">,</span><span class="w"> </span><span class="s">&quot;NC_GLOBAL&quot;</span><span class="p">,</span><span class="w"> </span><span class="n">key</span><span class="p">,</span><span class="w"> </span><span class="s">&quot;NC_CHAR&quot;</span><span class="p">,</span><span class="w"> </span><span class="n">attributes</span><span class="p">[[</span><span class="n">key</span><span class="p">]])</span>
+<span class="p">}</span>
+
+<span class="c1"># These attributes are all &quot;NC_CHAR&quot; format. You will need to adjust the code if writing other formats.</span>
+
+<span class="nf">print.nc</span><span class="p">(</span><span class="n">ncds</span><span class="p">)</span>
+</pre></div>
+</div>
+</div>
+<div class="cell_output docutils container">
+<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>netcdf classic {
+dimensions:
+	depth = 6 ;
+	latitude = 3 ;
+	longitude = 2 ;
+variables:
+	NC_INT depth(depth) ;
+		NC_CHAR depth:standard_name = &quot;depth&quot; ;
+		NC_CHAR depth:long_name = &quot;depth below sea level&quot; ;
+		NC_CHAR depth:units = &quot;meters&quot; ;
+		NC_CHAR depth:coverage_content_type = &quot;coordinate&quot; ;
+		NC_CHAR depth:positive = &quot;down&quot; ;
+	NC_DOUBLE latitude(latitude) ;
+		NC_CHAR latitude:standard_name = &quot;latitude&quot; ;
+		NC_CHAR latitude:long_name = &quot;latitude&quot; ;
+		NC_CHAR latitude:units = &quot;degrees_north&quot; ;
+		NC_CHAR latitude:coverage_content_type = &quot;coordinate&quot; ;
+	NC_DOUBLE longitude(longitude) ;
+		NC_CHAR longitude:standard_name = &quot;longitude&quot; ;
+		NC_CHAR longitude:long_name = &quot;longitude&quot; ;
+		NC_CHAR longitude:units = &quot;degrees_east&quot; ;
+		NC_CHAR longitude:coverage_content_type = &quot;coordinate&quot; ;
+	NC_DOUBLE salinity(depth, latitude, longitude) ;
+		NC_CHAR salinity:standard_name = &quot;sea_water_salinity&quot; ;
+		NC_CHAR salinity:long_name = &quot;a description about the variable in your own words&quot; ;
+		NC_CHAR salinity:units = &quot;psu&quot; ;
+		NC_CHAR salinity:coverage_content_type = &quot;modelResult&quot; ;
+
+// global attributes:
+		NC_CHAR :id = &quot;your_unique_id_here&quot; ;
+		NC_CHAR :naming_authority = &quot;institution that provides the id&quot; ;
+		NC_CHAR :title = &quot;my title&quot; ;
+		NC_CHAR :summary = &quot;analagous to an abstract in the paper, describing the data and how they were collected and processed&quot; ;
+		NC_CHAR :creator_type = &quot;person&quot; ;
+		NC_CHAR :creator_name = &quot;John Smith; Luke Marsden&quot; ;
+		NC_CHAR :creator_email = &quot;johns@unis.no; lukem@met.no&quot; ;
+		NC_CHAR :creator_institution = &quot;The University Centre in Svalbard (UNIS); Norwegian Meteorological Institute (MET)&quot; ;
+		NC_CHAR :creator_url = &quot;; https://orcid.org/0000-0002-9746-544X&quot; ;
+		NC_CHAR :time_coverage_start = &quot;2020-05-10T08:14:58Z&quot; ;
+		NC_CHAR :time_coverage_end = &quot;2020-05-10T11:51:12Z&quot; ;
+		NC_CHAR :keywords = &quot;sea_water_salinity&quot; ;
+		NC_CHAR :keywords_vocabulary = &quot;CF:NetCDF COARDS Climate and Forecast Standard Names&quot; ;
+		NC_CHAR :institution = &quot;Your Institution&quot; ;
+		NC_CHAR :publisher_name = &quot;Publisher Name&quot; ;
+		NC_CHAR :publisher_email = &quot;publisher@email.com&quot; ;
+		NC_CHAR :publisher_url = &quot;publisher_url_here&quot; ;
+		NC_CHAR :license = &quot;https://creativecommons.org/licenses/by/4.0/&quot; ;
+		NC_CHAR :Conventions = &quot;ACDD-1.3, CF-1.8&quot; ;
+		NC_CHAR :project = &quot;Your project name&quot; ;
+}
+</pre></div>
+</div>
+</div>
+</div>
+<p>In this case, it makes sense to add some attributes based on information we have already provided.</p>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-r notranslate"><div class="highlight"><pre><span></span><span class="nf">att.put.nc</span><span class="p">(</span><span class="n">ncds</span><span class="p">,</span><span class="w"> </span><span class="s">&quot;NC_GLOBAL&quot;</span><span class="p">,</span><span class="w"> </span><span class="s">&quot;geospatial_lat_min&quot;</span><span class="p">,</span><span class="w"> </span><span class="s">&quot;NC_FLOAT&quot;</span><span class="p">,</span><span class="w"> </span><span class="nf">min</span><span class="p">(</span><span class="n">lat</span><span class="p">))</span>
+<span class="nf">att.put.nc</span><span class="p">(</span><span class="n">ncds</span><span class="p">,</span><span class="w"> </span><span class="s">&quot;NC_GLOBAL&quot;</span><span class="p">,</span><span class="w"> </span><span class="s">&quot;geospatial_lat_max&quot;</span><span class="p">,</span><span class="w"> </span><span class="s">&quot;NC_FLOAT&quot;</span><span class="p">,</span><span class="w"> </span><span class="nf">max</span><span class="p">(</span><span class="n">lat</span><span class="p">))</span>
+<span class="nf">att.put.nc</span><span class="p">(</span><span class="n">ncds</span><span class="p">,</span><span class="w"> </span><span class="s">&quot;NC_GLOBAL&quot;</span><span class="p">,</span><span class="w"> </span><span class="s">&quot;geospatial_lon_min&quot;</span><span class="p">,</span><span class="w"> </span><span class="s">&quot;NC_FLOAT&quot;</span><span class="p">,</span><span class="w"> </span><span class="nf">min</span><span class="p">(</span><span class="n">lon</span><span class="p">))</span>
+<span class="nf">att.put.nc</span><span class="p">(</span><span class="n">ncds</span><span class="p">,</span><span class="w"> </span><span class="s">&quot;NC_GLOBAL&quot;</span><span class="p">,</span><span class="w"> </span><span class="s">&quot;geospatial_lon_max&quot;</span><span class="p">,</span><span class="w"> </span><span class="s">&quot;NC_FLOAT&quot;</span><span class="p">,</span><span class="w"> </span><span class="nf">max</span><span class="p">(</span><span class="n">lon</span><span class="p">))</span>
+</pre></div>
+</div>
+</div>
+</div>
+<p>We can include the current time in the <em>date_created</em> and <em>history</em> attributes.</p>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-r notranslate"><div class="highlight"><pre><span></span><span class="n">dtnow</span><span class="w"> </span><span class="o">&lt;-</span><span class="w"> </span><span class="nf">Sys.time</span><span class="p">()</span>
+<span class="nf">attr</span><span class="p">(</span><span class="n">dtnow</span><span class="p">,</span><span class="w"> </span><span class="s">&quot;tzone&quot;</span><span class="p">)</span><span class="w"> </span><span class="o">&lt;-</span><span class="w"> </span><span class="s">&quot;UTC&quot;</span>
+<span class="n">dt8601</span><span class="w"> </span><span class="o">&lt;-</span><span class="w"> </span><span class="nf">format</span><span class="p">(</span><span class="n">dtnow</span><span class="p">,</span><span class="w"> </span><span class="s">&quot;%Y-%m-%dT%H:%M:%SZ&quot;</span><span class="p">)</span><span class="w"> </span><span class="c1"># date and time in ISO 8601 format</span>
+<span class="nf">att.put.nc</span><span class="p">(</span><span class="n">ncds</span><span class="p">,</span><span class="w"> </span><span class="s">&quot;NC_GLOBAL&quot;</span><span class="p">,</span><span class="w"> </span><span class="s">&quot;date_created&quot;</span><span class="p">,</span><span class="w"> </span><span class="s">&quot;NC_CHAR&quot;</span><span class="p">,</span><span class="w"> </span><span class="n">dt8601</span><span class="p">)</span>
+<span class="n">history</span><span class="w"> </span><span class="o">&lt;-</span><span class="w"> </span><span class="nf">paste</span><span class="p">(</span><span class="s">&quot;File created at&quot;</span><span class="p">,</span><span class="w"> </span><span class="n">dtnow</span><span class="p">,</span><span class="w"> </span><span class="s">&quot;using RNetCDF by Luke Marsden&quot;</span><span class="p">)</span>
+<span class="nf">att.put.nc</span><span class="p">(</span><span class="n">ncds</span><span class="p">,</span><span class="w"> </span><span class="s">&quot;NC_GLOBAL&quot;</span><span class="p">,</span><span class="w"> </span><span class="s">&quot;history&quot;</span><span class="p">,</span><span class="w"> </span><span class="s">&quot;NC_CHAR&quot;</span><span class="p">,</span><span class="w"> </span><span class="n">history</span><span class="p">)</span>
+<span class="nf">print.nc</span><span class="p">(</span><span class="n">ncds</span><span class="p">)</span>
+</pre></div>
+</div>
+</div>
+<div class="cell_output docutils container">
+<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>netcdf classic {
+dimensions:
+	depth = 6 ;
+	latitude = 3 ;
+	longitude = 2 ;
+variables:
+	NC_INT depth(depth) ;
+		NC_CHAR depth:standard_name = &quot;depth&quot; ;
+		NC_CHAR depth:long_name = &quot;depth below sea level&quot; ;
+		NC_CHAR depth:units = &quot;meters&quot; ;
+		NC_CHAR depth:coverage_content_type = &quot;coordinate&quot; ;
+		NC_CHAR depth:positive = &quot;down&quot; ;
+	NC_DOUBLE latitude(latitude) ;
+		NC_CHAR latitude:standard_name = &quot;latitude&quot; ;
+		NC_CHAR latitude:long_name = &quot;latitude&quot; ;
+		NC_CHAR latitude:units = &quot;degrees_north&quot; ;
+		NC_CHAR latitude:coverage_content_type = &quot;coordinate&quot; ;
+	NC_DOUBLE longitude(longitude) ;
+		NC_CHAR longitude:standard_name = &quot;longitude&quot; ;
+		NC_CHAR longitude:long_name = &quot;longitude&quot; ;
+		NC_CHAR longitude:units = &quot;degrees_east&quot; ;
+		NC_CHAR longitude:coverage_content_type = &quot;coordinate&quot; ;
+	NC_DOUBLE salinity(depth, latitude, longitude) ;
+		NC_CHAR salinity:standard_name = &quot;sea_water_salinity&quot; ;
+		NC_CHAR salinity:long_name = &quot;a description about the variable in your own words&quot; ;
+		NC_CHAR salinity:units = &quot;psu&quot; ;
+		NC_CHAR salinity:coverage_content_type = &quot;modelResult&quot; ;
+
+// global attributes:
+		NC_CHAR :id = &quot;your_unique_id_here&quot; ;
+		NC_CHAR :naming_authority = &quot;institution that provides the id&quot; ;
+		NC_CHAR :title = &quot;my title&quot; ;
+		NC_CHAR :summary = &quot;analagous to an abstract in the paper, describing the data and how they were collected and processed&quot; ;
+		NC_CHAR :creator_type = &quot;person&quot; ;
+		NC_CHAR :creator_name = &quot;John Smith; Luke Marsden&quot; ;
+		NC_CHAR :creator_email = &quot;johns@unis.no; lukem@met.no&quot; ;
+		NC_CHAR :creator_institution = &quot;The University Centre in Svalbard (UNIS); Norwegian Meteorological Institute (MET)&quot; ;
+		NC_CHAR :creator_url = &quot;; https://orcid.org/0000-0002-9746-544X&quot; ;
+		NC_CHAR :time_coverage_start = &quot;2020-05-10T08:14:58Z&quot; ;
+		NC_CHAR :time_coverage_end = &quot;2020-05-10T11:51:12Z&quot; ;
+		NC_CHAR :keywords = &quot;sea_water_salinity&quot; ;
+		NC_CHAR :keywords_vocabulary = &quot;CF:NetCDF COARDS Climate and Forecast Standard Names&quot; ;
+		NC_CHAR :institution = &quot;Your Institution&quot; ;
+		NC_CHAR :publisher_name = &quot;Publisher Name&quot; ;
+		NC_CHAR :publisher_email = &quot;publisher@email.com&quot; ;
+		NC_CHAR :publisher_url = &quot;publisher_url_here&quot; ;
+		NC_CHAR :license = &quot;https://creativecommons.org/licenses/by/4.0/&quot; ;
+		NC_CHAR :Conventions = &quot;ACDD-1.3, CF-1.8&quot; ;
+		NC_CHAR :project = &quot;Your project name&quot; ;
+		NC_FLOAT :geospatial_lat_min = 80.3261032104492 ;
+		NC_FLOAT :geospatial_lat_max = 80.3261032104492 ;
+		NC_FLOAT :geospatial_lon_min = 28.5809993743896 ;
+		NC_FLOAT :geospatial_lon_max = 28.5809993743896 ;
+		NC_CHAR :date_created = &quot;2024-04-10T13:44:47Z&quot; ;
+		NC_CHAR :history = &quot;File created at 2024-04-10 13:44:47.84417 using RNetCDF by Luke Marsden&quot; ;
+}
+</pre></div>
+</div>
+</div>
+</div>
+<p>Finally, we close the file.</p>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-r notranslate"><div class="highlight"><pre><span></span><span class="nf">close.nc</span><span class="p">(</span><span class="n">ncds</span><span class="p">)</span>
+</pre></div>
+</div>
+</div>
+</div>
+</section>
+</section>
+<section id="checking-your-data">
+<h2>Checking your data<a class="headerlink" href="#checking-your-data" title="Permalink to this heading">#</a></h2>
+<p>Make sure you thoroughly check your file and it ideally should be run past all co-authors, just like when publishing a paper.</p>
+<p>There are also validators you can run your files by to make sure that you file is compliant with the ACDD and CF conventions before you publish it. For example: <a class="reference external" href="https://compliance.ioos.us/index.html">https://compliance.ioos.us/index.html</a></p>
+</section>
+</section>
+
+    <script type="text/x-thebe-config">
+    {
+        requestKernel: true,
+        binderOptions: {
+            repo: "binder-examples/jupyter-stacks-datascience",
+            ref: "master",
+        },
+        codeMirrorConfig: {
+            theme: "abcdef",
+            mode: "r"
+        },
+        kernelOptions: {
+            name: "ir",
+            path: "./."
+        },
+        predefinedOutput: true
+    }
+    </script>
+    <script>kernelName = 'ir'</script>
+
+                </article>
+              
+
+              
+              
+              
+              
+                <footer class="prev-next-footer">
+                  <!-- Previous / next buttons -->
+<div class="prev-next-area">
+    <a class="left-prev"
+       href="03_extracting_data_to_different_formats.html"
+       title="previous page">
+      <i class="fa-solid fa-angle-left"></i>
+      <div class="prev-next-info">
+        <p class="prev-next-subtitle">previous</p>
+        <p class="prev-next-title">03: Extracting data to different formats</p>
+      </div>
+    </a>
+</div>
+                </footer>
+              
+            </div>
+            
+            
+              
+                <div class="bd-sidebar-secondary bd-toc"><div class="sidebar-secondary-items sidebar-secondary__inner">
+
+  <div class="sidebar-secondary-item">
+  <div class="page-toc tocsection onthispage">
+    <i class="fa-solid fa-list"></i> Contents
+  </div>
+  <nav class="bd-toc-nav page-toc">
+    <ul class="visible nav section-nav flex-column">
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#initialising-your-file">Initialising your file</a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#dimensions-and-coordinate-variables">Dimensions and coordinate variables</a><ul class="nav section-nav flex-column">
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#dimension-depth">1 dimension - depth</a></li>
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#a-time-series-of-data">A time series of data</a></li>
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#multiple-dimensions">Multiple dimensions</a></li>
+</ul>
+</li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#data-variables">Data Variables</a><ul class="nav section-nav flex-column">
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#d-variable">1D variable</a></li>
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#id1">2D variable</a></li>
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#id2">3D variable</a></li>
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#d-data-from-data-frame">3D data from data frame</a></li>
+</ul>
+</li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#metadata-attributes">Metadata (attributes)</a><ul class="nav section-nav flex-column">
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#variable-attributes">Variable attributes</a></li>
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#global-attributes">Global attributes</a></li>
+</ul>
+</li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#checking-your-data">Checking your data</a></li>
+</ul>
+  </nav></div>
+
+</div></div>
+              
+            
+          </div>
+          <footer class="bd-footer-content">
+            
+<div class="bd-footer-content__inner container">
+  
+  <div class="footer-item">
+    
+<p class="component-author">
+By Luke Marsden
+</p>
+
+  </div>
+  
+  <div class="footer-item">
+    
+  <p class="copyright">
+    
+      © Copyright 2022.
+      <br/>
+    
+  </p>
+
+  </div>
+  
+  <div class="footer-item">
+    
+  </div>
+  
+  <div class="footer-item">
+    
+  </div>
+  
+</div>
+          </footer>
+        
+
+      </main>
+    </div>
+  </div>
+  
+  <!-- Scripts loaded after <body> so the DOM is not blocked -->
+  <script src="_static/scripts/bootstrap.js?digest=365ca57ee442770a23c6"></script>
+<script src="_static/scripts/pydata-sphinx-theme.js?digest=365ca57ee442770a23c6"></script>
+
+  <footer class="bd-footer">
+  </footer>
+  </body>
+</html>

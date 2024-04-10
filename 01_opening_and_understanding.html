@@ -1,0 +1,1137 @@
+
+
+<!DOCTYPE html>
+
+
+<html lang="en" >
+
+  <head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" /><meta name="generator" content="Docutils 0.18.1: http://docutils.sourceforge.net/" />
+
+    <title>01: Opening and understanding &#8212; NetCDF in R - from beginner to pro</title>
+  
+  
+  
+  <script data-cfasync="false">
+    document.documentElement.dataset.mode = localStorage.getItem("mode") || "";
+    document.documentElement.dataset.theme = localStorage.getItem("theme") || "light";
+  </script>
+  
+  <!-- Loaded before other Sphinx assets -->
+  <link href="_static/styles/theme.css?digest=365ca57ee442770a23c6" rel="stylesheet" />
+<link href="_static/styles/bootstrap.css?digest=365ca57ee442770a23c6" rel="stylesheet" />
+<link href="_static/styles/pydata-sphinx-theme.css?digest=365ca57ee442770a23c6" rel="stylesheet" />
+
+  
+  <link href="_static/vendor/fontawesome/6.1.2/css/all.min.css?digest=365ca57ee442770a23c6" rel="stylesheet" />
+  <link rel="preload" as="font" type="font/woff2" crossorigin href="_static/vendor/fontawesome/6.1.2/webfonts/fa-solid-900.woff2" />
+<link rel="preload" as="font" type="font/woff2" crossorigin href="_static/vendor/fontawesome/6.1.2/webfonts/fa-brands-400.woff2" />
+<link rel="preload" as="font" type="font/woff2" crossorigin href="_static/vendor/fontawesome/6.1.2/webfonts/fa-regular-400.woff2" />
+
+    <link rel="stylesheet" type="text/css" href="_static/pygments.css" />
+    <link rel="stylesheet" href="_static/styles/sphinx-book-theme.css?digest=14f4ca6b54d191a8c7657f6c759bf11a5fb86285" type="text/css" />
+    <link rel="stylesheet" type="text/css" href="_static/togglebutton.css" />
+    <link rel="stylesheet" type="text/css" href="_static/copybutton.css" />
+    <link rel="stylesheet" type="text/css" href="_static/mystnb.4510f1fc1dee50b3e5859aac5469c37c29e427902b24a333a5f9fcb2f0b3ac41.css" />
+    <link rel="stylesheet" type="text/css" href="_static/sphinx-thebe.css" />
+    <link rel="stylesheet" type="text/css" href="_static/design-style.4045f2051d55cab465a707391d5b2007.min.css" />
+  
+  <!-- Pre-loaded scripts that we'll load fully later -->
+  <link rel="preload" as="script" href="_static/scripts/bootstrap.js?digest=365ca57ee442770a23c6" />
+<link rel="preload" as="script" href="_static/scripts/pydata-sphinx-theme.js?digest=365ca57ee442770a23c6" />
+  <script src="_static/vendor/fontawesome/6.1.2/js/all.min.js?digest=365ca57ee442770a23c6"></script>
+
+    <script data-url_root="./" id="documentation_options" src="_static/documentation_options.js"></script>
+    <script src="_static/jquery.js"></script>
+    <script src="_static/underscore.js"></script>
+    <script src="_static/_sphinx_javascript_frameworks_compat.js"></script>
+    <script src="_static/doctools.js"></script>
+    <script src="_static/clipboard.min.js"></script>
+    <script src="_static/copybutton.js"></script>
+    <script src="_static/scripts/sphinx-book-theme.js?digest=5a5c038af52cf7bc1a1ec88eea08e6366ee68824"></script>
+    <script>let toggleHintShow = 'Click to show';</script>
+    <script>let toggleHintHide = 'Click to hide';</script>
+    <script>let toggleOpenOnPrint = 'true';</script>
+    <script src="_static/togglebutton.js"></script>
+    <script>var togglebuttonSelector = '.toggle, .admonition.dropdown';</script>
+    <script src="_static/design-tabs.js"></script>
+    <script>const THEBE_JS_URL = "https://unpkg.com/thebe@0.8.2/lib/index.js"
+const thebe_selector = ".thebe,.cell"
+const thebe_selector_input = "pre"
+const thebe_selector_output = ".output, .cell_output"
+</script>
+    <script async="async" src="_static/sphinx-thebe.js"></script>
+    <script>window.MathJax = {"options": {"processHtmlClass": "tex2jax_process|mathjax_process|math|output_area"}}</script>
+    <script defer="defer" src="https://cdn.jsdelivr.net/npm/mathjax@3/es5/tex-mml-chtml.js"></script>
+    <script>DOCUMENTATION_OPTIONS.pagename = '01_opening_and_understanding';</script>
+    <link rel="index" title="Index" href="genindex.html" />
+    <link rel="search" title="Search" href="search.html" />
+    <link rel="next" title="02: Creating Plots" href="02_creating_plots.html" />
+    <link rel="prev" title="NetCDF in R: From beginner to pro" href="intro.html" />
+  <meta name="viewport" content="width=device-width, initial-scale=1"/>
+  <meta name="docsearch:language" content="en"/>
+  </head>
+  
+  
+  <body data-bs-spy="scroll" data-bs-target=".bd-toc-nav" data-offset="180" data-bs-root-margin="0px 0px -60%" data-default-mode="">
+
+  
+  
+  <a class="skip-link" href="#main-content">Skip to main content</a>
+  
+  <div id="pst-scroll-pixel-helper"></div>
+
+  
+  <button type="button" class="btn rounded-pill" id="pst-back-to-top">
+    <i class="fa-solid fa-arrow-up"></i>
+    Back to top
+  </button>
+
+  
+  <input type="checkbox"
+          class="sidebar-toggle"
+          name="__primary"
+          id="__primary"/>
+  <label class="overlay overlay-primary" for="__primary"></label>
+  
+  <input type="checkbox"
+          class="sidebar-toggle"
+          name="__secondary"
+          id="__secondary"/>
+  <label class="overlay overlay-secondary" for="__secondary"></label>
+  
+  <div class="search-button__wrapper">
+    <div class="search-button__overlay"></div>
+    <div class="search-button__search-container">
+<form class="bd-search d-flex align-items-center"
+      action="search.html"
+      method="get">
+  <i class="fa-solid fa-magnifying-glass"></i>
+  <input type="search"
+         class="form-control"
+         name="q"
+         id="search-input"
+         placeholder="Search this book..."
+         aria-label="Search this book..."
+         autocomplete="off"
+         autocorrect="off"
+         autocapitalize="off"
+         spellcheck="false"/>
+  <span class="search-button__kbd-shortcut"><kbd class="kbd-shortcut__modifier">Ctrl</kbd>+<kbd>K</kbd></span>
+</form></div>
+  </div>
+  
+    <nav class="bd-header navbar navbar-expand-lg bd-navbar">
+    </nav>
+  
+  <div class="bd-container">
+    <div class="bd-container__inner bd-page-width">
+      
+      <div class="bd-sidebar-primary bd-sidebar">
+        
+
+  
+  <div class="sidebar-header-items sidebar-primary__section">
+    
+    
+    
+    
+  </div>
+  
+    <div class="sidebar-primary-items__start sidebar-primary__section">
+        <div class="sidebar-primary-item">
+  
+
+<a class="navbar-brand logo" href="intro.html">
+  
+  
+  
+  
+  
+    
+    
+      
+    
+    
+    <img src="_static/logo.png" class="logo__image only-light" alt="NetCDF in R - from beginner to pro - Home"/>
+    <script>document.write(`<img src="_static/logo.png" class="logo__image only-dark" alt="NetCDF in R - from beginner to pro - Home"/>`);</script>
+  
+  
+</a></div>
+        <div class="sidebar-primary-item"><nav class="bd-links" id="bd-docs-nav" aria-label="Main">
+    <div class="bd-toc-item navbar-nav active">
+        
+        <ul class="nav bd-sidenav bd-sidenav__home-link">
+            <li class="toctree-l1">
+                <a class="reference internal" href="intro.html">
+                    NetCDF in R: From beginner to pro
+                </a>
+            </li>
+        </ul>
+        <ul class="current nav bd-sidenav">
+<li class="toctree-l1 current active"><a class="current reference internal" href="#">01: Opening and understanding</a></li>
+<li class="toctree-l1"><a class="reference internal" href="02_creating_plots.html">02: Creating Plots</a></li>
+<li class="toctree-l1"><a class="reference internal" href="03_extracting_data_to_different_formats.html">03: Extracting data to different formats</a></li>
+<li class="toctree-l1"><a class="reference internal" href="04_creating_a_cfnetcdf_file.html">04: Creating a CF-NetCDF file</a></li>
+</ul>
+
+    </div>
+</nav></div>
+    </div>
+  
+  
+  <div class="sidebar-primary-items__end sidebar-primary__section">
+  </div>
+  
+  <div id="rtd-footer-container"></div>
+
+
+      </div>
+      
+      <main id="main-content" class="bd-main">
+        
+        
+
+<div class="sbt-scroll-pixel-helper"></div>
+
+          <div class="bd-content">
+            <div class="bd-article-container">
+              
+              <div class="bd-header-article">
+<div class="header-article-items header-article__inner">
+  
+    <div class="header-article-items__start">
+      
+        <div class="header-article-item"><label class="sidebar-toggle primary-toggle btn btn-sm" for="__primary" title="Toggle primary sidebar" data-bs-placement="bottom" data-bs-toggle="tooltip">
+  <span class="fa-solid fa-bars"></span>
+</label></div>
+      
+    </div>
+  
+  
+    <div class="header-article-items__end">
+      
+        <div class="header-article-item">
+
+<div class="article-header-buttons">
+
+
+
+
+
+<div class="dropdown dropdown-source-buttons">
+  <button class="btn dropdown-toggle" type="button" data-bs-toggle="dropdown" aria-expanded="false" aria-label="Source repositories">
+    <i class="fab fa-github"></i>
+  </button>
+  <ul class="dropdown-menu">
+      
+      
+      
+      <li><a href="https://github.com/lhmarsden/NetCDF_in_R_from_beginner_to_pro" target="_blank"
+   class="btn btn-sm btn-source-repository-button dropdown-item"
+   title="Source repository"
+   data-bs-placement="left" data-bs-toggle="tooltip"
+>
+  
+
+<span class="btn__icon-container">
+  <i class="fab fa-github"></i>
+  </span>
+<span class="btn__text-container">Repository</span>
+</a>
+</li>
+      
+      
+      
+      
+      <li><a href="https://github.com/lhmarsden/NetCDF_in_R_from_beginner_to_pro/issues/new?title=Issue%20on%20page%20%2F01_opening_and_understanding.html&body=Your%20issue%20content%20here." target="_blank"
+   class="btn btn-sm btn-source-issues-button dropdown-item"
+   title="Open an issue"
+   data-bs-placement="left" data-bs-toggle="tooltip"
+>
+  
+
+<span class="btn__icon-container">
+  <i class="fas fa-lightbulb"></i>
+  </span>
+<span class="btn__text-container">Open issue</span>
+</a>
+</li>
+      
+  </ul>
+</div>
+
+
+
+
+
+
+<div class="dropdown dropdown-download-buttons">
+  <button class="btn dropdown-toggle" type="button" data-bs-toggle="dropdown" aria-expanded="false" aria-label="Download this page">
+    <i class="fas fa-download"></i>
+  </button>
+  <ul class="dropdown-menu">
+      
+      
+      
+      <li><a href="_sources/01_opening_and_understanding.ipynb" target="_blank"
+   class="btn btn-sm btn-download-source-button dropdown-item"
+   title="Download source file"
+   data-bs-placement="left" data-bs-toggle="tooltip"
+>
+  
+
+<span class="btn__icon-container">
+  <i class="fas fa-file"></i>
+  </span>
+<span class="btn__text-container">.ipynb</span>
+</a>
+</li>
+      
+      
+      
+      
+      <li>
+<button onclick="window.print()"
+  class="btn btn-sm btn-download-pdf-button dropdown-item"
+  title="Print to PDF"
+  data-bs-placement="left" data-bs-toggle="tooltip"
+>
+  
+
+<span class="btn__icon-container">
+  <i class="fas fa-file-pdf"></i>
+  </span>
+<span class="btn__text-container">.pdf</span>
+</button>
+</li>
+      
+  </ul>
+</div>
+
+
+
+
+<button onclick="toggleFullScreen()"
+  class="btn btn-sm btn-fullscreen-button"
+  title="Fullscreen mode"
+  data-bs-placement="bottom" data-bs-toggle="tooltip"
+>
+  
+
+<span class="btn__icon-container">
+  <i class="fas fa-expand"></i>
+  </span>
+
+</button>
+
+
+<script>
+document.write(`
+  <button class="btn btn-sm navbar-btn theme-switch-button" title="light/dark" aria-label="light/dark" data-bs-placement="bottom" data-bs-toggle="tooltip">
+    <span class="theme-switch nav-link" data-mode="light"><i class="fa-solid fa-sun fa-lg"></i></span>
+    <span class="theme-switch nav-link" data-mode="dark"><i class="fa-solid fa-moon fa-lg"></i></span>
+    <span class="theme-switch nav-link" data-mode="auto"><i class="fa-solid fa-circle-half-stroke fa-lg"></i></span>
+  </button>
+`);
+</script>
+
+<script>
+document.write(`
+  <button class="btn btn-sm navbar-btn search-button search-button__button" title="Search" aria-label="Search" data-bs-placement="bottom" data-bs-toggle="tooltip">
+    <i class="fa-solid fa-magnifying-glass fa-lg"></i>
+  </button>
+`);
+</script>
+<label class="sidebar-toggle secondary-toggle btn btn-sm" for="__secondary"title="Toggle secondary sidebar" data-bs-placement="bottom" data-bs-toggle="tooltip">
+    <span class="fa-solid fa-list"></span>
+</label>
+</div></div>
+      
+    </div>
+  
+</div>
+</div>
+              
+              
+
+<div id="jb-print-docs-body" class="onlyprint">
+    <h1>01: Opening and understanding</h1>
+    <!-- Table of contents -->
+    <div id="print-main-content">
+        <div id="jb-print-toc">
+            
+            <div>
+                <h2> Contents </h2>
+            </div>
+            <nav aria-label="Page">
+                <ul class="visible nav section-nav flex-column">
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#importing-some-data-from-opendap">Importing some data from OPeNDAP</a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#attributes">Attributes</a><ul class="nav section-nav flex-column">
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#global-attributes">Global attributes</a></li>
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#variable-attributes">Variable attributes</a></li>
+</ul>
+</li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#dimensions">Dimensions</a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#variables">Variables</a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#citing-data">Citing data</a></li>
+</ul>
+            </nav>
+        </div>
+    </div>
+</div>
+
+              
+                
+<div id="searchbox"></div>
+                <article class="bd-article" role="main">
+                  
+  <section class="tex2jax_ignore mathjax_ignore" id="opening-and-understanding">
+<h1>01: Opening and understanding<a class="headerlink" href="#opening-and-understanding" title="Permalink to this heading">#</a></h1>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-r notranslate"><div class="highlight"><pre><span></span><span class="c1">#library(IRdisplay)</span>
+<span class="c1">#display_html(&#39;&lt;iframe width=&quot;560&quot; height=&quot;315&quot; src=&quot;https://www.youtube.com/embed/699jkjLJGyM&quot; frameborder=&quot;0&quot; allowfullscreen&gt;&lt;/iframe&gt;&#39;)</span>
+</pre></div>
+</div>
+</div>
+</div>
+<p>In this notebook we will go through how to open a NetCDF file in R. We will also try to understand the file and extract the data and metadata from it.</p>
+<p>Firstly, let’s import the modules that we will work with.</p>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-r notranslate"><div class="highlight"><pre><span></span><span class="nf">if </span><span class="p">(</span><span class="o">!</span><span class="nf">requireNamespace</span><span class="p">(</span><span class="s">&quot;RNetCDF&quot;</span><span class="p">,</span><span class="w"> </span><span class="n">quietly</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="kc">TRUE</span><span class="p">))</span><span class="w"> </span><span class="p">{</span>
+<span class="w">  </span><span class="nf">install.packages</span><span class="p">(</span><span class="s">&quot;RNetCDF&quot;</span><span class="p">)</span>
+<span class="p">}</span>
+<span class="nf">library</span><span class="p">(</span><span class="n">RNetCDF</span><span class="p">)</span>
+</pre></div>
+</div>
+</div>
+</div>
+<p>You can find the documentation for the RNetCDF package here:
+<a class="reference external" href="https://cran.r-project.org/web/packages/RNetCDF/RNetCDF.pdf">https://cran.r-project.org/web/packages/RNetCDF/RNetCDF.pdf</a></p>
+<p>The syntax for functions in RNetCDF is very repetitive as you will learn throughout this course, which makes it easy to learn. However, there are other libraries you can use like ncdf4.
+<a class="reference external" href="https://cran.r-project.org/web/packages/ncdf4/ncdf4.pdf">https://cran.r-project.org/web/packages/ncdf4/ncdf4.pdf</a></p>
+<p>In this tutorial, we will stick to RNetCDF.</p>
+<section id="importing-some-data-from-opendap">
+<h2>Importing some data from OPeNDAP<a class="headerlink" href="#importing-some-data-from-opendap" title="Permalink to this heading">#</a></h2>
+<p>Have you heard of OPeNDAP? Try running the cell below.</p>
+<p>OPeNDAP, which stands for “Open-source Project for a Network Data Access Protocol,” makes it easier to access and share scientific data over the internet. One advantage of using OPeNDAP is that you don’t need to download the data to use them!</p>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-r notranslate"><div class="highlight"><pre><span></span><span class="n">netcdf_file</span><span class="w"> </span><span class="o">&lt;-</span><span class="w"> </span><span class="s">&#39;https://www.ncei.noaa.gov/thredds/dodsC/noaa-global-temp-v5/NOAAGlobalTemp_v5.0.0_gridded_s188001_e202212_c20230108T133308.nc&#39;</span>
+<span class="n">data</span><span class="w"> </span><span class="o">&lt;-</span><span class="w"> </span><span class="nf">open.nc</span><span class="p">(</span><span class="n">netcdf_file</span><span class="p">)</span>
+</pre></div>
+</div>
+</div>
+</div>
+<p>If we want some quick information about the file we can make an inquiry</p>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-r notranslate"><div class="highlight"><pre><span></span><span class="nf">file.inq.nc</span><span class="p">(</span><span class="n">data</span><span class="p">)</span>
+</pre></div>
+</div>
+</div>
+<div class="cell_output docutils container">
+<div class="output text_html"><dl>
+	<dt>$ndims</dt>
+		<dd>4</dd>
+	<dt>$nvars</dt>
+		<dd>5</dd>
+	<dt>$ngatts</dt>
+		<dd>66</dd>
+	<dt>$unlimdimid</dt>
+		<dd>&lt;NA&gt;</dd>
+	<dt>$format</dt>
+		<dd>'classic'</dd>
+	<dt>$libvers</dt>
+		<dd>'4.8.1 of Sep 29 2021 09:36:14 $'</dd>
+</dl>
+</div></div>
+</div>
+<p>The inquiry is a list of key value pairs, so we can access the values like this</p>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-r notranslate"><div class="highlight"><pre><span></span><span class="nf">file.inq.nc</span><span class="p">(</span><span class="n">data</span><span class="p">)[</span><span class="s">&#39;format&#39;</span><span class="p">]</span>
+</pre></div>
+</div>
+</div>
+<div class="cell_output docutils container">
+<div class="output text_html"><strong>$format</strong> = 'classic'</div></div>
+</div>
+<p>Though often we will want more information, so we can do this instead:</p>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-r notranslate"><div class="highlight"><pre><span></span><span class="nf">print.nc</span><span class="p">(</span><span class="n">data</span><span class="p">)</span>
+</pre></div>
+</div>
+</div>
+<div class="cell_output docutils container">
+<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>netcdf classic {
+dimensions:
+	lat = 36 ;
+	lon = 72 ;
+	time = 1716 ;
+	z = 1 ;
+variables:
+	NC_FLOAT time(time) ;
+		NC_CHAR time:long_name = &quot;reference time of global temperature anomalies&quot; ;
+		NC_CHAR time:standard_name = &quot;time&quot; ;
+		NC_CHAR time:coverage_content_type = &quot;coordinate&quot; ;
+		NC_CHAR time:units = &quot;days since 1800-01-01 00:00:00&quot; ;
+		NC_CHAR time:calendar = &quot;gregorian&quot; ;
+		NC_CHAR time:axis = &quot;T&quot; ;
+	NC_FLOAT lat(lat) ;
+		NC_CHAR lat:long_name = &quot;Latitude&quot; ;
+		NC_CHAR lat:standard_name = &quot;latitude&quot; ;
+		NC_CHAR lat:coverage_content_type = &quot;coordinate&quot; ;
+		NC_CHAR lat:units = &quot;degrees_north&quot; ;
+		NC_CHAR lat:grids = &quot;Uniform grid from -87.5 to 87.5 by 5&quot; ;
+		NC_FLOAT lat:valid_min = -87.5 ;
+		NC_FLOAT lat:valid_max = 87.5 ;
+		NC_CHAR lat:axis = &quot;Y&quot; ;
+		NC_CHAR lat:_CoordinateAxisType = &quot;Lat&quot; ;
+		NC_CHAR lat:coordinate_defines = &quot;center&quot; ;
+	NC_FLOAT lon(lon) ;
+		NC_CHAR lon:long_name = &quot;Longitude&quot; ;
+		NC_CHAR lon:standard_name = &quot;longitude&quot; ;
+		NC_CHAR lon:coverage_content_type = &quot;coordinate&quot; ;
+		NC_CHAR lon:units = &quot;degrees_east&quot; ;
+		NC_CHAR lon:grids = &quot;Uniform grid from 2.5 to 357.5 by 5&quot; ;
+		NC_CHAR lon:axis = &quot;X&quot; ;
+		NC_FLOAT lon:valid_min = 2.5 ;
+		NC_FLOAT lon:valid_max = 357.5 ;
+		NC_CHAR lon:_CoordinateAxisType = &quot;Lon&quot; ;
+		NC_CHAR lon:coordinate_defines = &quot;center&quot; ;
+	NC_FLOAT z(z) ;
+		NC_CHAR z:long_name = &quot;height of surface temperature&quot; ;
+		NC_CHAR z:standard_name = &quot;height&quot; ;
+		NC_CHAR z:coverage_content_type = &quot;coordinate&quot; ;
+		NC_CHAR z:geospatial_bounds_vertical_crs = &quot;EPSG:5703&quot; ;
+		NC_CHAR z:units = &quot;meters&quot; ;
+		NC_CHAR z:positive = &quot;up&quot; ;
+		NC_FLOAT z:valid_min = 0 ;
+		NC_FLOAT z:valid_max = 0 ;
+		NC_CHAR z:axis = &quot;Z&quot; ;
+		NC_CHAR z:_CoordinateAxisType = &quot;Height&quot; ;
+		NC_CHAR z:comment = &quot;Actual measurement depth of in situ sea surface temperature varies from 0.2 to 10 m, but corrected to the nominal depth of buoy at 0.2 m; for air temperature over land is 2m.&quot; ;
+	NC_FLOAT anom(lon, lat, z, time) ;
+		NC_CHAR anom:long_name = &quot;Global Temperature Anomalies&quot; ;
+		NC_CHAR anom:standard_name = &quot;surface_temperature_anomaly&quot; ;
+		NC_CHAR anom:coverage_content_type = &quot;physicalMeasurement&quot; ;
+		NC_CHAR anom:units = &quot;degrees C&quot; ;
+		NC_FLOAT anom:missing_value = -999.900024414062 ;
+		NC_FLOAT anom:_FillValue = -999.900024414062 ;
+		NC_FLOAT anom:add_offset = 0 ;
+		NC_FLOAT anom:scale_factor = 1 ;
+		NC_FLOAT anom:valid_min = -40 ;
+		NC_FLOAT anom:valid_max = 40 ;
+		NC_CHAR anom:coordinates = &quot;time z lat lon&quot; ;
+
+// global attributes:
+		NC_CHAR :Conventions = &quot;CF-1.6, ACDD-1.3&quot; ;
+		NC_CHAR :title = &quot;NOAA Merged Land Ocean Global Surface Temperature Analysis (NOAAGlobalTemp)&quot; ;
+		NC_CHAR :summary = &quot;NOAAGlobalTemp is a merged land-ocean surface temperature analysis, formerly abbreviated as MLOST. The SST dataset is the Extended Reconstructed Sea Surface Temperature (ERSST) and the land surface air temperature dataset is from the Global Historical Climatology Network Monthly (GHCN-M) database.&quot; ;
+		NC_CHAR :institution = &quot;DOC/NOAA/NESDIS/National Centers for Environmental Information(NCEI)&quot; ;
+		NC_CHAR :id = &quot; gov.noaa.ncdc:C00934 &quot; ;
+		NC_CHAR :naming_authority = &quot; gov.noaa.ncei &quot; ;
+		NC_CHAR :project = &quot; NOAAGlobalTemp &quot; ;
+		NC_CHAR :platform = &quot;Ships, moored buoys, surface drifting buoys, Argo floats, and weather stations&quot; ;
+		NC_CHAR :instrument = &quot;Conventional thermometers&quot; ;
+		NC_CHAR :history = &quot;Version 5.0.0, blending ERSST V5 and GHCN-M V4.&quot; ;
+		NC_CHAR :comment = &quot;Merged land ocean surface temperature anomalies.&quot; ;
+		NC_CHAR :product_version = &quot;5.0.0&quot; ;
+		NC_CHAR :source = &quot;NOAAGlobalTemp combines a global sea surface temperature with a global land surface air temperature data&quot; ;
+		NC_CHAR :ncei_template_version = &quot;NCEI_NetCDF_Grid_Template_v2.0&quot; ;
+		NC_CHAR :Metadata_Conventions = &quot;Unidata Dataset Discovery v1.0&quot; ;
+		NC_CHAR :license = &quot;These data are available for use without restriction.&quot; ;
+		NC_CHAR :creator_name = &quot;Boyin Huang, Xungang Yin, Ph.D&quot; ;
+		NC_CHAR :creator_email = &quot;Boyin.Huang@noaa.gov, Xungang.Yin@noaa.gov&quot; ;
+		NC_CHAR :creator_type = &quot;group&quot; ;
+		NC_CHAR :creator_institution = &quot;US DOC/NOAA/NESDIS/National Centers for Environmental Information(NCEI)&quot; ;
+		NC_CHAR :contributor_name = &quot;Huai-min Zhang, Ph.D&quot; ;
+		NC_CHAR :contributor_role = &quot;Chief, NOAA/NESDIS/NCEI/CCOG/OSB Ocean Surface Section&quot; ;
+		NC_CHAR :publisher_name = &quot;NCEI&quot; ;
+		NC_CHAR :publisher_institution = &quot;NCEI&quot; ;
+		NC_CHAR :publisher_url = &quot;https://www.ncdc.noaa.gov/&quot; ;
+		NC_CHAR :publisher_email = &quot;ncei.info@noaa.gov&quot; ;
+		NC_CHAR :publisher_type = &quot;institution&quot; ;
+		NC_CHAR :keywords = &quot;Earth Science &gt; Oceans &gt; Ocean Temperature &gt; Sea Surface Temperature, Earth Science &gt; Atmosphere &gt; Atmospheric Temperature &gt; Surface Temperature &gt; Air Temperature&quot; ;
+		NC_CHAR :keywords_vocabulary = &quot;NASA Global Change Master Directory (GCMD) Science Keywords&quot; ;
+		NC_CHAR :standard_name_vocabulary = &quot;Climate and Forecast (CF) Standard Name Table (Version 46, 25 July 2017)&quot; ;
+		NC_CHAR :date_created = &quot;2023-01-08T18:33:09Z&quot; ;
+		NC_CHAR :necdf_version_id = &quot;4.2.1.1&quot; ;
+		NC_CHAR :netcdf_creator_name = &quot;Yongsheng Zhang, Ph.D&quot; ;
+		NC_CHAR :netcdf_creator_email = &quot;yongsheng.zhang@noaa.gov&quot; ;
+		NC_CHAR :dataset_citation_product = &quot;NOAA Merged Land Ocean Global Surface Temperature Analysis (NOAAGlobalTemp)&quot; ;
+		NC_CHAR :dataset_citation_version = &quot;5.0.0&quot; ;
+		NC_CHAR :dataset_citation_institution = &quot;NOAA/NESDIS/NCEI, Asheville, NC, USA&quot; ;
+		NC_CHAR :dataset_citation_url = &quot;https://doi.org/10.25921/9qth-2p70&quot; ;
+		NC_CHAR :metadata_link = &quot;https://doi.org/10.25921/9qth-2p70&quot; ;
+		NC_CHAR :cdm_data_type = &quot;Grid&quot; ;
+		NC_CHAR :grid_mapping_name = &quot;latitude_longitude&quot; ;
+		NC_CHAR :processing_level = &quot;NOAA Processing Level 4&quot; ;
+		NC_FLOAT :geospatial_lon_min = 2.5 ;
+		NC_FLOAT :geospatial_lon_max = 357.5 ;
+		NC_CHAR :geospatial_lon_units = &quot;degrees_east&quot; ;
+		NC_CHAR :geospatial_lon_resolution = &quot;5.0 degree&quot; ;
+		NC_FLOAT :geospatial_lat_min = -87.5 ;
+		NC_FLOAT :geospatial_lat_max = 87.5 ;
+		NC_CHAR :geospatial_lat_units = &quot;degrees_north&quot; ;
+		NC_CHAR :geospatial_lat_resolution = &quot;5.0 degree&quot; ;
+		NC_CHAR :geospatial_bounds = &quot;POLYGON ((2.5 -87.5, 2.5 87.5, 357.5 87.5, 357.5 -87.5, 2.5 -87.5))&quot; ;
+		NC_CHAR :geospatial_bounds_crs = &quot;EPSG:4326&quot; ;
+		NC_FLOAT :geospatial_vertical_min = 0 ;
+		NC_FLOAT :geospatial_vertical_max = 0 ;
+		NC_CHAR :geospatial_vertical_units = &quot;meters&quot; ;
+		NC_CHAR :geospatial_vertical_resolution = &quot;0.f&quot; ;
+		NC_CHAR :geospatial_vertical_positive = &quot;up&quot; ;
+		NC_CHAR :time_coverage_start = &quot;1880-01&quot; ;
+		NC_CHAR :time_coverage_end = &quot;2022-12&quot; ;
+		NC_CHAR :time_coverage_resolution = &quot;P1M&quot; ;
+		NC_CHAR :time_coverage_duration = &quot;P143Y0M&quot; ;
+		NC_CHAR :references = &quot;Vose, R. S., et al., 2012: NOAAs merged land-ocean surface temperature analysis. Bulletin of the American Meteorological Society, 93, 1677-1685. doi: 10.1175/BAMS-D-11-00241.1. Huang, B., Peter W. Thorne, et. al, 2017: Extended Reconstructed Sea Surface Temperature version 5 (ERSSTv5), Upgrades, validations, and intercomparisons. J. Climate, 30, 8179-8205. doi: 10.1175/JCLI-D-16-0836.1&quot; ;
+		NC_CHAR :climatology = &quot;Climatology is based on 1971-2000 monthly climatology&quot; ;
+		NC_CHAR :acknowledgment = &quot;The NOAA Global Surface Temperature Dataset is provided by the NOAA National Centers for Environmental Information(NCEI)&quot; ;
+		NC_CHAR :date_modified = &quot;2023-01-08T18:33:09Z&quot; ;
+		NC_CHAR :date_issued = &quot;2023-01-08T18:33:09Z&quot; ;
+}
+</pre></div>
+</div>
+</div>
+</div>
+<p>Let’s break down what we see above.</p>
+<p>A classic NetCDF file like this one can be broken down into 3 components - dimensions, variables and attributes.</p>
+<ul class="simple">
+<li><p>Dimensions: Define the size of the variables.</p></li>
+<li><p>Variables: Where the data are stored. The variables can be broken down into coordinate variables and data variables. In RNetCDF, the coordinate variables and data variables are displayed together, but if you open a NetCDF file using different software they might be separated.</p>
+<ul>
+<li><p>Coordinate variables: Coordinate variables are things like longitude, latitude, time and elevation/depth. The first variable listed is <em>time</em> which has 1 dimension with the same name in brackets. So we know that the <em>time</em> variable is a 1D array with 1716 data points. It is common practice for coordinate variables to have the same name as their respective dimension, but this might not always be the case.</p></li>
+<li><p>Data variables: This file has only one data variable, <em>anom</em>. This has 4 dimensions, so we can see that the data are stored in a 4D array with size 72 x 36 x 1 x 1716.</p></li>
+</ul>
+</li>
+<li><p>Attributes: The metadata describing the data. A CF-NetCDF file should have both global and variable attributes.</p>
+<ul>
+<li><p>Variable attributes: Describe each variable</p></li>
+<li><p>Global attributes: Describe the whole dataset (e.g. title, creator, keywords, a bounding box for the coordinates)</p></li>
+</ul>
+</li>
+</ul>
+<p>We will now have a closer look at how to access each of these components, starting at the bottom with attributes.</p>
+</section>
+<section id="attributes">
+<h2>Attributes<a class="headerlink" href="#attributes" title="Permalink to this heading">#</a></h2>
+<p>Accessing an attribute using RNetCDF can be done like</p>
+<p><code class="docutils literal notranslate"><span class="pre">att.get.nc(nc_object,</span> <span class="pre">variable_name,</span> <span class="pre">attribute_name)</span></code></p>
+<section id="global-attributes">
+<h3>Global attributes<a class="headerlink" href="#global-attributes" title="Permalink to this heading">#</a></h3>
+<p>For a global attribute, we assign a special variable name, <em>NC_GLOBAL</em>.</p>
+<p><code class="docutils literal notranslate"><span class="pre">att.get.nc(nc_object,</span> <span class="pre">&quot;NC_GLOBAL&quot;,</span> <span class="pre">attribute_name)</span></code></p>
+<p>If we want to just access the <em>creator_name</em> attribute for example:</p>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-r notranslate"><div class="highlight"><pre><span></span><span class="nf">att.get.nc</span><span class="p">(</span><span class="n">data</span><span class="p">,</span><span class="w"> </span><span class="s">&quot;NC_GLOBAL&quot;</span><span class="p">,</span><span class="w"> </span><span class="s">&quot;creator_name&quot;</span><span class="p">)</span>
+</pre></div>
+</div>
+</div>
+<div class="cell_output docutils container">
+<div class="output text_html">'Boyin Huang, Xungang Yin, Ph.D'</div></div>
+</div>
+<p>If you want more information than just the value, you can make an inquiry. See how the syntax is almost the same for ‘getting’ and attribute as it is for ‘inquiring’ about one?</p>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-r notranslate"><div class="highlight"><pre><span></span><span class="nf">att.inq.nc</span><span class="p">(</span><span class="n">data</span><span class="p">,</span><span class="w"> </span><span class="s">&quot;NC_GLOBAL&quot;</span><span class="p">,</span><span class="w"> </span><span class="s">&quot;creator_name&quot;</span><span class="p">)</span>
+</pre></div>
+</div>
+</div>
+<div class="cell_output docutils container">
+<div class="output text_html"><dl>
+	<dt>$id</dt>
+		<dd>16</dd>
+	<dt>$name</dt>
+		<dd>'creator_name'</dd>
+	<dt>$type</dt>
+		<dd>'NC_CHAR'</dd>
+	<dt>$length</dt>
+		<dd>30</dd>
+</dl>
+</div></div>
+</div>
+<p><em>Conventions</em> is probably the most important global attribute because it tells you (and a machine) how to interpret the rest of the file.</p>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-r notranslate"><div class="highlight"><pre><span></span><span class="nf">att.get.nc</span><span class="p">(</span><span class="n">data</span><span class="p">,</span><span class="w"> </span><span class="s">&quot;NC_GLOBAL&quot;</span><span class="p">,</span><span class="w"> </span><span class="s">&quot;Conventions&quot;</span><span class="p">)</span>
+</pre></div>
+</div>
+</div>
+<div class="cell_output docutils container">
+<div class="output text_html">'CF-1.6, ACDD-1.3'</div></div>
+</div>
+<p><em>CF-1.6</em> refers to version 1.6 of the CF conventions, which you can find here:</p>
+<p><a class="reference external" href="https://cfconventions.org/">https://cfconventions.org/</a> <a class="reference external" href="https://cfconventions.org/Data/cf-conventions/cf-conventions-1.6/cf-conventions.html">https://cfconventions.org/Data/cf-conventions/cf-conventions-1.6/cf-conventions.html</a></p>
+<p>The CF conventions are a set of standards that define how a NetCDF file should be structured. The document linked above is extensive, but the aim is to provide a standardised way to organise many different types of data. You don’t need to read it all, but it should be your go-to place if you want to know how to structure or understand a CF-NetCDF file, or encode certain types of data.</p>
+<p>However, the CF conventions are light on discovery metadata. Discovery metadata are metadata that can be used to find data. For example, when and where the data were collected and by whom, some keywords etc. So we also use the <em>ACDD</em> convention - The Attribute Convention for Data Discovery.</p>
+<p><a class="reference external" href="https://wiki.esipfed.org/Attribute_Convention_for_Data_Discovery_1-3">https://wiki.esipfed.org/Attribute_Convention_for_Data_Discovery_1-3</a></p>
+<p>In most cases, if you want to find out what a global attribute means, you can visit the ACDD convention page above to find a description of the attribute. There are other conventions that someone might have included that you can also find online, but we recommend that you always follow the CF and ACDD conventions as a minimum when creating a NetCDF file.</p>
+<p>The person who created this file should have read the relevant sections of these documents to make sure that the files comply with these conventions. There are also validators you can run your files by to make sure that you file is compliant with the conventions before you publish it. For example:</p>
+<p><a class="reference external" href="https://compliance.ioos.us/index.html">https://compliance.ioos.us/index.html</a></p>
+<p>By following conventions, the data creator and user, human or machine, should be able to understand the data in the same way. A NetCDF file itself is not neccessarily FAIR because you could include any attributes or structure your data however you like. A CF-NetCDF file is FAIR.</p>
+</section>
+<section id="variable-attributes">
+<h3>Variable attributes<a class="headerlink" href="#variable-attributes" title="Permalink to this heading">#</a></h3>
+<p>Let’s extract a variable attribute now from the <em>anom</em> variable:</p>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-r notranslate"><div class="highlight"><pre><span></span><span class="nf">att.get.nc</span><span class="p">(</span><span class="n">data</span><span class="p">,</span><span class="w"> </span><span class="s">&quot;anom&quot;</span><span class="p">,</span><span class="w"> </span><span class="s">&quot;standard_name&quot;</span><span class="p">)</span>
+</pre></div>
+</div>
+</div>
+<div class="cell_output docutils container">
+<div class="output text_html">'surface_temperature_anomaly'</div></div>
+</div>
+<p>The variable name <em>anom</em> is not standardised. Fortunately, the <em>standard_name</em> variable attribute is standardised. You can find sea_water_temperature in the list of CF standard names here.
+<a class="reference external" href="https://cfconventions.org/Data/cf-standard-names/current/build/cf-standard-name-table.html">https://cfconventions.org/Data/cf-standard-names/current/build/cf-standard-name-table.html</a></p>
+<p>Hopefully, the data creator has selected the <em>standard_name</em> from the CF standard name table after reading the description for that term. You, the data user, can now also find that term and its description. This way, the data provider and the data user can share the same understanding about what the these data are. Any other CF-NetCDF file that contains the same type of data should also include the same <em>standard_name</em>. Controlled vocabularies like this one are understandable to machines too!</p>
+<p>The data in the file doesn’t need to be stored with the same units, but should be stored with units that are physically equivalent. For example, in this case the units degrees_C are physically equivalent to K.</p>
+</section>
+</section>
+<section id="dimensions">
+<h2>Dimensions<a class="headerlink" href="#dimensions" title="Permalink to this heading">#</a></h2>
+<p>To extract information about a dimension, you can do this:</p>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-r notranslate"><div class="highlight"><pre><span></span><span class="nf">dim.inq.nc</span><span class="p">(</span><span class="n">data</span><span class="p">,</span><span class="s">&#39;lat&#39;</span><span class="p">)</span>
+</pre></div>
+</div>
+</div>
+<div class="cell_output docutils container">
+<div class="output text_html"><dl>
+	<dt>$id</dt>
+		<dd>0</dd>
+	<dt>$name</dt>
+		<dd>'lat'</dd>
+	<dt>$length</dt>
+		<dd>36</dd>
+	<dt>$unlim</dt>
+		<dd>FALSE</dd>
+</dl>
+</div></div>
+</div>
+<p>If you didn’t know the name of the dimension, you could use the index of the variable to call it instead. Remember that 0 is always the first.</p>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-r notranslate"><div class="highlight"><pre><span></span><span class="nf">dim.inq.nc</span><span class="p">(</span><span class="n">data</span><span class="p">,</span><span class="m">0</span><span class="p">)</span>
+</pre></div>
+</div>
+</div>
+<div class="cell_output docutils container">
+<div class="output text_html"><dl>
+	<dt>$id</dt>
+		<dd>0</dd>
+	<dt>$name</dt>
+		<dd>'lat'</dd>
+	<dt>$length</dt>
+		<dd>36</dd>
+	<dt>$unlim</dt>
+		<dd>FALSE</dd>
+</dl>
+</div></div>
+</div>
+<p>The <em>lat</em> dimension has 36 points. Dimensions tell you about the shape and size of your variables. In this case, we know that any variable with a dimension of only <em>lat</em> will have 36 data points - though some could be NaN. The dimension doesn’t tell you anything about what the values are - that information is in the variables.</p>
+</section>
+<section id="variables">
+<h2>Variables<a class="headerlink" href="#variables" title="Permalink to this heading">#</a></h2>
+<p>Finally, the most important part - getting at the data!</p>
+<p>If you know the variable name, you can get the data like this:</p>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-r notranslate"><div class="highlight"><pre><span></span><span class="nf">var.get.nc</span><span class="p">(</span><span class="n">data</span><span class="p">,</span><span class="s">&quot;lat&quot;</span><span class="p">)</span>
+</pre></div>
+</div>
+</div>
+<div class="cell_output docutils container">
+<div class="output text_html"><style>
+.list-inline {list-style: none; margin:0; padding: 0}
+.list-inline>li {display: inline-block}
+.list-inline>li:not(:last-child)::after {content: "\00b7"; padding: 0 .5ex}
+</style>
+<ol class=list-inline><li>-87.5</li><li>-82.5</li><li>-77.5</li><li>-72.5</li><li>-67.5</li><li>-62.5</li><li>-57.5</li><li>-52.5</li><li>-47.5</li><li>-42.5</li><li>-37.5</li><li>-32.5</li><li>-27.5</li><li>-22.5</li><li>-17.5</li><li>-12.5</li><li>-7.5</li><li>-2.5</li><li>2.5</li><li>7.5</li><li>12.5</li><li>17.5</li><li>22.5</li><li>27.5</li><li>32.5</li><li>37.5</li><li>42.5</li><li>47.5</li><li>52.5</li><li>57.5</li><li>62.5</li><li>67.5</li><li>72.5</li><li>77.5</li><li>82.5</li><li>87.5</li></ol>
+</div></div>
+</div>
+<p>Or inquire about it</p>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-r notranslate"><div class="highlight"><pre><span></span><span class="nf">var.inq.nc</span><span class="p">(</span><span class="n">data</span><span class="p">,</span><span class="w"> </span><span class="s">&quot;lat&quot;</span><span class="p">)</span>
+</pre></div>
+</div>
+</div>
+<div class="cell_output docutils container">
+<div class="output text_html"><dl>
+	<dt>$id</dt>
+		<dd>1</dd>
+	<dt>$name</dt>
+		<dd>'lat'</dd>
+	<dt>$type</dt>
+		<dd>'NC_FLOAT'</dd>
+	<dt>$ndims</dt>
+		<dd>1</dd>
+	<dt>$dimids</dt>
+		<dd>0</dd>
+	<dt>$natts</dt>
+		<dd>10</dd>
+</dl>
+</div></div>
+</div>
+<p>We can get just a subset of the data. For example, to get 3 values starting from the 5th value in the array, where <em>start</em> is the first value to extract and <em>count</em> is how many values:</p>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-r notranslate"><div class="highlight"><pre><span></span><span class="nf">var.get.nc</span><span class="p">(</span><span class="n">data</span><span class="p">,</span><span class="w"> </span><span class="s">&quot;lat&quot;</span><span class="p">,</span><span class="w"> </span><span class="n">start</span><span class="o">=</span><span class="nf">c</span><span class="p">(</span><span class="m">5</span><span class="p">),</span><span class="w"> </span><span class="n">count</span><span class="o">=</span><span class="nf">c</span><span class="p">(</span><span class="m">3</span><span class="p">))</span>
+</pre></div>
+</div>
+</div>
+<div class="cell_output docutils container">
+<div class="output text_html"><style>
+.list-inline {list-style: none; margin:0; padding: 0}
+.list-inline>li {display: inline-block}
+.list-inline>li:not(:last-child)::after {content: "\00b7"; padding: 0 .5ex}
+</style>
+<ol class=list-inline><li>-67.5</li><li>-62.5</li><li>-57.5</li></ol>
+</div></div>
+</div>
+<p>There is a lot of data in the anom variable, so we won’t display all of that below! But let’s try and extract data for a single date.</p>
+<p>Let’s again first select based on the index using <em>start</em> and *count. The order in the lists corresponds to the order of the dimensions that the variable has. In this case, we are extracting data for all latitudes and longitudes (so <em>NA</em> is used) and from the 1st (and only) vertical coordinate. I have selected data for an arbitrary time slice, 700 in this case.</p>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-r notranslate"><div class="highlight"><pre><span></span><span class="n">lat</span><span class="w"> </span><span class="o">&lt;-</span><span class="w"> </span><span class="nf">var.get.nc</span><span class="p">(</span><span class="n">data</span><span class="p">,</span><span class="w"> </span><span class="s">&#39;lat&#39;</span><span class="p">)</span>
+<span class="n">lon</span><span class="w"> </span><span class="o">&lt;-</span><span class="w"> </span><span class="nf">var.get.nc</span><span class="p">(</span><span class="n">data</span><span class="p">,</span><span class="w"> </span><span class="s">&#39;lon&#39;</span><span class="p">)</span>
+<span class="n">anom</span><span class="w"> </span><span class="o">&lt;-</span><span class="w"> </span><span class="nf">var.get.nc</span><span class="p">(</span><span class="n">data</span><span class="p">,</span><span class="w"> </span><span class="s">&#39;anom&#39;</span><span class="p">,</span><span class="w"> </span><span class="n">start</span><span class="o">=</span><span class="nf">c</span><span class="p">(</span><span class="kc">NA</span><span class="p">,</span><span class="w"> </span><span class="kc">NA</span><span class="p">,</span><span class="w"> </span><span class="m">1</span><span class="p">,</span><span class="w"> </span><span class="m">700</span><span class="p">),</span><span class="w"> </span><span class="n">count</span><span class="o">=</span><span class="nf">c</span><span class="p">(</span><span class="kc">NA</span><span class="p">,</span><span class="kc">NA</span><span class="p">,</span><span class="m">1</span><span class="p">,</span><span class="m">1</span><span class="p">))</span>
+<span class="n">anom</span>
+</pre></div>
+</div>
+</div>
+<div class="cell_output docutils container">
+<div class="output text_html"><table class="dataframe">
+<caption>A matrix: 72 × 36 of type dbl</caption>
+<tbody>
+	<tr><td>NA</td><td>NA</td><td>NA</td><td>NA</td><td>NA</td><td>NA</td><td>-0.6202122</td><td>-0.28983244</td><td> 0.127612844</td><td> 0.105352372</td><td>⋯</td><td>-0.537931740</td><td>-1.87294960</td><td> 0.24818414</td><td> 0.49265805</td><td> 0.28210214</td><td> 0.449737489</td><td> 1.1294684</td><td>0.9146796</td><td>  NA</td><td>NA</td></tr>
+	<tr><td>NA</td><td>NA</td><td>NA</td><td>NA</td><td>NA</td><td>NA</td><td>-0.4854550</td><td>-0.29407427</td><td> 0.026559843</td><td> 0.000770571</td><td>⋯</td><td>-0.835091114</td><td>-2.66000009</td><td>-1.08594847</td><td> 0.69367015</td><td> 0.10752933</td><td> 0.591097713</td><td> 1.1051759</td><td>0.7053886</td><td>  NA</td><td>NA</td></tr>
+	<tr><td>NA</td><td>NA</td><td>NA</td><td>NA</td><td>NA</td><td>NA</td><td>-0.7393103</td><td>-0.28969392</td><td> 0.041384175</td><td>-0.090124525</td><td>⋯</td><td>-1.269892812</td><td>-3.05221272</td><td>-1.84167469</td><td> 0.43207514</td><td> 0.35837406</td><td> 0.443900764</td><td> 0.9841446</td><td>0.8509724</td><td>  NA</td><td>NA</td></tr>
+	<tr><td>NA</td><td>NA</td><td>NA</td><td>NA</td><td>NA</td><td>NA</td><td>-0.8334374</td><td>-0.22463292</td><td> 0.190988734</td><td>-0.151320428</td><td>⋯</td><td>-1.601708531</td><td>-3.17991972</td><td>-2.66849828</td><td> 0.27449751</td><td> 0.36497775</td><td> 0.345626265</td><td> 1.0454960</td><td>       NA</td><td>  NA</td><td>NA</td></tr>
+	<tr><td>NA</td><td>NA</td><td>NA</td><td>NA</td><td>NA</td><td>NA</td><td>-0.8196298</td><td>-0.20011082</td><td> 0.178636834</td><td>-0.218324393</td><td>⋯</td><td>-2.145020962</td><td>-2.74029255</td><td>-2.38935113</td><td>-0.28059667</td><td> 0.50999999</td><td> 0.259044379</td><td> 1.0828582</td><td>       NA</td><td>  NA</td><td>NA</td></tr>
+	<tr><td>NA</td><td>NA</td><td>NA</td><td>NA</td><td>NA</td><td>NA</td><td>-0.5987538</td><td>-0.09562428</td><td> 0.127850562</td><td>-0.302159876</td><td>⋯</td><td>-1.020416260</td><td>-1.85013807</td><td>-2.57099295</td><td>-1.79307616</td><td>-0.99419832</td><td> 0.613359451</td><td> 0.9467384</td><td>       NA</td><td>  NA</td><td>NA</td></tr>
+	<tr><td>NA</td><td>NA</td><td>NA</td><td>NA</td><td>NA</td><td>NA</td><td>-0.4492744</td><td>-0.14773342</td><td> 0.020136885</td><td>-0.136485785</td><td>⋯</td><td>-0.401134670</td><td>-1.10070395</td><td>-2.19099236</td><td>-1.69648826</td><td>-0.55620253</td><td> 0.760314703</td><td> 0.8679525</td><td>       NA</td><td>  NA</td><td>NA</td></tr>
+	<tr><td>NA</td><td>NA</td><td>NA</td><td>NA</td><td>NA</td><td>NA</td><td>        NA</td><td>         NA</td><td> 0.009670788</td><td>-0.005256775</td><td>⋯</td><td>-0.638019681</td><td>-1.44743681</td><td>-1.64928043</td><td>-1.89835858</td><td>-1.24357367</td><td> 1.259999990</td><td> 0.7236950</td><td>       NA</td><td>  NA</td><td>NA</td></tr>
+	<tr><td>NA</td><td>NA</td><td>NA</td><td>NA</td><td>NA</td><td>NA</td><td>        NA</td><td>         NA</td><td>-0.158918560</td><td>-0.102225631</td><td>⋯</td><td>-0.917013168</td><td>-1.16364527</td><td>-0.99239308</td><td>-1.57622480</td><td>-0.27919686</td><td>-0.005481333</td><td>-0.1899090</td><td>       NA</td><td>  NA</td><td>NA</td></tr>
+	<tr><td>NA</td><td>NA</td><td>NA</td><td>NA</td><td>NA</td><td>NA</td><td>        NA</td><td>-0.64733446</td><td>-0.345341444</td><td>-0.261111975</td><td>⋯</td><td>-0.276104450</td><td>-0.50022191</td><td> 0.31061247</td><td>-0.72260940</td><td> 0.48036933</td><td> 4.380000114</td><td>        NA</td><td>       NA</td><td>  NA</td><td>NA</td></tr>
+	<tr><td>NA</td><td>NA</td><td>NA</td><td>NA</td><td>NA</td><td>NA</td><td>        NA</td><td>-0.67590743</td><td>-0.373588830</td><td>-0.263846487</td><td>⋯</td><td>-0.268124402</td><td> 0.10986871</td><td> 1.17465675</td><td> 0.57172859</td><td> 0.61704886</td><td> 1.343866348</td><td> 2.6400001</td><td>       NA</td><td>  NA</td><td>NA</td></tr>
+	<tr><td>NA</td><td>NA</td><td>NA</td><td>NA</td><td>NA</td><td>NA</td><td>        NA</td><td>-0.52490014</td><td>-0.261390358</td><td>-0.183519289</td><td>⋯</td><td> 1.109488249</td><td> 1.09304774</td><td> 1.24661541</td><td> 1.00859094</td><td> 1.40338135</td><td> 1.853716373</td><td>        NA</td><td>       NA</td><td>0.65</td><td>NA</td></tr>
+	<tr><td>NA</td><td>NA</td><td>NA</td><td>NA</td><td>NA</td><td>NA</td><td>        NA</td><td>-0.44366845</td><td>-0.299334317</td><td>-0.142208368</td><td>⋯</td><td> 1.495387554</td><td> 1.39396477</td><td> 1.81454659</td><td> 1.60197926</td><td> 2.63795424</td><td> 3.119392395</td><td>        NA</td><td>3.3599999</td><td>  NA</td><td>NA</td></tr>
+	<tr><td>NA</td><td>NA</td><td>NA</td><td>NA</td><td>NA</td><td>NA</td><td>        NA</td><td>-0.44151002</td><td>-0.365199476</td><td>-0.055469848</td><td>⋯</td><td> 1.322556496</td><td> 2.03410816</td><td> 2.52891922</td><td> 2.52818990</td><td> 3.64879513</td><td> 3.072127104</td><td>        NA</td><td>4.1599998</td><td>  NA</td><td>NA</td></tr>
+	<tr><td>NA</td><td>NA</td><td>NA</td><td>NA</td><td>NA</td><td>NA</td><td>        NA</td><td>-0.37778386</td><td>-0.301796347</td><td>-0.091428578</td><td>⋯</td><td> 2.109943390</td><td> 1.86116982</td><td> 2.27722478</td><td> 3.05860758</td><td> 4.44784117</td><td> 3.276115417</td><td> 2.7100000</td><td>       NA</td><td>  NA</td><td>NA</td></tr>
+	<tr><td>NA</td><td>NA</td><td>NA</td><td>NA</td><td>NA</td><td>NA</td><td>        NA</td><td>-0.36512563</td><td>-0.313503146</td><td>-0.129802525</td><td>⋯</td><td> 1.826648235</td><td> 1.65793383</td><td> 2.10578156</td><td> 3.15935707</td><td> 4.85814810</td><td> 4.668457985</td><td> 4.2700000</td><td>       NA</td><td>  NA</td><td>NA</td></tr>
+	<tr><td>NA</td><td>NA</td><td>NA</td><td>NA</td><td>NA</td><td>NA</td><td>        NA</td><td>         NA</td><td>-0.343594402</td><td>-0.210632339</td><td>⋯</td><td> 1.205056548</td><td> 2.22496557</td><td> 2.11366200</td><td> 3.61913133</td><td> 4.79895020</td><td> 4.541970730</td><td> 1.9019500</td><td>4.3800001</td><td>  NA</td><td>NA</td></tr>
+	<tr><td>NA</td><td>NA</td><td>NA</td><td>NA</td><td>NA</td><td>NA</td><td>        NA</td><td>         NA</td><td>-0.523310781</td><td>-0.357023031</td><td>⋯</td><td> 0.448161513</td><td> 1.32473087</td><td> 2.34931517</td><td> 3.54763889</td><td> 4.18121338</td><td> 4.248987198</td><td> 2.8111274</td><td>5.0000000</td><td>  NA</td><td>NA</td></tr>
+	<tr><td>NA</td><td>NA</td><td>NA</td><td>NA</td><td>NA</td><td>NA</td><td>        NA</td><td>         NA</td><td>-0.708950460</td><td>-0.583143473</td><td>⋯</td><td>-0.023835853</td><td> 0.97581047</td><td> 2.51909184</td><td> 3.73701119</td><td> 4.25832701</td><td> 4.222610950</td><td> 4.4118767</td><td>       NA</td><td>  NA</td><td>NA</td></tr>
+	<tr><td>NA</td><td>NA</td><td>NA</td><td>NA</td><td>NA</td><td>NA</td><td>        NA</td><td>-0.83585399</td><td>-0.982789934</td><td>-0.909944713</td><td>⋯</td><td> 0.727405906</td><td> 1.36702776</td><td> 2.68381667</td><td> 3.36054611</td><td> 4.29253864</td><td> 4.651895523</td><td> 4.2035837</td><td>3.8599999</td><td>  NA</td><td>NA</td></tr>
+	<tr><td>NA</td><td>NA</td><td>NA</td><td>NA</td><td>NA</td><td>NA</td><td>        NA</td><td>-1.08239102</td><td>-1.135215282</td><td>-1.018131852</td><td>⋯</td><td> 1.607886434</td><td> 2.05043435</td><td> 3.00426292</td><td> 3.71028423</td><td> 4.09760380</td><td> 4.630562782</td><td> 4.3828650</td><td>4.1199999</td><td>  NA</td><td>NA</td></tr>
+	<tr><td>NA</td><td>NA</td><td>NA</td><td>NA</td><td>NA</td><td>NA</td><td>        NA</td><td>-1.20429385</td><td>-1.073588252</td><td>-1.074453712</td><td>⋯</td><td> 2.145003080</td><td> 2.14999557</td><td> 2.75228047</td><td> 3.36074185</td><td> 3.17259288</td><td> 3.993427038</td><td> 3.4505026</td><td>       NA</td><td>  NA</td><td>NA</td></tr>
+	<tr><td>NA</td><td>NA</td><td>NA</td><td>NA</td><td>NA</td><td>NA</td><td>        NA</td><td>-1.24920452</td><td>-1.097619534</td><td>-1.098227978</td><td>⋯</td><td> 2.495729923</td><td> 2.06742120</td><td> 2.35480118</td><td> 3.17945910</td><td> 2.44510150</td><td> 3.006891251</td><td> 1.4027667</td><td>       NA</td><td>  NA</td><td>NA</td></tr>
+	<tr><td>NA</td><td>NA</td><td>NA</td><td>NA</td><td>NA</td><td>NA</td><td>        NA</td><td>-1.17536151</td><td>-1.127874255</td><td>-1.053290129</td><td>⋯</td><td> 1.671961427</td><td> 1.51226854</td><td> 2.00921392</td><td> 2.47920394</td><td> 2.22450638</td><td> 2.667634249</td><td> 1.5593848</td><td>       NA</td><td>  NA</td><td>NA</td></tr>
+	<tr><td>NA</td><td>NA</td><td>NA</td><td>NA</td><td>NA</td><td>NA</td><td>        NA</td><td>-1.03222525</td><td>-0.958126485</td><td>-0.963152111</td><td>⋯</td><td> 0.750443339</td><td> 0.97895187</td><td> 1.00236785</td><td> 1.29838908</td><td> 1.22042096</td><td> 2.404286861</td><td> 1.5253580</td><td>       NA</td><td>  NA</td><td>NA</td></tr>
+	<tr><td>NA</td><td>NA</td><td>NA</td><td>NA</td><td>NA</td><td>NA</td><td>        NA</td><td>-0.74122697</td><td>-0.859642327</td><td>-0.899472177</td><td>⋯</td><td>-0.182048351</td><td> 0.08869952</td><td> 0.35434717</td><td> 0.69949293</td><td> 1.16713667</td><td> 1.793119788</td><td> 0.8606514</td><td>       NA</td><td>  NA</td><td>NA</td></tr>
+	<tr><td>NA</td><td>NA</td><td>NA</td><td>NA</td><td>NA</td><td>NA</td><td>        NA</td><td>-0.46319559</td><td>-0.705830514</td><td>-0.703707695</td><td>⋯</td><td>-0.664974868</td><td>-0.31978831</td><td> 0.02538815</td><td> 0.40935487</td><td> 0.04900825</td><td> 0.772662342</td><td>        NA</td><td>       NA</td><td>  NA</td><td>NA</td></tr>
+	<tr><td>NA</td><td>NA</td><td>NA</td><td>NA</td><td>NA</td><td>NA</td><td>        NA</td><td>-0.34032953</td><td>-0.554033041</td><td>-0.565362215</td><td>⋯</td><td>-0.562718034</td><td>-0.67619538</td><td>-0.45037004</td><td>-0.02868681</td><td> 0.10339553</td><td> 0.832687557</td><td> 0.3900000</td><td>2.7400000</td><td>  NA</td><td>NA</td></tr>
+	<tr><td>NA</td><td>NA</td><td>NA</td><td>NA</td><td>NA</td><td>NA</td><td>        NA</td><td>-0.13787335</td><td>-0.366101772</td><td>-0.402459711</td><td>⋯</td><td> 0.088325746</td><td>-0.57997417</td><td>-0.51999998</td><td> 0.33000001</td><td> 0.21330257</td><td> 0.599803090</td><td> 3.6099999</td><td>       NA</td><td>  NA</td><td>NA</td></tr>
+	<tr><td>NA</td><td>NA</td><td>NA</td><td>NA</td><td>NA</td><td>NA</td><td>        NA</td><td>         NA</td><td>-0.153727695</td><td>-0.090792619</td><td>⋯</td><td>-0.007916592</td><td>-0.74654436</td><td>         NA</td><td>         NA</td><td> 0.25405270</td><td> 0.460937053</td><td>        NA</td><td>       NA</td><td>  NA</td><td>NA</td></tr>
+	<tr><td>⋮</td><td>⋮</td><td>⋮</td><td>⋮</td><td>⋮</td><td>⋮</td><td>⋮</td><td>⋮</td><td>⋮</td><td>⋮</td><td>⋱</td><td>⋮</td><td>⋮</td><td>⋮</td><td>⋮</td><td>⋮</td><td>⋮</td><td>⋮</td><td>⋮</td><td>⋮</td><td>⋮</td></tr>
+	<tr><td>NA</td><td>NA</td><td>NA</td><td>NA</td><td>NA</td><td>         NA</td><td>        NA</td><td>        NA</td><td>-1.03765130</td><td>-1.14787817</td><td>⋯</td><td>-0.72745198</td><td>-0.539152145</td><td>-0.63528079</td><td>-0.35526615</td><td> 0.761579692</td><td> 0.1559132</td><td>         NA</td><td>NA</td><td>NA</td><td>NA</td></tr>
+	<tr><td>NA</td><td>NA</td><td>NA</td><td>NA</td><td>NA</td><td>         NA</td><td>        NA</td><td>        NA</td><td>         NA</td><td>-1.33770728</td><td>⋯</td><td>-0.70461655</td><td>-0.496376604</td><td>-0.40371022</td><td>-0.07586693</td><td> 1.017054319</td><td> 1.0395586</td><td>         NA</td><td>NA</td><td>NA</td><td>NA</td></tr>
+	<tr><td>NA</td><td>NA</td><td>NA</td><td>NA</td><td>NA</td><td>         NA</td><td>        NA</td><td>        NA</td><td>         NA</td><td>-1.32537293</td><td>⋯</td><td>-0.58864594</td><td>-0.390182823</td><td>-0.27330157</td><td> 0.06163443</td><td>-0.013497770</td><td>-0.1581344</td><td>         NA</td><td>NA</td><td>NA</td><td>NA</td></tr>
+	<tr><td>NA</td><td>NA</td><td>NA</td><td>NA</td><td>NA</td><td>         NA</td><td>        NA</td><td>        NA</td><td>         NA</td><td>-1.23415732</td><td>⋯</td><td>-0.45375887</td><td>-0.406053036</td><td>-0.15399772</td><td> 0.08400441</td><td>-0.975186229</td><td>-1.3216939</td><td>         NA</td><td>NA</td><td>NA</td><td>NA</td></tr>
+	<tr><td>NA</td><td>NA</td><td>NA</td><td>NA</td><td>NA</td><td>         NA</td><td>        NA</td><td>        NA</td><td>         NA</td><td>-1.02880096</td><td>⋯</td><td>-0.13268386</td><td>-0.197947741</td><td> 0.12996706</td><td>-0.59248364</td><td>-1.486913204</td><td>-1.5317039</td><td>         NA</td><td>NA</td><td>NA</td><td>NA</td></tr>
+	<tr><td>NA</td><td>NA</td><td>NA</td><td>NA</td><td>NA</td><td>         NA</td><td>        NA</td><td>        NA</td><td>         NA</td><td>         NA</td><td>⋯</td><td> 0.28471875</td><td> 0.528546691</td><td> 0.49920291</td><td>-0.81128365</td><td>-3.235391378</td><td>-2.7874804</td><td>         NA</td><td>NA</td><td>NA</td><td>NA</td></tr>
+	<tr><td>NA</td><td>NA</td><td>NA</td><td>NA</td><td>NA</td><td>         NA</td><td>        NA</td><td>        NA</td><td>         NA</td><td>         NA</td><td>⋯</td><td> 0.42999995</td><td> 0.270000011</td><td> 0.22992519</td><td>-0.44362128</td><td>-3.800447464</td><td>-2.4703212</td><td>         NA</td><td>NA</td><td>NA</td><td>NA</td></tr>
+	<tr><td>NA</td><td>NA</td><td>NA</td><td>NA</td><td>NA</td><td>         NA</td><td>        NA</td><td>        NA</td><td>         NA</td><td>         NA</td><td>⋯</td><td> 0.51999998</td><td> 0.070000000</td><td>-0.57999998</td><td>-2.13038158</td><td>-3.040197372</td><td>-1.4691701</td><td>         NA</td><td>NA</td><td>NA</td><td>NA</td></tr>
+	<tr><td>NA</td><td>NA</td><td>NA</td><td>NA</td><td>NA</td><td>         NA</td><td>        NA</td><td>        NA</td><td>         NA</td><td>         NA</td><td>⋯</td><td> 0.25999999</td><td>-0.140000001</td><td>-0.93999994</td><td>-2.43839717</td><td>-2.530547380</td><td>-0.1766288</td><td>         NA</td><td>NA</td><td>NA</td><td>NA</td></tr>
+	<tr><td>NA</td><td>NA</td><td>NA</td><td>NA</td><td>NA</td><td>         NA</td><td>        NA</td><td>        NA</td><td>         NA</td><td>         NA</td><td>⋯</td><td> 0.25999999</td><td> 0.189999998</td><td>-1.00000024</td><td>-1.90921295</td><td>-2.355106115</td><td>-1.1711433</td><td>         NA</td><td>NA</td><td>NA</td><td>NA</td></tr>
+	<tr><td>NA</td><td>NA</td><td>NA</td><td>NA</td><td>NA</td><td>         NA</td><td>        NA</td><td>        NA</td><td>         NA</td><td>         NA</td><td>⋯</td><td> 0.56000000</td><td>-0.070000000</td><td>-1.39589906</td><td>-2.19961476</td><td>-1.992772341</td><td>-1.1521786</td><td>         NA</td><td>NA</td><td>NA</td><td>NA</td></tr>
+	<tr><td>NA</td><td>NA</td><td>NA</td><td>NA</td><td>NA</td><td>         NA</td><td>        NA</td><td>        NA</td><td>         NA</td><td>         NA</td><td>⋯</td><td> 0.28999999</td><td>-0.271055728</td><td>-1.62058520</td><td>-4.23999977</td><td>-4.360000134</td><td>        NA</td><td>         NA</td><td>NA</td><td>NA</td><td>NA</td></tr>
+	<tr><td>NA</td><td>NA</td><td>NA</td><td>NA</td><td>NA</td><td>         NA</td><td>        NA</td><td>        NA</td><td>         NA</td><td>         NA</td><td>⋯</td><td> 0.21408066</td><td>-0.627142847</td><td>-2.09491158</td><td>         NA</td><td>          NA</td><td>        NA</td><td>-2.50000000</td><td>NA</td><td>NA</td><td>NA</td></tr>
+	<tr><td>NA</td><td>NA</td><td>NA</td><td>NA</td><td>NA</td><td>         NA</td><td>-0.1697439</td><td>-0.4409237</td><td>-0.55458266</td><td>-0.57835609</td><td>⋯</td><td>-0.24019694</td><td>-0.417958498</td><td>-1.04271126</td><td>         NA</td><td>          NA</td><td>        NA</td><td>-0.62603480</td><td>NA</td><td>NA</td><td>NA</td></tr>
+	<tr><td>NA</td><td>NA</td><td>NA</td><td>NA</td><td>NA</td><td>-0.06098633</td><td>-0.4206600</td><td>-0.7029645</td><td>-0.78887171</td><td>-0.79945225</td><td>⋯</td><td> 0.60682619</td><td> 0.639952779</td><td>-1.07690096</td><td>-1.52999997</td><td>-2.730000019</td><td>        NA</td><td>-3.19000006</td><td>NA</td><td>NA</td><td>NA</td></tr>
+	<tr><td>NA</td><td>NA</td><td>NA</td><td>NA</td><td>NA</td><td>-0.15486561</td><td>-0.5678198</td><td>-0.4074512</td><td>-0.72860694</td><td>-1.02617061</td><td>⋯</td><td> 0.44225967</td><td> 0.289999992</td><td>-1.45528984</td><td>-2.36751652</td><td>          NA</td><td>-2.0213497</td><td>         NA</td><td>NA</td><td>NA</td><td>NA</td></tr>
+	<tr><td>NA</td><td>NA</td><td>NA</td><td>NA</td><td>NA</td><td>-0.24057946</td><td>-0.6678612</td><td>-0.9029381</td><td>-0.94882452</td><td>-1.42196906</td><td>⋯</td><td>-0.29198876</td><td> 0.007856488</td><td>-1.49762917</td><td>-1.47038269</td><td>-3.339999914</td><td>-6.6900001</td><td>         NA</td><td>NA</td><td>NA</td><td>NA</td></tr>
+	<tr><td>NA</td><td>NA</td><td>NA</td><td>NA</td><td>NA</td><td>-0.22199807</td><td>-0.8262340</td><td>-1.3077309</td><td>-1.35774004</td><td>-1.31461942</td><td>⋯</td><td> 0.09749806</td><td> 0.119999997</td><td>-1.31053293</td><td>         NA</td><td>-2.190000057</td><td>        NA</td><td>         NA</td><td>NA</td><td>NA</td><td>NA</td></tr>
+	<tr><td>NA</td><td>NA</td><td>NA</td><td>NA</td><td>NA</td><td>-0.36582714</td><td>-0.9412854</td><td>-1.2547942</td><td>-1.65094185</td><td>-1.47020209</td><td>⋯</td><td> 0.95338994</td><td>-1.179990530</td><td>-0.94999999</td><td>         NA</td><td>          NA</td><td>        NA</td><td> 2.97000003</td><td>NA</td><td>NA</td><td>NA</td></tr>
+	<tr><td>NA</td><td>NA</td><td>NA</td><td>NA</td><td>NA</td><td>         NA</td><td>-0.9192676</td><td>-1.4885594</td><td>-1.86747491</td><td>-1.41876101</td><td>⋯</td><td> 0.55572647</td><td>-0.991240323</td><td>         NA</td><td>-1.30097270</td><td>-1.104978204</td><td>        NA</td><td>-1.09486389</td><td>NA</td><td>NA</td><td>NA</td></tr>
+	<tr><td>NA</td><td>NA</td><td>NA</td><td>NA</td><td>NA</td><td>         NA</td><td>        NA</td><td>-1.4861391</td><td>-1.74675107</td><td>-1.11806643</td><td>⋯</td><td> 0.54016954</td><td>-0.087156199</td><td>-0.09771429</td><td>-0.58162260</td><td>-1.226686239</td><td>-1.3258067</td><td>-1.16933286</td><td>NA</td><td>NA</td><td>NA</td></tr>
+	<tr><td>NA</td><td>NA</td><td>NA</td><td>NA</td><td>NA</td><td> 0.34000000</td><td>        NA</td><td>        NA</td><td>         NA</td><td>-0.90929210</td><td>⋯</td><td> 1.22658181</td><td> 1.544310927</td><td> 0.96281517</td><td> 0.11501031</td><td>          NA</td><td> 0.3753299</td><td> 0.05857182</td><td>NA</td><td>NA</td><td>NA</td></tr>
+	<tr><td>NA</td><td>NA</td><td>NA</td><td>NA</td><td>NA</td><td>         NA</td><td>        NA</td><td> 1.2000000</td><td>         NA</td><td>-0.65815240</td><td>⋯</td><td> 1.07102656</td><td> 1.912538052</td><td> 1.35502267</td><td> 0.56753224</td><td>-0.107015751</td><td> 0.3371410</td><td> 0.77885288</td><td>NA</td><td>NA</td><td>NA</td></tr>
+	<tr><td>NA</td><td>NA</td><td>NA</td><td>NA</td><td>NA</td><td>         NA</td><td>-0.7499329</td><td>-0.8363801</td><td>         NA</td><td>-0.56528622</td><td>⋯</td><td> 1.04670095</td><td> 1.791487932</td><td> 1.47122908</td><td> 0.86064625</td><td> 0.440668404</td><td>        NA</td><td> 1.12747109</td><td>NA</td><td>NA</td><td>NA</td></tr>
+	<tr><td>NA</td><td>NA</td><td>NA</td><td>NA</td><td>NA</td><td>         NA</td><td>-0.7914029</td><td>-0.8402827</td><td>-0.76294339</td><td>-0.47780380</td><td>⋯</td><td> 1.11061668</td><td> 1.632037044</td><td> 1.31927037</td><td> 0.89700294</td><td> 0.494957596</td><td>-0.1191137</td><td> 1.26109028</td><td>NA</td><td>NA</td><td>NA</td></tr>
+	<tr><td>NA</td><td>NA</td><td>NA</td><td>NA</td><td>NA</td><td>         NA</td><td>-0.9720980</td><td>-0.7398673</td><td>-0.54816222</td><td>-0.36572853</td><td>⋯</td><td> 1.05496168</td><td> 1.368819237</td><td> 1.11766005</td><td> 0.84499192</td><td> 0.295163870</td><td>-0.1554662</td><td> 1.75000000</td><td>NA</td><td>NA</td><td>NA</td></tr>
+	<tr><td>NA</td><td>NA</td><td>NA</td><td>NA</td><td>NA</td><td>         NA</td><td>-0.9025080</td><td>-0.6139256</td><td>-0.30291057</td><td>-0.30004954</td><td>⋯</td><td> 0.86234093</td><td> 1.040015578</td><td> 0.95735621</td><td> 0.59824568</td><td> 0.320065022</td><td> 0.5698152</td><td>         NA</td><td>NA</td><td>NA</td><td>NA</td></tr>
+	<tr><td>NA</td><td>NA</td><td>NA</td><td>NA</td><td>NA</td><td>         NA</td><td>-0.8384985</td><td>-0.5307279</td><td>-0.23365818</td><td>-0.39668068</td><td>⋯</td><td> 0.68489653</td><td> 0.727147460</td><td> 0.64485824</td><td> 0.44672173</td><td> 0.202944711</td><td> 0.2979381</td><td>         NA</td><td>NA</td><td>NA</td><td>NA</td></tr>
+	<tr><td>NA</td><td>NA</td><td>NA</td><td>NA</td><td>NA</td><td>         NA</td><td>-0.7920504</td><td>-0.4944986</td><td>-0.16763553</td><td>-0.39215466</td><td>⋯</td><td> 0.53223640</td><td> 0.371893227</td><td> 0.33779463</td><td> 0.35033759</td><td> 0.096019298</td><td> 0.4784548</td><td> 1.41840124</td><td>NA</td><td>NA</td><td>NA</td></tr>
+	<tr><td>NA</td><td>NA</td><td>NA</td><td>NA</td><td>NA</td><td>         NA</td><td>-0.7084152</td><td>-0.3460619</td><td> 0.04035293</td><td>-0.04183052</td><td>⋯</td><td>-0.17381990</td><td>-0.145835012</td><td> 0.18178961</td><td> 0.32527083</td><td>-0.002842225</td><td> 0.3367361</td><td> 1.53253829</td><td>NA</td><td>NA</td><td>NA</td></tr>
+</tbody>
+</table>
+</div></div>
+</div>
+<p>But in most cases, we want to select based on time (or whichever coordinate), not based on the index. So let’s now select based on a given time. The units for time are</p>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-r notranslate"><div class="highlight"><pre><span></span><span class="nf">att.get.nc</span><span class="p">(</span><span class="n">data</span><span class="p">,</span><span class="w"> </span><span class="s">&quot;time&quot;</span><span class="p">,</span><span class="w"> </span><span class="s">&quot;units&quot;</span><span class="p">)</span>
+</pre></div>
+</div>
+</div>
+<div class="cell_output docutils container">
+<div class="output text_html">'days since 1800-01-01 00:00:00'</div></div>
+</div>
+<p>There are specific recommendations on how time should be stored in CF-NetCDF files. I will try to explain briefly here, and there is a nice explanation here too: <a class="reference external" href="https://www.unidata.ucar.edu/software/netcdf/time/recs.html">https://www.unidata.ucar.edu/software/netcdf/time/recs.html</a></p>
+<p>The <em>time</em> variable has units that count from a user defined origin, for example “hours since 2020-01-01 00:00 UTC” or “days since 2014-01-01”. The units may be in years, days, seconds, nanoseconds, etc. Whilst this approach may seem strange at a glance, it allows the times to be stored in conventional numerical formats such as integers or floats, and to our desired precision. This is much more efficient than using a long timestamp string for each coordinate.</p>
+<p>Some softwares know how to interpret this and will convert the data into timestamps in when you extract the data from a CF-NetCDF file. For example, xarray in Python does this, so does Panoply. Unfortunately, RNetCDF does not - at least not at the time of writing.</p>
+<p>So now let’s extract the time series, work out what index in the time series our desired date corresponds to, and then select from the <em>anom</em> variable based on that index.</p>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-r notranslate"><div class="highlight"><pre><span></span><span class="n">desired_date</span><span class="w"> </span><span class="o">&lt;-</span><span class="w"> </span><span class="nf">as.Date</span><span class="p">(</span><span class="s">&#39;2020-01-01&#39;</span><span class="p">)</span>
+<span class="n">days_since_1800</span><span class="w"> </span><span class="o">&lt;-</span><span class="w"> </span><span class="nf">as.numeric</span><span class="p">(</span><span class="nf">difftime</span><span class="p">(</span><span class="n">desired_date</span><span class="p">,</span><span class="w"> </span><span class="nf">as.Date</span><span class="p">(</span><span class="s">&#39;1800-01-01&#39;</span><span class="p">),</span><span class="w"> </span><span class="n">units</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="s">&#39;days&#39;</span><span class="p">))</span>
+
+<span class="n">time</span><span class="w"> </span><span class="o">&lt;-</span><span class="w"> </span><span class="nf">var.get.nc</span><span class="p">(</span><span class="n">data</span><span class="p">,</span><span class="w"> </span><span class="s">&quot;time&quot;</span><span class="p">)</span><span class="w"> </span>
+<span class="c1"># Finding index of the value</span>
+<span class="n">time_index</span><span class="w"> </span><span class="o">&lt;-</span><span class="w"> </span><span class="nf">which</span><span class="p">(</span><span class="n">time</span><span class="w"> </span><span class="o">==</span><span class="w"> </span><span class="n">days_since_1800</span><span class="p">)</span>
+
+<span class="n">anom</span><span class="w"> </span><span class="o">&lt;-</span><span class="w"> </span><span class="nf">var.get.nc</span><span class="p">(</span><span class="n">data</span><span class="p">,</span><span class="w"> </span><span class="s">&#39;anom&#39;</span><span class="p">,</span><span class="w"> </span><span class="n">start</span><span class="o">=</span><span class="nf">c</span><span class="p">(</span><span class="kc">NA</span><span class="p">,</span><span class="w"> </span><span class="kc">NA</span><span class="p">,</span><span class="w"> </span><span class="m">1</span><span class="p">,</span><span class="w"> </span><span class="n">time_index</span><span class="p">),</span><span class="w"> </span><span class="n">count</span><span class="o">=</span><span class="nf">c</span><span class="p">(</span><span class="kc">NA</span><span class="p">,</span><span class="kc">NA</span><span class="p">,</span><span class="m">1</span><span class="p">,</span><span class="m">1</span><span class="p">))</span>
+<span class="n">anom</span>
+</pre></div>
+</div>
+</div>
+<div class="cell_output docutils container">
+<div class="output text_html"><table class="dataframe">
+<caption>A matrix: 72 × 36 of type dbl</caption>
+<tbody>
+	<tr><td>   NA</td><td>   NA</td><td>   NA</td><td>-0.09</td><td>-0.4774149</td><td>-0.28590867</td><td>-0.147390142</td><td> 0.162335649</td><td> 0.3555031419</td><td> 0.085328840</td><td>⋯</td><td>0.9572873</td><td> 2.7277462</td><td> 1.795067</td><td> 1.0600646</td><td> 0.9244725</td><td> 0.901413739</td><td> 0.7911479</td><td> 1.0034733</td><td>  NA</td><td>NA</td></tr>
+	<tr><td>   NA</td><td>   NA</td><td>   NA</td><td>   NA</td><td>-0.5136998</td><td>-0.28014940</td><td>-0.160545558</td><td> 0.158801332</td><td> 0.3941240311</td><td> 0.155463889</td><td>⋯</td><td>0.7803320</td><td> 2.8799996</td><td> 2.655742</td><td> 2.0247676</td><td> 2.4968357</td><td> 0.878529668</td><td> 0.6843208</td><td> 0.8648409</td><td>  NA</td><td>NA</td></tr>
+	<tr><td>   NA</td><td>   NA</td><td>   NA</td><td> 0.30</td><td>-0.4267291</td><td>-0.27559584</td><td>-0.183748201</td><td> 0.202584669</td><td> 0.4098227322</td><td> 0.211597517</td><td>⋯</td><td>1.1051872</td><td> 2.7000260</td><td> 3.316797</td><td> 3.3139091</td><td> 6.5279703</td><td> 1.357819557</td><td> 0.7310358</td><td> 0.5478907</td><td>  NA</td><td>NA</td></tr>
+	<tr><td>   NA</td><td>   NA</td><td>   NA</td><td>   NA</td><td>-0.2727111</td><td>-0.23345284</td><td>-0.168438852</td><td> 0.203091472</td><td> 0.3795720339</td><td> 0.154737383</td><td>⋯</td><td>1.1962049</td><td> 1.5803304</td><td> 4.079368</td><td> 2.4789727</td><td> 5.1615229</td><td> 4.826246738</td><td> 0.8632154</td><td>-0.7200000</td><td>  NA</td><td>NA</td></tr>
+	<tr><td>   NA</td><td>   NA</td><td>   NA</td><td>   NA</td><td>-0.1808161</td><td>-0.16997650</td><td>-0.113978557</td><td> 0.188084275</td><td> 0.3441761434</td><td> 0.155692816</td><td>⋯</td><td>1.5916607</td><td> 0.6660571</td><td> 5.440616</td><td> 2.8465347</td><td> 3.7294011</td><td> 4.428432941</td><td> 0.8453974</td><td>        NA</td><td>  NA</td><td>NA</td></tr>
+	<tr><td>   NA</td><td>   NA</td><td>   NA</td><td>   NA</td><td>-0.1048512</td><td>-0.08315404</td><td>-0.078388907</td><td> 0.161499396</td><td> 0.3325377405</td><td> 0.242152914</td><td>⋯</td><td>1.3523049</td><td> 3.2296455</td><td> 6.082641</td><td> 6.5513883</td><td> 7.1897578</td><td> 3.872640371</td><td> 0.7872372</td><td>-0.9600000</td><td>  NA</td><td>NA</td></tr>
+	<tr><td>   NA</td><td>   NA</td><td>   NA</td><td>   NA</td><td>-0.2039971</td><td>-0.03734734</td><td>-0.050673340</td><td> 0.083849691</td><td> 0.2672915161</td><td> 0.320076883</td><td>⋯</td><td>1.2378309</td><td> 3.4596205</td><td> 6.688095</td><td> 8.1772079</td><td> 7.9278369</td><td> 3.297797918</td><td> 0.7249542</td><td>        NA</td><td>  NA</td><td>NA</td></tr>
+	<tr><td>   NA</td><td>   NA</td><td> 2.24</td><td>   NA</td><td> 0.4100000</td><td> 0.04984033</td><td>-0.030647313</td><td> 0.002807403</td><td> 0.2073578984</td><td> 0.060383327</td><td>⋯</td><td>1.0983480</td><td> 3.6145263</td><td> 7.006868</td><td> 8.3200865</td><td> 7.6957769</td><td> 2.810969353</td><td> 0.2470920</td><td>        NA</td><td>  NA</td><td>NA</td></tr>
+	<tr><td>   NA</td><td>   NA</td><td>   NA</td><td> 1.85</td><td>        NA</td><td> 0.09618616</td><td>-0.021199374</td><td>-0.029650999</td><td>-0.0445042588</td><td>-0.036017980</td><td>⋯</td><td>1.8151871</td><td> 5.7194242</td><td> 7.489800</td><td> 8.2420597</td><td> 7.5445147</td><td> 1.702046871</td><td> 0.3923281</td><td>        NA</td><td>  NA</td><td>NA</td></tr>
+	<tr><td>   NA</td><td>   NA</td><td>   NA</td><td>   NA</td><td> 0.0800000</td><td> 0.09327671</td><td> 0.001323494</td><td>-0.059333336</td><td>-0.1571347415</td><td>-0.177169263</td><td>⋯</td><td>2.0461519</td><td> 5.5822577</td><td> 7.721563</td><td> 8.3688650</td><td> 7.5512500</td><td> 2.840023041</td><td> 0.4435947</td><td>        NA</td><td>  NA</td><td>NA</td></tr>
+	<tr><td>   NA</td><td>   NA</td><td>   NA</td><td>   NA</td><td>        NA</td><td> 0.10112605</td><td> 0.023530630</td><td>-0.102159321</td><td>-0.1461249292</td><td>-0.315625727</td><td>⋯</td><td>2.3329496</td><td> 5.2566156</td><td> 7.872991</td><td> 8.2446203</td><td> 6.9870377</td><td> 4.032630920</td><td> 0.8986476</td><td>        NA</td><td>  NA</td><td>NA</td></tr>
+	<tr><td>   NA</td><td>   NA</td><td>   NA</td><td>   NA</td><td>        NA</td><td> 0.15525936</td><td> 0.039516296</td><td>-0.160253525</td><td>-0.4670970440</td><td>-0.694061339</td><td>⋯</td><td>4.3591695</td><td> 5.3242002</td><td> 7.156808</td><td> 7.2001529</td><td> 6.7234974</td><td> 4.168582439</td><td>        NA</td><td>        NA</td><td>5.44</td><td>NA</td></tr>
+	<tr><td>   NA</td><td>   NA</td><td>   NA</td><td>   NA</td><td> 0.1200000</td><td> 0.17133424</td><td> 0.020352060</td><td>-0.183834001</td><td>-0.5728002191</td><td>-0.892433882</td><td>⋯</td><td>3.5030200</td><td> 6.0381327</td><td> 6.840115</td><td> 6.3887873</td><td> 6.9327917</td><td> 4.684739113</td><td>        NA</td><td>        NA</td><td>  NA</td><td>NA</td></tr>
+	<tr><td>   NA</td><td>   NA</td><td>   NA</td><td> 0.51</td><td>-0.1045271</td><td> 0.12875792</td><td> 0.010437957</td><td>-0.192575157</td><td>-0.6314202547</td><td>-1.080038309</td><td>⋯</td><td>1.9361970</td><td> 4.4810176</td><td> 6.170854</td><td> 5.7854176</td><td> 5.9653182</td><td> 4.766786575</td><td>        NA</td><td>        NA</td><td>  NA</td><td>NA</td></tr>
+	<tr><td>   NA</td><td>   NA</td><td>   NA</td><td>   NA</td><td>        NA</td><td> 0.12464470</td><td> 0.036503941</td><td>-0.108508967</td><td>-0.4493696690</td><td>-0.968589544</td><td>⋯</td><td>1.8712949</td><td> 3.4052238</td><td> 6.302463</td><td> 5.9270997</td><td> 6.3741350</td><td> 3.730565071</td><td> 5.4499998</td><td>        NA</td><td>  NA</td><td>NA</td></tr>
+	<tr><td>   NA</td><td>-2.74</td><td>-6.49</td><td>   NA</td><td> 0.2366797</td><td> 0.18782446</td><td> 0.133120105</td><td> 0.082596302</td><td>-0.3003827631</td><td>-0.751365244</td><td>⋯</td><td>2.1469994</td><td> 3.8464892</td><td> 5.916843</td><td> 6.3851500</td><td> 6.4738703</td><td> 5.140623093</td><td>        NA</td><td> 2.2100000</td><td>  NA</td><td>NA</td></tr>
+	<tr><td>   NA</td><td>   NA</td><td>   NA</td><td>   NA</td><td>        NA</td><td> 0.18006249</td><td> 0.205805823</td><td> 0.132874653</td><td>-0.2052679509</td><td>-0.681200624</td><td>⋯</td><td>2.6520324</td><td> 3.8627431</td><td> 4.681370</td><td> 6.7149715</td><td> 7.6431904</td><td> 8.325294495</td><td> 2.4645054</td><td>        NA</td><td>  NA</td><td>NA</td></tr>
+	<tr><td>-3.23</td><td>   NA</td><td>   NA</td><td>   NA</td><td>        NA</td><td> 0.21591021</td><td> 0.297305465</td><td> 0.191144824</td><td> 0.0002424157</td><td>-0.475218683</td><td>⋯</td><td>1.5729918</td><td> 3.1421788</td><td> 3.056231</td><td> 6.2712049</td><td> 8.8811817</td><td> 8.233824730</td><td> 4.2742991</td><td> 2.9200001</td><td>  NA</td><td>NA</td></tr>
+	<tr><td>   NA</td><td>   NA</td><td>   NA</td><td>   NA</td><td> 1.4100000</td><td> 0.24058017</td><td> 0.389482826</td><td> 0.454154611</td><td> 0.3260739446</td><td>-0.130278409</td><td>⋯</td><td>1.1721898</td><td> 1.9892517</td><td> 4.083584</td><td> 7.7274904</td><td> 8.9799690</td><td> 8.900437355</td><td> 7.3149533</td><td> 3.1400001</td><td>  NA</td><td>NA</td></tr>
+	<tr><td>   NA</td><td>   NA</td><td>   NA</td><td>   NA</td><td>        NA</td><td> 0.08222742</td><td> 0.462933093</td><td> 0.622475207</td><td> 0.6073665023</td><td> 0.200632140</td><td>⋯</td><td>1.4139801</td><td> 1.8027588</td><td> 2.745549</td><td> 7.4859943</td><td> 9.0099735</td><td>10.146947861</td><td> 7.4159012</td><td>        NA</td><td>  NA</td><td>NA</td></tr>
+	<tr><td>   NA</td><td>   NA</td><td>   NA</td><td>   NA</td><td>        NA</td><td> 0.22611250</td><td> 0.510275364</td><td> 0.726758242</td><td> 0.6986377239</td><td> 0.318254828</td><td>⋯</td><td>2.4283347</td><td> 1.5985538</td><td> 2.620578</td><td> 5.8397551</td><td>10.7067041</td><td>10.549728394</td><td> 7.0739231</td><td> 1.8500000</td><td>  NA</td><td>NA</td></tr>
+	<tr><td>   NA</td><td>   NA</td><td> 1.25</td><td>   NA</td><td>        NA</td><td> 0.26540589</td><td> 0.580444694</td><td> 0.760604620</td><td> 0.6664374471</td><td> 0.239719421</td><td>⋯</td><td>2.6909816</td><td> 3.2365203</td><td> 1.660322</td><td> 6.3767095</td><td>11.3682051</td><td> 9.817378998</td><td> 6.7846031</td><td>        NA</td><td>  NA</td><td>NA</td></tr>
+	<tr><td>   NA</td><td>   NA</td><td>   NA</td><td>   NA</td><td> 1.4400001</td><td> 0.23749603</td><td> 0.580396712</td><td> 0.748356700</td><td> 0.6247741580</td><td> 0.104442805</td><td>⋯</td><td>1.9244378</td><td> 1.9029524</td><td> 2.724763</td><td> 8.6504669</td><td> 9.4975271</td><td> 7.550381184</td><td> 5.2764120</td><td>        NA</td><td>  NA</td><td>NA</td></tr>
+	<tr><td>   NA</td><td>   NA</td><td>   NA</td><td>   NA</td><td>        NA</td><td> 0.18075460</td><td> 0.548415363</td><td> 0.727091372</td><td> 0.5926325321</td><td> 0.106404528</td><td>⋯</td><td>2.4785178</td><td> 3.5415964</td><td> 3.099287</td><td> 6.4127460</td><td> 9.1109905</td><td> 7.136222363</td><td> 3.9328668</td><td>        NA</td><td>  NA</td><td>NA</td></tr>
+	<tr><td>   NA</td><td>   NA</td><td> 2.81</td><td>   NA</td><td>        NA</td><td> 0.16377415</td><td> 0.523425102</td><td> 0.596909940</td><td> 0.3836425245</td><td> 0.162375107</td><td>⋯</td><td>2.8302016</td><td> 3.0401354</td><td> 3.149857</td><td> 5.7515340</td><td> 8.5855122</td><td> 6.447008133</td><td> 3.2445862</td><td>        NA</td><td>  NA</td><td>NA</td></tr>
+	<tr><td>   NA</td><td>   NA</td><td>   NA</td><td>   NA</td><td>        NA</td><td> 0.15745857</td><td> 0.393516779</td><td> 0.449483484</td><td> 0.2567939758</td><td> 0.180907041</td><td>⋯</td><td>3.3748968</td><td> 2.8877025</td><td> 3.324666</td><td> 8.0333014</td><td> 7.5390706</td><td> 4.663214207</td><td> 2.3414955</td><td>        NA</td><td>  NA</td><td>NA</td></tr>
+	<tr><td>   NA</td><td>   NA</td><td>   NA</td><td>   NA</td><td>        NA</td><td> 0.09594598</td><td> 0.209859416</td><td> 0.192347363</td><td> 0.1322625130</td><td> 0.119496055</td><td>⋯</td><td>2.9328752</td><td> 4.0491333</td><td> 3.670716</td><td> 5.6424479</td><td> 5.5709038</td><td> 3.862676620</td><td>        NA</td><td>        NA</td><td>  NA</td><td>NA</td></tr>
+	<tr><td>   NA</td><td>   NA</td><td>   NA</td><td>   NA</td><td> 0.5700000</td><td>-0.01971135</td><td> 0.086351745</td><td> 0.022201179</td><td>-0.0598816760</td><td> 0.009354172</td><td>⋯</td><td>1.2883152</td><td> 2.4070759</td><td> 3.116643</td><td> 3.3065968</td><td> 1.3663971</td><td> 1.190155149</td><td>-0.2100000</td><td> 1.8000000</td><td>  NA</td><td>NA</td></tr>
+	<tr><td>   NA</td><td>   NA</td><td>   NA</td><td>   NA</td><td> 0.0400000</td><td>-0.05072745</td><td> 0.079560325</td><td>-0.014219291</td><td>-0.2375546545</td><td>-0.014574289</td><td>⋯</td><td>1.0367877</td><td> 1.1600000</td><td> 2.320000</td><td> 1.5100000</td><td>-0.6620501</td><td>-0.005278349</td><td>        NA</td><td>        NA</td><td>  NA</td><td>NA</td></tr>
+	<tr><td>   NA</td><td>   NA</td><td>   NA</td><td>   NA</td><td>        NA</td><td>-0.01008736</td><td> 0.107823193</td><td>-0.026469907</td><td>-0.4114962518</td><td> 0.090423912</td><td>⋯</td><td>0.8417667</td><td>-1.3527929</td><td>-1.477125</td><td>-0.9154379</td><td>-0.7692944</td><td>-0.279117882</td><td>-0.1200000</td><td>        NA</td><td>  NA</td><td>NA</td></tr>
+	<tr><td>⋮</td><td>⋮</td><td>⋮</td><td>⋮</td><td>⋮</td><td>⋮</td><td>⋮</td><td>⋮</td><td>⋮</td><td>⋮</td><td>⋱</td><td>⋮</td><td>⋮</td><td>⋮</td><td>⋮</td><td>⋮</td><td>⋮</td><td>⋮</td><td>⋮</td><td>⋮</td><td>⋮</td></tr>
+	<tr><td>   NA</td><td>-1.28</td><td>  NA</td><td>-0.4698156</td><td>-0.484841824</td><td> 0.09154083</td><td> 0.6440986395</td><td> 0.86868376</td><td> 1.36309803</td><td> 1.81497061</td><td>⋯</td><td>1.2319669</td><td>1.09131396</td><td> 0.6522085071</td><td> 0.52465075</td><td>-5.436241150</td><td>-4.5521069</td><td>-3.09999990</td><td>        NA</td><td>   NA</td><td>NA</td></tr>
+	<tr><td>   NA</td><td>   NA</td><td>  NA</td><td>-0.3934032</td><td>-0.431364000</td><td> 0.14756560</td><td> 0.5137752891</td><td> 0.61684585</td><td> 1.08714056</td><td> 1.54263282</td><td>⋯</td><td>1.1222075</td><td>1.25820720</td><td> 0.9412134290</td><td> 0.69965726</td><td>-5.388529778</td><td>-3.2256734</td><td>-2.76999998</td><td>        NA</td><td>   NA</td><td>NA</td></tr>
+	<tr><td>   NA</td><td>-2.87</td><td>  NA</td><td>        NA</td><td>-0.414644599</td><td> 0.16411288</td><td> 0.3302588761</td><td> 0.34657753</td><td> 0.78035277</td><td> 1.23245287</td><td>⋯</td><td>0.7796755</td><td>1.34756613</td><td> 1.1005250216</td><td> 0.42685211</td><td>-3.570737123</td><td>-1.3942188</td><td>         NA</td><td>        NA</td><td>   NA</td><td>NA</td></tr>
+	<tr><td>   NA</td><td>   NA</td><td>  NA</td><td>        NA</td><td>-0.280095577</td><td> 0.17187184</td><td> 0.1874384582</td><td> 0.13639207</td><td> 0.44986501</td><td> 0.77768350</td><td>⋯</td><td>0.4036115</td><td>0.90187240</td><td> 0.6559444666</td><td>-0.16429505</td><td>-1.692900538</td><td>-0.3730847</td><td>         NA</td><td>        NA</td><td>   NA</td><td>NA</td></tr>
+	<tr><td>   NA</td><td>   NA</td><td>  NA</td><td>        NA</td><td>-0.268713385</td><td> 0.12222777</td><td> 0.0106154578</td><td>-0.06838228</td><td> 0.11478064</td><td> 0.31041491</td><td>⋯</td><td>0.2344677</td><td>0.44264463</td><td> 0.1042358428</td><td>-1.29303682</td><td>-1.633660436</td><td>-0.9327446</td><td> 1.82000005</td><td>        NA</td><td>   NA</td><td>NA</td></tr>
+	<tr><td>   NA</td><td>-0.92</td><td>  NA</td><td>        NA</td><td>-0.197808459</td><td> 0.11562244</td><td>-0.0397457480</td><td>-0.14111784</td><td>-0.07678779</td><td>-0.09737960</td><td>⋯</td><td>0.9099060</td><td>1.16355646</td><td> 1.2394207716</td><td>-1.14657307</td><td>-1.999983311</td><td> 1.0552218</td><td> 1.53999996</td><td>        NA</td><td>   NA</td><td>NA</td></tr>
+	<tr><td>   NA</td><td>-0.03</td><td>  NA</td><td>-0.5619973</td><td>-0.124478303</td><td> 0.22203135</td><td> 0.1132662669</td><td>-0.07467450</td><td>-0.20421869</td><td>-0.42011777</td><td>⋯</td><td>2.4100001</td><td>2.74000001</td><td> 0.4900098443</td><td>-0.49499625</td><td> 0.268961966</td><td> 2.1826148</td><td> 2.40000010</td><td> 0.6700000</td><td>   NA</td><td>NA</td></tr>
+	<tr><td>   NA</td><td>   NA</td><td>  NA</td><td>        NA</td><td>-0.064553842</td><td> 0.28961024</td><td> 0.1855113804</td><td>-0.09331908</td><td>-0.28049749</td><td>-0.45346436</td><td>⋯</td><td>2.2600000</td><td>3.00000000</td><td>-0.0399999619</td><td> 1.77955723</td><td> 2.390084028</td><td> 1.3966146</td><td>         NA</td><td>        NA</td><td>   NA</td><td>NA</td></tr>
+	<tr><td>   NA</td><td>   NA</td><td>  NA</td><td>        NA</td><td> 0.014955498</td><td> 0.37070805</td><td> 0.2341449112</td><td>-0.03662325</td><td>-0.17936961</td><td>-0.21100482</td><td>⋯</td><td>2.3000000</td><td>2.85999990</td><td> 2.6600768566</td><td> 4.73088789</td><td> 3.017217636</td><td> 0.2097187</td><td> 1.55999994</td><td>        NA</td><td>   NA</td><td>NA</td></tr>
+	<tr><td>   NA</td><td>   NA</td><td>  NA</td><td>-0.4620867</td><td> 0.151447281</td><td> 0.49756023</td><td> 0.3641515374</td><td> 0.17027101</td><td> 0.09872701</td><td> 0.15636560</td><td>⋯</td><td>3.0300000</td><td>2.63000011</td><td> 4.0700082779</td><td> 4.46887016</td><td> 3.263908625</td><td> 1.9812412</td><td>-8.56999969</td><td> 0.3200000</td><td>   NA</td><td>NA</td></tr>
+	<tr><td>   NA</td><td>   NA</td><td>  NA</td><td>        NA</td><td> 0.220768183</td><td> 0.60737258</td><td> 0.4621249437</td><td> 0.31238753</td><td> 0.34462538</td><td> 0.42748836</td><td>⋯</td><td>2.1300001</td><td>3.33999991</td><td> 5.2585630417</td><td> 5.04434347</td><td> 4.643915176</td><td> 1.7200259</td><td>         NA</td><td>        NA</td><td>   NA</td><td>NA</td></tr>
+	<tr><td>   NA</td><td>   NA</td><td>  NA</td><td>        NA</td><td> 0.250222027</td><td> 0.62426901</td><td> 0.4832903743</td><td> 0.44083375</td><td> 0.49659431</td><td> 0.56856495</td><td>⋯</td><td>3.6400001</td><td>4.28217030</td><td> 6.2233800888</td><td> 5.96999979</td><td> 6.269999981</td><td> 1.8399289</td><td>-6.21999979</td><td>        NA</td><td>   NA</td><td>NA</td></tr>
+	<tr><td>   NA</td><td>   NA</td><td>  NA</td><td>        NA</td><td> 0.136668548</td><td> 0.56714785</td><td> 0.4752582014</td><td> 0.51889729</td><td> 0.57429111</td><td> 0.62632006</td><td>⋯</td><td>3.6535807</td><td>2.14575386</td><td> 5.9827761650</td><td>         NA</td><td>          NA</td><td> 4.1399999</td><td>-1.72000003</td><td>-2.1800001</td><td>   NA</td><td>NA</td></tr>
+	<tr><td>   NA</td><td>   NA</td><td>  NA</td><td>        NA</td><td> 0.097286239</td><td> 0.47690770</td><td> 0.4453872740</td><td> 0.56508142</td><td> 0.55497044</td><td> 0.49322265</td><td>⋯</td><td>1.9782990</td><td>3.54007483</td><td> 3.8028151989</td><td>         NA</td><td> 3.039999962</td><td> 1.4100000</td><td>-0.11851262</td><td>-2.1099999</td><td>   NA</td><td>NA</td></tr>
+	<tr><td>   NA</td><td>   NA</td><td>  NA</td><td>        NA</td><td> 0.009490349</td><td> 0.41094211</td><td> 0.4368603826</td><td> 0.58647507</td><td> 0.48691010</td><td> 0.35713318</td><td>⋯</td><td>3.0759089</td><td>4.80000353</td><td> 3.9606328011</td><td> 3.91000009</td><td> 3.099999905</td><td>-0.6500000</td><td>-2.15000010</td><td>        NA</td><td>   NA</td><td>NA</td></tr>
+	<tr><td>   NA</td><td>   NA</td><td>  NA</td><td> 0.4600000</td><td>-0.044147618</td><td> 0.40844291</td><td> 0.5009096265</td><td> 0.52736115</td><td> 0.55674899</td><td> 0.44166863</td><td>⋯</td><td>2.8152328</td><td>4.57000017</td><td> 4.1282920837</td><td> 3.25530601</td><td>          NA</td><td> 0.3736914</td><td>         NA</td><td>        NA</td><td>   NA</td><td>NA</td></tr>
+	<tr><td>   NA</td><td>   NA</td><td>  NA</td><td> 1.6100000</td><td>-0.044302195</td><td> 0.33518147</td><td> 0.4985094666</td><td> 0.48975295</td><td> 0.35365939</td><td> 1.24740696</td><td>⋯</td><td>1.2059940</td><td>3.00945592</td><td> 2.3990960121</td><td> 1.93532622</td><td> 0.680000007</td><td>-4.4299998</td><td>-0.89999998</td><td>-1.6400000</td><td>   NA</td><td>NA</td></tr>
+	<tr><td>   NA</td><td>   NA</td><td>  NA</td><td> 0.8700000</td><td>-0.225116432</td><td> 0.14925167</td><td> 0.4378926158</td><td> 0.40267450</td><td> 0.07255031</td><td>-0.04456457</td><td>⋯</td><td>1.8385988</td><td>0.07792632</td><td> 1.3569607735</td><td> 1.65999997</td><td>          NA</td><td> 0.3300000</td><td>         NA</td><td>        NA</td><td>   NA</td><td>NA</td></tr>
+	<tr><td>   NA</td><td>   NA</td><td>2.78</td><td>        NA</td><td>          NA</td><td> 0.05853839</td><td> 0.4594276845</td><td> 0.36315942</td><td>-0.17322914</td><td>-0.20791532</td><td>⋯</td><td>1.9392450</td><td>0.25425702</td><td> 0.4623103738</td><td> 1.67879176</td><td> 1.897409081</td><td>        NA</td><td> 1.22000003</td><td>        NA</td><td>   NA</td><td>NA</td></tr>
+	<tr><td>   NA</td><td>   NA</td><td>  NA</td><td>        NA</td><td>          NA</td><td>-0.51736933</td><td> 0.4211530983</td><td> 0.29534271</td><td>-0.42727485</td><td>-0.55569929</td><td>⋯</td><td>1.2038542</td><td>0.28530520</td><td> 0.8195887208</td><td> 1.55946314</td><td> 1.503227830</td><td> 1.0871487</td><td>-0.12800276</td><td>        NA</td><td>   NA</td><td>NA</td></tr>
+	<tr><td>   NA</td><td>   NA</td><td>  NA</td><td>        NA</td><td>          NA</td><td>-0.42621243</td><td> 0.3630766273</td><td> 0.41877541</td><td>-0.13659766</td><td>-0.30312842</td><td>⋯</td><td>0.8046693</td><td>0.69055551</td><td> 1.0235382318</td><td> 1.11682236</td><td>-0.628074944</td><td>-1.5977148</td><td>-1.20875096</td><td>        NA</td><td>   NA</td><td>NA</td></tr>
+	<tr><td>   NA</td><td>   NA</td><td>  NA</td><td>        NA</td><td>          NA</td><td>-0.16678715</td><td> 0.2627283633</td><td> 0.57024199</td><td> 0.33911827</td><td> 0.14897911</td><td>⋯</td><td>0.7098715</td><td>0.91861933</td><td> 0.8771149516</td><td> 0.85675263</td><td> 0.784333229</td><td> 0.5525564</td><td> 0.04455871</td><td>        NA</td><td>   NA</td><td>NA</td></tr>
+	<tr><td>   NA</td><td>   NA</td><td>  NA</td><td>        NA</td><td>-0.194812909</td><td>-0.22618596</td><td> 0.1277418733</td><td> 0.42979327</td><td> 0.35964090</td><td> 0.31177506</td><td>⋯</td><td>0.7069281</td><td>0.64331269</td><td> 0.4695768356</td><td> 0.56522942</td><td> 0.747213602</td><td> 1.0081477</td><td> 0.47750920</td><td>        NA</td><td>   NA</td><td>NA</td></tr>
+	<tr><td>   NA</td><td>   NA</td><td>1.57</td><td>        NA</td><td>-0.130373791</td><td>-0.22180483</td><td> 0.0003080616</td><td> 0.35777867</td><td> 0.40363389</td><td> 0.33334056</td><td>⋯</td><td>0.7366806</td><td>0.14018732</td><td> 0.0000656803</td><td> 0.26645169</td><td> 0.239929050</td><td>        NA</td><td> 0.46911913</td><td>        NA</td><td>   NA</td><td>NA</td></tr>
+	<tr><td>   NA</td><td>   NA</td><td>0.94</td><td>        NA</td><td>-0.153345466</td><td>-0.22729057</td><td>-0.0965210348</td><td> 0.38904455</td><td> 0.59542358</td><td> 0.43189961</td><td>⋯</td><td>0.7664551</td><td>0.03444019</td><td>-0.2368861586</td><td>-0.01529107</td><td> 0.045474380</td><td>        NA</td><td> 0.44222745</td><td>        NA</td><td>   NA</td><td>NA</td></tr>
+	<tr><td>   NA</td><td>   NA</td><td>  NA</td><td>        NA</td><td>-0.158705324</td><td>-0.23096702</td><td>-0.1192000657</td><td> 0.35051736</td><td> 0.65484744</td><td> 0.51323599</td><td>⋯</td><td>0.7715414</td><td>0.12901822</td><td>-0.0952277705</td><td>-0.05363240</td><td> 0.078593031</td><td> 0.1726537</td><td> 5.59999990</td><td>        NA</td><td>   NA</td><td>NA</td></tr>
+	<tr><td>   NA</td><td>   NA</td><td>  NA</td><td>        NA</td><td>-0.120913103</td><td>-0.20881623</td><td>-0.0960118026</td><td> 0.30507845</td><td> 0.58462906</td><td> 0.47204792</td><td>⋯</td><td>0.7475851</td><td>0.26955667</td><td>-0.0668849200</td><td>-0.20265251</td><td>-0.004614398</td><td> 0.5638793</td><td>         NA</td><td> 2.9200001</td><td>-0.25</td><td>NA</td></tr>
+	<tr><td>   NA</td><td> 0.47</td><td>  NA</td><td>        NA</td><td>-0.149685591</td><td>-0.19056554</td><td>-0.0408856384</td><td> 0.30412224</td><td> 0.44861937</td><td> 0.25704691</td><td>⋯</td><td>0.5928607</td><td>0.39582220</td><td> 0.2603332698</td><td>-0.14342251</td><td> 0.102634087</td><td> 0.4348391</td><td> 0.84614593</td><td>        NA</td><td>   NA</td><td>NA</td></tr>
+	<tr><td>   NA</td><td>   NA</td><td>  NA</td><td> 0.8000000</td><td>-0.259972930</td><td>-0.20408601</td><td>-0.0251651946</td><td> 0.26172209</td><td> 0.35818422</td><td> 0.23227650</td><td>⋯</td><td>0.7917297</td><td>0.61566544</td><td> 0.8431401253</td><td> 0.48186198</td><td> 0.462726474</td><td> 0.6100513</td><td> 0.92998093</td><td>        NA</td><td>   NA</td><td>NA</td></tr>
+	<tr><td>-2.64</td><td>   NA</td><td>0.97</td><td> 0.2700000</td><td>-0.361352175</td><td>-0.23032261</td><td>-0.0848020315</td><td> 0.20081067</td><td> 0.32587203</td><td> 0.11305467</td><td>⋯</td><td>1.0220841</td><td>1.14713442</td><td> 1.6009719372</td><td> 0.96171165</td><td> 0.840205550</td><td> 0.7000809</td><td> 0.71420395</td><td> 0.6590008</td><td>   NA</td><td>NA</td></tr>
+</tbody>
+</table>
+</div></div>
+</div>
+<p>If you don’t know the variable name, you can use the index instead.</p>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-r notranslate"><div class="highlight"><pre><span></span><span class="nf">var.inq.nc</span><span class="p">(</span><span class="n">data</span><span class="p">,</span><span class="w"> </span><span class="m">2</span><span class="p">)</span>
+</pre></div>
+</div>
+</div>
+<div class="cell_output docutils container">
+<div class="output text_html"><dl>
+	<dt>$id</dt>
+		<dd>2</dd>
+	<dt>$name</dt>
+		<dd>'lon'</dd>
+	<dt>$type</dt>
+		<dd>'NC_FLOAT'</dd>
+	<dt>$ndims</dt>
+		<dd>1</dd>
+	<dt>$dimids</dt>
+		<dd>1</dd>
+	<dt>$natts</dt>
+		<dd>10</dd>
+</dl>
+</div></div>
+</div>
+</section>
+<section id="citing-data">
+<h2>Citing data<a class="headerlink" href="#citing-data" title="Permalink to this heading">#</a></h2>
+<p>Remember, if you use a scientific dataset in a publication you should cite it in the same way you cite a paper - in the list of references. You can also include a statement in the data availability statement, but this should be as well as citing the dataset in the list of references.</p>
+<p>This is the recommended citation for the data used in this tutorial - remember to update the data accessed:</p>
+<p>H.-M. Zhang, B. Huang, J. H. Lawrimore, M. J. Menne, and T. M. Smith (2019): NOAA Global Surface Temperature Dataset (NOAAGlobalTemp), Version 5.0. NOAA National Centers for Environmental Information. doi:10.25921/9qth-2p70 Accessed 2024-04-10.</p>
+</section>
+</section>
+
+    <script type="text/x-thebe-config">
+    {
+        requestKernel: true,
+        binderOptions: {
+            repo: "binder-examples/jupyter-stacks-datascience",
+            ref: "master",
+        },
+        codeMirrorConfig: {
+            theme: "abcdef",
+            mode: "r"
+        },
+        kernelOptions: {
+            name: "ir",
+            path: "./."
+        },
+        predefinedOutput: true
+    }
+    </script>
+    <script>kernelName = 'ir'</script>
+
+                </article>
+              
+
+              
+              
+              
+              
+                <footer class="prev-next-footer">
+                  <!-- Previous / next buttons -->
+<div class="prev-next-area">
+    <a class="left-prev"
+       href="intro.html"
+       title="previous page">
+      <i class="fa-solid fa-angle-left"></i>
+      <div class="prev-next-info">
+        <p class="prev-next-subtitle">previous</p>
+        <p class="prev-next-title">NetCDF in R: From beginner to pro</p>
+      </div>
+    </a>
+    <a class="right-next"
+       href="02_creating_plots.html"
+       title="next page">
+      <div class="prev-next-info">
+        <p class="prev-next-subtitle">next</p>
+        <p class="prev-next-title">02: Creating Plots</p>
+      </div>
+      <i class="fa-solid fa-angle-right"></i>
+    </a>
+</div>
+                </footer>
+              
+            </div>
+            
+            
+              
+                <div class="bd-sidebar-secondary bd-toc"><div class="sidebar-secondary-items sidebar-secondary__inner">
+
+  <div class="sidebar-secondary-item">
+  <div class="page-toc tocsection onthispage">
+    <i class="fa-solid fa-list"></i> Contents
+  </div>
+  <nav class="bd-toc-nav page-toc">
+    <ul class="visible nav section-nav flex-column">
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#importing-some-data-from-opendap">Importing some data from OPeNDAP</a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#attributes">Attributes</a><ul class="nav section-nav flex-column">
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#global-attributes">Global attributes</a></li>
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#variable-attributes">Variable attributes</a></li>
+</ul>
+</li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#dimensions">Dimensions</a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#variables">Variables</a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#citing-data">Citing data</a></li>
+</ul>
+  </nav></div>
+
+</div></div>
+              
+            
+          </div>
+          <footer class="bd-footer-content">
+            
+<div class="bd-footer-content__inner container">
+  
+  <div class="footer-item">
+    
+<p class="component-author">
+By Luke Marsden
+</p>
+
+  </div>
+  
+  <div class="footer-item">
+    
+  <p class="copyright">
+    
+      © Copyright 2022.
+      <br/>
+    
+  </p>
+
+  </div>
+  
+  <div class="footer-item">
+    
+  </div>
+  
+  <div class="footer-item">
+    
+  </div>
+  
+</div>
+          </footer>
+        
+
+      </main>
+    </div>
+  </div>
+  
+  <!-- Scripts loaded after <body> so the DOM is not blocked -->
+  <script src="_static/scripts/bootstrap.js?digest=365ca57ee442770a23c6"></script>
+<script src="_static/scripts/pydata-sphinx-theme.js?digest=365ca57ee442770a23c6"></script>
+
+  <footer class="bd-footer">
+  </footer>
+  </body>
+</html>
