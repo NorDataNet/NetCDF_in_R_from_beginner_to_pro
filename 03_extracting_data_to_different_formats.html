@@ -844,7 +844,7 @@ variables:
 <div class="cell docutils container">
 <div class="cell_input docutils container">
 <div class="highlight-r notranslate"><div class="highlight"><pre><span></span><span class="nf">write_xlsx</span><span class="p">(</span><span class="n">df</span><span class="p">,</span><span class="w"> </span><span class="s">&#39;../data/exported_from_notebooks/ctd_data.xlsx&#39;</span><span class="p">)</span>
-<span class="nf">write.csv</span><span class="p">(</span><span class="n">df</span><span class="p">,</span><span class="w"> </span><span class="s">&#39;../data/exported_from_notebooks/ctd_data.csv&#39;</span><span class="p">)</span>
+<span class="nf">write.csv</span><span class="p">(</span><span class="n">df</span><span class="p">,</span><span class="w"> </span><span class="s">&#39;../data/exported_from_notebooks/ctd_data.csv&#39;</span><span class="p">,</span><span class="w"> </span><span class="n">row.names</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="kc">FALSE</span><span class="p">)</span>
 </pre></div>
 </div>
 </div>
@@ -959,10 +959,58 @@ variables:
 <div class="cell docutils container">
 <div class="cell_input docutils container">
 <div class="highlight-r notranslate"><div class="highlight"><pre><span></span><span class="nf">write_xlsx</span><span class="p">(</span><span class="n">df</span><span class="p">,</span><span class="w"> </span><span class="nf">paste</span><span class="p">(</span><span class="s">&#39;../data/exported_from_notebooks/temperature_anomalies_&#39;</span><span class="p">,</span><span class="n">desired_date</span><span class="p">,</span><span class="s">&#39;.xlsx&#39;</span><span class="p">,</span><span class="w"> </span><span class="n">sep</span><span class="o">=</span><span class="s">&#39;&#39;</span><span class="p">))</span>
-<span class="nf">write.csv</span><span class="p">(</span><span class="n">df</span><span class="p">,</span><span class="w"> </span><span class="nf">paste</span><span class="p">(</span><span class="s">&#39;../data/exported_from_notebooks/temperature_anomalies_&#39;</span><span class="p">,</span><span class="n">desired_date</span><span class="p">,</span><span class="s">&#39;.csv&#39;</span><span class="p">,</span><span class="w"> </span><span class="n">sep</span><span class="o">=</span><span class="s">&#39;&#39;</span><span class="p">))</span>
+<span class="nf">write.csv</span><span class="p">(</span><span class="n">df</span><span class="p">,</span><span class="w"> </span><span class="nf">paste</span><span class="p">(</span><span class="s">&#39;../data/exported_from_notebooks/temperature_anomalies_&#39;</span><span class="p">,</span><span class="n">desired_date</span><span class="p">,</span><span class="s">&#39;.csv&#39;</span><span class="p">,</span><span class="w"> </span><span class="n">sep</span><span class="o">=</span><span class="s">&#39;&#39;</span><span class="p">),</span><span class="w"> </span><span class="n">row.names</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="kc">FALSE</span><span class="p">)</span>
 </pre></div>
 </div>
 </div>
+</div>
+<p>Now let’s try and write all the data (the whole time series) to a dataframe - so 3D data.</p>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-r notranslate"><div class="highlight"><pre><span></span><span class="n">lat</span><span class="w"> </span><span class="o">&lt;-</span><span class="w"> </span><span class="nf">var.get.nc</span><span class="p">(</span><span class="n">data</span><span class="p">,</span><span class="w"> </span><span class="s">&#39;lat&#39;</span><span class="p">)</span>
+<span class="n">lon</span><span class="w"> </span><span class="o">&lt;-</span><span class="w"> </span><span class="nf">var.get.nc</span><span class="p">(</span><span class="n">data</span><span class="p">,</span><span class="w"> </span><span class="s">&#39;lon&#39;</span><span class="p">)</span>
+<span class="n">time</span><span class="w"> </span><span class="o">&lt;-</span><span class="w"> </span><span class="nf">var.get.nc</span><span class="p">(</span><span class="n">data</span><span class="p">,</span><span class="w"> </span><span class="s">&quot;time&quot;</span><span class="p">)</span>
+
+<span class="c1"># Convert time to readable dates</span>
+<span class="n">start_date</span><span class="w"> </span><span class="o">&lt;-</span><span class="w"> </span><span class="nf">as.Date</span><span class="p">(</span><span class="s">&quot;1800-01-01&quot;</span><span class="p">)</span>
+<span class="n">date</span><span class="w"> </span><span class="o">&lt;-</span><span class="w"> </span><span class="nf">as.Date</span><span class="p">(</span><span class="n">time</span><span class="p">,</span><span class="w"> </span><span class="n">origin</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="n">start_date</span><span class="p">)</span>
+
+<span class="n">anom</span><span class="w"> </span><span class="o">&lt;-</span><span class="w"> </span><span class="nf">var.get.nc</span><span class="p">(</span><span class="n">data</span><span class="p">,</span><span class="w"> </span><span class="s">&#39;anom&#39;</span><span class="p">,</span><span class="w"> </span><span class="n">start</span><span class="o">=</span><span class="nf">c</span><span class="p">(</span><span class="kc">NA</span><span class="p">,</span><span class="w"> </span><span class="kc">NA</span><span class="p">,</span><span class="w"> </span><span class="m">1</span><span class="p">,</span><span class="w"> </span><span class="kc">NA</span><span class="p">),</span><span class="w"> </span><span class="n">count</span><span class="o">=</span><span class="nf">c</span><span class="p">(</span><span class="kc">NA</span><span class="p">,</span><span class="kc">NA</span><span class="p">,</span><span class="m">1</span><span class="p">,</span><span class="kc">NA</span><span class="p">))</span>
+<span class="n">anom_flat</span><span class="w"> </span><span class="o">&lt;-</span><span class="w"> </span><span class="nf">as.vector</span><span class="p">(</span><span class="n">anom</span><span class="p">)</span>
+
+<span class="n">lat_repeat</span><span class="w"> </span><span class="o">&lt;-</span><span class="w"> </span><span class="nf">rep</span><span class="p">(</span><span class="n">lat</span><span class="p">,</span><span class="w"> </span><span class="n">each</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="nf">length</span><span class="p">(</span><span class="n">lon</span><span class="p">)</span><span class="w"> </span><span class="o">*</span><span class="w"> </span><span class="nf">length</span><span class="p">(</span><span class="n">time</span><span class="p">))</span>
+<span class="n">lon_repeat</span><span class="w"> </span><span class="o">&lt;-</span><span class="w"> </span><span class="nf">rep</span><span class="p">(</span><span class="nf">rep</span><span class="p">(</span><span class="n">lon</span><span class="p">,</span><span class="w"> </span><span class="n">each</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="nf">length</span><span class="p">(</span><span class="n">time</span><span class="p">)),</span><span class="w"> </span><span class="n">times</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="nf">length</span><span class="p">(</span><span class="n">lat</span><span class="p">))</span>
+<span class="n">date_repeat</span><span class="w"> </span><span class="o">&lt;-</span><span class="w"> </span><span class="nf">rep</span><span class="p">(</span><span class="n">date</span><span class="p">,</span><span class="w"> </span><span class="n">times</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="nf">length</span><span class="p">(</span><span class="n">lat</span><span class="p">)</span><span class="w"> </span><span class="o">*</span><span class="w"> </span><span class="nf">length</span><span class="p">(</span><span class="n">lon</span><span class="p">))</span>
+
+<span class="n">df</span><span class="w"> </span><span class="o">&lt;-</span><span class="w"> </span><span class="nf">data.frame</span><span class="p">(</span>
+<span class="w">  </span><span class="n">date</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="n">date_repeat</span><span class="p">,</span>
+<span class="w">  </span><span class="n">latitude</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="n">lat_repeat</span><span class="p">,</span>
+<span class="w">  </span><span class="n">longitude</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="n">lon_repeat</span><span class="p">,</span>
+<span class="w">  </span><span class="n">anom</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="n">anom_flat</span>
+<span class="p">)</span>
+
+<span class="nf">head</span><span class="p">(</span><span class="n">df</span><span class="p">)</span>
+<span class="nf">write.csv</span><span class="p">(</span><span class="n">df</span><span class="p">,</span><span class="w"> </span><span class="s">&#39;../data/exported_from_notebooks/temperature_anomalies_all_dates.csv&#39;</span><span class="p">,</span><span class="w"> </span><span class="n">row.names</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="kc">FALSE</span><span class="p">)</span>
+</pre></div>
+</div>
+</div>
+<div class="cell_output docutils container">
+<div class="output text_html"><table class="dataframe">
+<caption>A data.frame: 6 × 4</caption>
+<thead>
+	<tr><th></th><th scope=col>date</th><th scope=col>latitude</th><th scope=col>longitude</th><th scope=col>anom</th></tr>
+	<tr><th></th><th scope=col>&lt;date&gt;</th><th scope=col>&lt;dbl&gt;</th><th scope=col>&lt;dbl&gt;</th><th scope=col>&lt;dbl&gt;</th></tr>
+</thead>
+<tbody>
+	<tr><th scope=row>1</th><td>1880-01-01</td><td>-87.5</td><td>2.5</td><td>NA</td></tr>
+	<tr><th scope=row>2</th><td>1880-02-01</td><td>-87.5</td><td>2.5</td><td>NA</td></tr>
+	<tr><th scope=row>3</th><td>1880-03-01</td><td>-87.5</td><td>2.5</td><td>NA</td></tr>
+	<tr><th scope=row>4</th><td>1880-04-01</td><td>-87.5</td><td>2.5</td><td>NA</td></tr>
+	<tr><th scope=row>5</th><td>1880-05-01</td><td>-87.5</td><td>2.5</td><td>NA</td></tr>
+	<tr><th scope=row>6</th><td>1880-06-01</td><td>-87.5</td><td>2.5</td><td>NA</td></tr>
+</tbody>
+</table>
+</div></div>
 </div>
 </section>
 </section>
