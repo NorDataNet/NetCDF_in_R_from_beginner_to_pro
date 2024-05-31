@@ -23,6 +23,4 @@ Marsden, L. (2024, May 31). NetCDF in R - from beginner to pro. Zenodo. https://
 
 And you can navigate to the publication and export the citation in different styles and formats by clicking the icon below.
 
-You can view the Jupyter book at https://lhmarsden.github.io/NetCDF_in_R_from_beginner_to_pro
-
 [![DOI](https://zenodo.org/badge/DOI/10.5281/zenodo.11400754.svg)](https://doi.org/10.5281/zenodo.11400754)
