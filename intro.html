@@ -341,7 +341,9 @@ document.write(`
   </button>
 `);
 </script>
-
+<label class="sidebar-toggle secondary-toggle btn btn-sm" for="__secondary"title="Toggle secondary sidebar" data-bs-placement="bottom" data-bs-toggle="tooltip">
+    <span class="fa-solid fa-list"></span>
+</label>
 </div></div>
       
     </div>
@@ -357,6 +359,14 @@ document.write(`
     <div id="print-main-content">
         <div id="jb-print-toc">
             
+            <div>
+                <h2> Contents </h2>
+            </div>
+            <nav aria-label="Page">
+                <ul class="visible nav section-nav flex-column">
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#how-to-cite-this-course">How to cite this course</a></li>
+</ul>
+            </nav>
         </div>
     </div>
 </div>
@@ -380,6 +390,14 @@ document.write(`
 <li class="toctree-l1"><a class="reference internal" href="04_creating_a_cfnetcdf_file.html">04: Creating a CF-NetCDF file</a></li>
 </ul>
 </div>
+<section id="how-to-cite-this-course">
+<h2>How to cite this course<a class="headerlink" href="#how-to-cite-this-course" title="Permalink to this heading">#</a></h2>
+<p>If you think this course contributed to the work you are doing, consider citing it in your list of references. Here is a recommended citation:</p>
+<p>Marsden, L. (2024, May 31). NetCDF in R - from beginner to pro. Zenodo. <a class="reference external" href="https://doi.org/10.5281/zenodo.11400754">https://doi.org/10.5281/zenodo.11400754</a></p>
+<p>And you can navigate to the publication and export the citation in different styles and formats by clicking the icon below.</p>
+<p>You can view the Jupyter book at <a class="reference external" href="https://lhmarsden.github.io/NetCDF_in_R_from_beginner_to_pro">https://lhmarsden.github.io/NetCDF_in_R_from_beginner_to_pro</a></p>
+<p><a class="reference external" href="https://doi.org/10.5281/zenodo.11400754"><img alt="DOI" src="https://zenodo.org/badge/DOI/10.5281/zenodo.11400754.svg" /></a></p>
+</section>
 </section>
 
     <script type="text/x-thebe-config">
@@ -427,6 +445,20 @@ document.write(`
             </div>
             
             
+              
+                <div class="bd-sidebar-secondary bd-toc"><div class="sidebar-secondary-items sidebar-secondary__inner">
+
+  <div class="sidebar-secondary-item">
+  <div class="page-toc tocsection onthispage">
+    <i class="fa-solid fa-list"></i> Contents
+  </div>
+  <nav class="bd-toc-nav page-toc">
+    <ul class="visible nav section-nav flex-column">
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#how-to-cite-this-course">How to cite this course</a></li>
+</ul>
+  </nav></div>
+
+</div></div>
               
             
           </div>
