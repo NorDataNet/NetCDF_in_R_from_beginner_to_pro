@@ -173,6 +173,7 @@ const thebe_selector_output = ".output, .cell_output"
 <li class="toctree-l1"><a class="reference internal" href="01_opening_and_understanding.html">01: Opening and understanding</a></li>
 <li class="toctree-l1"><a class="reference internal" href="02_creating_plots.html">02: Creating Plots</a></li>
 <li class="toctree-l1 current active"><a class="current reference internal" href="#">03: Extracting data to different formats</a></li>
+
 <li class="toctree-l1"><a class="reference internal" href="04_creating_a_cfnetcdf_file.html">04: Creating a CF-NetCDF file</a></li>
 </ul>
 
@@ -367,10 +368,17 @@ document.write(`
             </div>
             <nav aria-label="Page">
                 <ul class="visible nav section-nav flex-column">
+<li class="toc-h1 nav-item toc-entry"><a class="reference internal nav-link" href="#">03: Extracting data to different formats</a><ul class="visible nav section-nav flex-column">
 <li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#variables-with-1-dimension">Variables with 1 dimension</a></li>
-<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#variables-with-multiple-dimensions">Variables with multiple dimensions</a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#variables-with-2-dimensions">Variables with 2 dimensions</a></li>
+</ul>
+</li>
+<li class="toc-h1 nav-item toc-entry"><a class="reference internal nav-link" href="#variables-with-3-dimensions">Variables with 3 dimensions</a><ul class="visible nav section-nav flex-column">
 <li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#how-to-cite-this-course">How to cite this course</a></li>
 </ul>
+</li>
+</ul>
+
             </nav>
         </div>
     </div>
@@ -393,6 +401,7 @@ document.write(`
 </div>
 </div>
 </div>
+<p>In this notebook you’ll find examples for 1D, 2D and 3D variables.</p>
 <section id="variables-with-1-dimension">
 <h2>Variables with 1 dimension<a class="headerlink" href="#variables-with-1-dimension" title="Permalink to this heading">#</a></h2>
 <p>In this section, we will use some CTD data from the Nansen Legacy project. If you use these data, please cite them as recommended below:</p>
@@ -851,89 +860,260 @@ variables:
 </div>
 </div>
 </section>
-<section id="variables-with-multiple-dimensions">
-<h2>Variables with multiple dimensions<a class="headerlink" href="#variables-with-multiple-dimensions" title="Permalink to this heading">#</a></h2>
-<p>What is a variable has multiple dimensions? Let’s look at the same data we used in <a class="reference internal" href="01_opening_and_understanding.html"><span class="doc std std-doc">tutorial #01</span></a>.</p>
+<section id="variables-with-2-dimensions">
+<h2>Variables with 2 dimensions<a class="headerlink" href="#variables-with-2-dimensions" title="Permalink to this heading">#</a></h2>
+<p>Let’s look at some sea ice concentration data.</p>
 <p>If you use these data, please cite them as recommended below:</p>
-<p><em>H.-M. Zhang, B. Huang, J. H. Lawrimore, M. J. Menne, and T. M. Smith (2019): NOAA Global Surface Temperature Dataset (NOAAGlobalTemp), Version 5.0. NOAA National Centers for Environmental Information. doi:10.25921/9qth-2p70 Accessed 2024-04-09.</em></p>
-<p>Let’s load in the data, and extract the data from the <em>anom</em> varaible for a given date.</p>
+<p><em>Lavergne, T.; Sørensen, A.; Tonboe, R.T.; Kreiner, M.; Saldo, R.; Birkedal, A.; Baordo, F.; Aspenes, T.; Eastwood, S. (2023): ESA Sea Ice Climate Change Initiative (Sea_Ice_cci): High(er) Resolution Sea Ice Concentration Climate Data Record Version 3 (SSM/I and SSMIS). NERC EDS Centre for Environmental Data Analysis, 17 May 2023. doi:10.5285/eade27004395466aaa006135e1b2ad1a. <a class="reference external" href="https://dx.doi.org/10.5285/eade27004395466aaa006135e1b2ad1a">https://dx.doi.org/10.5285/eade27004395466aaa006135e1b2ad1a</a></em></p>
 <div class="cell docutils container">
 <div class="cell_input docutils container">
-<div class="highlight-r notranslate"><div class="highlight"><pre><span></span><span class="n">url</span><span class="w"> </span><span class="o">&lt;-</span><span class="w"> </span><span class="s">&#39;https://www.ncei.noaa.gov/thredds/dodsC/noaa-global-temp-v5/NOAAGlobalTemp_v5.0.0_gridded_s188001_e202212_c20230108T133308.nc&#39;</span>
+<div class="highlight-r notranslate"><div class="highlight"><pre><span></span><span class="n">url</span><span class="w"> </span><span class="o">&lt;-</span><span class="w"> </span><span class="s">&#39;https://dap.ceda.ac.uk/thredds/dodsC/neodc/esacci/sea_ice/data/sea_ice_concentration/L4/ssmi_ssmis/12.5km/v3.0/NH/2007/09/ESACCI-SEAICE-L4-SICONC-RE_SSMI_12.5kmEASE2-NH-20070915-fv3.0.nc&#39;</span>
 <span class="n">data</span><span class="w"> </span><span class="o">&lt;-</span><span class="w"> </span><span class="nf">open.nc</span><span class="p">(</span><span class="n">url</span><span class="p">)</span>
-
-<span class="n">lat</span><span class="w"> </span><span class="o">&lt;-</span><span class="w"> </span><span class="nf">var.get.nc</span><span class="p">(</span><span class="n">data</span><span class="p">,</span><span class="w"> </span><span class="s">&#39;lat&#39;</span><span class="p">)</span>
-<span class="n">lon</span><span class="w"> </span><span class="o">&lt;-</span><span class="w"> </span><span class="nf">var.get.nc</span><span class="p">(</span><span class="n">data</span><span class="p">,</span><span class="w"> </span><span class="s">&#39;lon&#39;</span><span class="p">)</span>
-
-<span class="n">desired_date</span><span class="w"> </span><span class="o">&lt;-</span><span class="w"> </span><span class="nf">as.Date</span><span class="p">(</span><span class="s">&#39;2020-01-01&#39;</span><span class="p">)</span>
-<span class="n">days_since_1800</span><span class="w"> </span><span class="o">&lt;-</span><span class="w"> </span><span class="nf">as.numeric</span><span class="p">(</span><span class="nf">difftime</span><span class="p">(</span><span class="n">desired_date</span><span class="p">,</span><span class="w"> </span><span class="nf">as.Date</span><span class="p">(</span><span class="s">&#39;1800-01-01&#39;</span><span class="p">),</span><span class="w"> </span><span class="n">units</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="s">&#39;days&#39;</span><span class="p">))</span>
-
-<span class="n">time</span><span class="w"> </span><span class="o">&lt;-</span><span class="w"> </span><span class="nf">var.get.nc</span><span class="p">(</span><span class="n">data</span><span class="p">,</span><span class="w"> </span><span class="s">&quot;time&quot;</span><span class="p">)</span><span class="w"> </span>
-<span class="c1"># Finding index of the value</span>
-<span class="n">time_index</span><span class="w"> </span><span class="o">&lt;-</span><span class="w"> </span><span class="nf">which</span><span class="p">(</span><span class="n">time</span><span class="w"> </span><span class="o">==</span><span class="w"> </span><span class="n">days_since_1800</span><span class="p">)</span>
-
-<span class="n">anom</span><span class="w"> </span><span class="o">&lt;-</span><span class="w"> </span><span class="nf">var.get.nc</span><span class="p">(</span><span class="n">data</span><span class="p">,</span><span class="w"> </span><span class="s">&#39;anom&#39;</span><span class="p">,</span><span class="w"> </span><span class="n">start</span><span class="o">=</span><span class="nf">c</span><span class="p">(</span><span class="kc">NA</span><span class="p">,</span><span class="w"> </span><span class="kc">NA</span><span class="p">,</span><span class="w"> </span><span class="m">1</span><span class="p">,</span><span class="w"> </span><span class="n">time_index</span><span class="p">),</span><span class="w"> </span><span class="n">count</span><span class="o">=</span><span class="nf">c</span><span class="p">(</span><span class="kc">NA</span><span class="p">,</span><span class="kc">NA</span><span class="p">,</span><span class="m">1</span><span class="p">,</span><span class="m">1</span><span class="p">))</span>
-</pre></div>
-</div>
-</div>
-</div>
-<p><em>lat</em> and <em>lon</em> are 1D arrays whilst <em>anom</em> is a 2D matrix.</p>
-<p>We can’t just write latitude and longitude to a dataframe like this:</p>
-<div class="cell docutils container">
-<div class="cell_input docutils container">
-<div class="highlight-r notranslate"><div class="highlight"><pre><span></span><span class="n">df</span><span class="w"> </span><span class="o">&lt;-</span><span class="w"> </span><span class="nf">data.frame</span><span class="p">(</span><span class="n">lon</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="n">lon</span><span class="p">,</span><span class="w"> </span><span class="n">lat</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="n">lat</span><span class="p">)</span>
-<span class="nf">head</span><span class="p">(</span><span class="n">df</span><span class="p">)</span>
+<span class="nf">print.nc</span><span class="p">(</span><span class="n">data</span><span class="p">)</span>
 </pre></div>
 </div>
 </div>
 <div class="cell_output docutils container">
-<div class="output text_html"><table class="dataframe">
-<caption>A data.frame: 6 × 2</caption>
-<thead>
-	<tr><th></th><th scope=col>lon</th><th scope=col>lat</th></tr>
-	<tr><th></th><th scope=col>&lt;dbl&gt;</th><th scope=col>&lt;dbl&gt;</th></tr>
-</thead>
-<tbody>
-	<tr><th scope=row>1</th><td> 2.5</td><td>-87.5</td></tr>
-	<tr><th scope=row>2</th><td> 7.5</td><td>-82.5</td></tr>
-	<tr><th scope=row>3</th><td>12.5</td><td>-77.5</td></tr>
-	<tr><th scope=row>4</th><td>17.5</td><td>-72.5</td></tr>
-	<tr><th scope=row>5</th><td>22.5</td><td>-67.5</td></tr>
-	<tr><th scope=row>6</th><td>27.5</td><td>-62.5</td></tr>
-</tbody>
-</table>
-</div></div>
+<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>netcdf classic {
+dimensions:
+	time = UNLIMITED ; // (1 currently)
+	nv = 2 ;
+	xc = 864 ;
+	yc = 864 ;
+variables:
+	NC_INT Lambert_Azimuthal_Grid ;
+		NC_CHAR Lambert_Azimuthal_Grid:grid_mapping_name = &quot;lambert_azimuthal_equal_area&quot; ;
+		NC_DOUBLE Lambert_Azimuthal_Grid:longitude_of_projection_origin = 0 ;
+		NC_DOUBLE Lambert_Azimuthal_Grid:latitude_of_projection_origin = 90 ;
+		NC_DOUBLE Lambert_Azimuthal_Grid:false_easting = 0 ;
+		NC_DOUBLE Lambert_Azimuthal_Grid:false_northing = 0 ;
+		NC_DOUBLE Lambert_Azimuthal_Grid:semi_major_axis = 6378137 ;
+		NC_DOUBLE Lambert_Azimuthal_Grid:inverse_flattening = 298.257223563 ;
+		NC_CHAR Lambert_Azimuthal_Grid:proj4_string = &quot;+proj=laea +lon_0=0 +datum=WGS84 +ellps=WGS84 +lat_0=90.0&quot; ;
+	NC_DOUBLE time(time) ;
+		NC_CHAR time:units = &quot;seconds since 1978-01-01 00:00:00&quot; ;
+		NC_CHAR time:long_name = &quot;reference time of product&quot; ;
+		NC_CHAR time:standard_name = &quot;time&quot; ;
+		NC_CHAR time:axis = &quot;T&quot; ;
+		NC_CHAR time:calendar = &quot;standard&quot; ;
+		NC_CHAR time:bounds = &quot;time_bnds&quot; ;
+		NC_INT time:_ChunkSizes = 512 ;
+	NC_DOUBLE time_bnds(nv, time) ;
+		NC_INT time_bnds:_ChunkSizes = 1, 2 ;
+	NC_DOUBLE xc(xc) ;
+		NC_CHAR xc:units = &quot;km&quot; ;
+		NC_CHAR xc:long_name = &quot;x coordinate of projection (eastings)&quot; ;
+		NC_CHAR xc:standard_name = &quot;projection_x_coordinate&quot; ;
+		NC_INT xc:_ChunkSizes = 864 ;
+	NC_DOUBLE yc(yc) ;
+		NC_CHAR yc:units = &quot;km&quot; ;
+		NC_CHAR yc:long_name = &quot;y coordinate of projection (northings)&quot; ;
+		NC_CHAR yc:standard_name = &quot;projection_y_coordinate&quot; ;
+		NC_INT yc:_ChunkSizes = 864 ;
+	NC_FLOAT lat(xc, yc) ;
+		NC_CHAR lat:units = &quot;degrees_north&quot; ;
+		NC_CHAR lat:long_name = &quot;latitude coordinate&quot; ;
+		NC_CHAR lat:standard_name = &quot;latitude&quot; ;
+		NC_INT lat:_ChunkSizes = 864, 864 ;
+	NC_FLOAT lon(xc, yc) ;
+		NC_CHAR lon:units = &quot;degrees_east&quot; ;
+		NC_CHAR lon:long_name = &quot;longitude coordinate&quot; ;
+		NC_CHAR lon:standard_name = &quot;longitude&quot; ;
+		NC_INT lon:_ChunkSizes = 864, 864 ;
+	NC_INT ice_conc(xc, yc, time) ;
+		NC_INT ice_conc:_FillValue = -32767 ;
+		NC_CHAR ice_conc:long_name = &quot;fully filtered concentration of sea ice using atmospheric correction of brightness temperatures and open water filters&quot; ;
+		NC_CHAR ice_conc:standard_name = &quot;sea_ice_area_fraction&quot; ;
+		NC_CHAR ice_conc:units = &quot;%&quot; ;
+		NC_INT ice_conc:valid_min = 0 ;
+		NC_INT ice_conc:valid_max = 10000 ;
+		NC_CHAR ice_conc:grid_mapping = &quot;Lambert_Azimuthal_Grid&quot; ;
+		NC_CHAR ice_conc:ancillary_variables = &quot;total_standard_uncertainty status_flag&quot; ;
+		NC_DOUBLE ice_conc:scale_factor = 0.01 ;
+		NC_CHAR ice_conc:comment = &quot;this field is the primary sea ice concentration estimate for this climate data record&quot; ;
+		NC_CHAR ice_conc:coordinates = &quot;time lat lon&quot; ;
+		NC_INT ice_conc:_ChunkSizes = 1, 864, 864 ;
+	NC_INT raw_ice_conc_values(xc, yc, time) ;
+		NC_INT raw_ice_conc_values:_FillValue = -32767 ;
+		NC_CHAR raw_ice_conc_values:long_name = &quot;sea ice concentration estimates as retrieved by the algorithm, and that were edited away by the various filters&quot; ;
+		NC_CHAR raw_ice_conc_values:units = &quot;%&quot; ;
+		NC_CHAR raw_ice_conc_values:grid_mapping = &quot;Lambert_Azimuthal_Grid&quot; ;
+		NC_DOUBLE raw_ice_conc_values:scale_factor = 0.01 ;
+		NC_CHAR raw_ice_conc_values:comment = &quot;this field can be used in combination with &#39;ice_conc&#39; to access un-bounded normal distribution of sea ice concentration estimates corresponding to the uncertainty estimate in &#39;total_standard_uncertainty&#39;. It does also feature some amount of un-physical data (below 0% and above 100%).&quot; ;
+		NC_CHAR raw_ice_conc_values:coordinates = &quot;time lat lon&quot; ;
+		NC_INT raw_ice_conc_values:_ChunkSizes = 1, 864, 864 ;
+	NC_INT total_standard_uncertainty(xc, yc, time) ;
+		NC_INT total_standard_uncertainty:_FillValue = -32767 ;
+		NC_CHAR total_standard_uncertainty:long_name = &quot;total uncertainty (one standard deviation) of concentration of sea ice&quot; ;
+		NC_CHAR total_standard_uncertainty:standard_name = &quot;sea_ice_area_fraction standard_error&quot; ;
+		NC_CHAR total_standard_uncertainty:units = &quot;%&quot; ;
+		NC_CHAR total_standard_uncertainty:grid_mapping = &quot;Lambert_Azimuthal_Grid&quot; ;
+		NC_DOUBLE total_standard_uncertainty:scale_factor = 0.01 ;
+		NC_CHAR total_standard_uncertainty:coordinates = &quot;time lat lon&quot; ;
+		NC_INT total_standard_uncertainty:_ChunkSizes = 1, 864, 864 ;
+	NC_INT smearing_standard_uncertainty(xc, yc, time) ;
+		NC_INT smearing_standard_uncertainty:_FillValue = -32767 ;
+		NC_CHAR smearing_standard_uncertainty:long_name = &quot;smearing uncertainty (one standard deviation) of concentration of sea ice&quot; ;
+		NC_CHAR smearing_standard_uncertainty:units = &quot;%&quot; ;
+		NC_CHAR smearing_standard_uncertainty:grid_mapping = &quot;Lambert_Azimuthal_Grid&quot; ;
+		NC_DOUBLE smearing_standard_uncertainty:scale_factor = 0.01 ;
+		NC_CHAR smearing_standard_uncertainty:comment = &quot;this is one of the two components contributing to &#39;total_standard_uncertainty&#39;&quot; ;
+		NC_CHAR smearing_standard_uncertainty:coordinates = &quot;time lat lon&quot; ;
+		NC_INT smearing_standard_uncertainty:_ChunkSizes = 1, 864, 864 ;
+	NC_INT algorithm_standard_uncertainty(xc, yc, time) ;
+		NC_INT algorithm_standard_uncertainty:_FillValue = -32767 ;
+		NC_CHAR algorithm_standard_uncertainty:long_name = &quot;algorithm uncertainty (one standard deviation) of concentration of sea ice&quot; ;
+		NC_CHAR algorithm_standard_uncertainty:units = &quot;%&quot; ;
+		NC_CHAR algorithm_standard_uncertainty:grid_mapping = &quot;Lambert_Azimuthal_Grid&quot; ;
+		NC_DOUBLE algorithm_standard_uncertainty:scale_factor = 0.01 ;
+		NC_CHAR algorithm_standard_uncertainty:comment = &quot;this is one of the two components contributing to &#39;total_standard_uncertainty&#39;&quot; ;
+		NC_CHAR algorithm_standard_uncertainty:coordinates = &quot;time lat lon&quot; ;
+		NC_INT algorithm_standard_uncertainty:_ChunkSizes = 1, 864, 864 ;
+	NC_SHORT status_flag(xc, yc, time) ;
+		NC_SHORT status_flag:_FillValue = -32768 ;
+		NC_CHAR status_flag:long_name = &quot;status flag bit array for sea ice concentration retrievals&quot; ;
+		NC_CHAR status_flag:standard_name = &quot;sea_ice_area_fraction status_flag&quot; ;
+		NC_SHORT status_flag:valid_min = 0 ;
+		NC_SHORT status_flag:valid_max = 32767 ;
+		NC_CHAR status_flag:grid_mapping = &quot;Lambert_Azimuthal_Grid&quot; ;
+		NC_SHORT status_flag:flag_masks = 1, 2, 4, 8, 16, 32, 64, 128 ;
+		NC_CHAR status_flag:flag_meanings = &quot;land lake open_water_filtered land_spill_over high_t2m spatial_interp temporal_interp max_ice_climo&quot; ;
+		NC_CHAR status_flag:flag_descriptions = &quot;
+all bits to 0 (flag 0): Nominal retrieval by the SIC algorithm
+bit 1 (flag 1): Position is over land
+bit 2 (flag 2): Position is lake
+bit 3 (flag 4): SIC is set to zero by the open water filter
+bit 4 (flag 8): SIC value is changed for correcting land spill-over effects
+bit 5 (flag 16): Handle with caution, the 2m air temperature is high at this position, and this might be false ice
+bit 6 (flag 32): Value is the result of spatial interpolation
+bit 7 (flag 64): Value is the result of temporal interpolation
+bit 8 (flag 128): SIC is set to zero since position is outside maximum sea ice climatology.&quot; ;
+		NC_CHAR status_flag:comment = &quot;Flag values found in the map might be combinations of those listed above. For example flag value 80 (= 2^4 + 2^6 = 16 + 64) indicates high_t2m AND temporal_interp&quot; ;
+		NC_CHAR status_flag:coordinates = &quot;time lat lon&quot; ;
+		NC_INT status_flag:_ChunkSizes = 1, 864, 864 ;
+
+// global attributes:
+		NC_CHAR :title = &quot;High(er) Resolution Sea Ice Concentration Climate Data Record Version 3 (SSM/I and SSMIS) from the ESA CCI+&quot; ;
+		NC_CHAR :summary = &quot;This climate data record of sea ice concentration is obtained from passive microwave satellite data (SSM/I and SSMIS) over the polar regions (Arctic and Antarctic). The processing chain features: 1) dynamic tuning of tie-points and algorithms,  2) correction of atmospheric noise using a Radiative Transfer Model,  3) computation of per-pixel uncertainties, 4) an optimal hybrid sea ice concentration algorithm, and 5) pan-sharpening of the SIC fields using the near-90GHz imagery channels. This dataset was generated by the ESA Climate Change Initiative (CCI+) Sea Ice Phase 1 project. This dataset is an enhanced-resolution version of the OSI SAF OSI-450-a CDR over the period 1991-2020.&quot; ;
+		NC_CHAR :topiccategory = &quot;Oceans ClimatologyMeteorologyAtmosphere&quot; ;
+		NC_CHAR :keywords = &quot;GCMDSK:Earth Science &gt; Cryosphere &gt; Sea Ice &gt; Sea Ice Concentration, GCMDSK:Earth Science &gt; Oceans &gt; Sea Ice &gt; Sea Ice Concentration, GCMDSK:Earth Science &gt; Climate Indicators &gt; Cryospheric Indicators &gt; Sea Ice Concentration, GCMDLOC:Geographic Region &gt; Northern Hemisphere, GCMDLOC:Vertical Location &gt; Sea Surface, GCMDPROV: Government Agencies-non-US &gt; Norway &gt; NO/MET &gt; Norwegian Meteorological Institute&quot; ;
+		NC_CHAR :keywords_vocabulary = &quot;GCMDSK:GCMD Science Keywords:https://gcmd.earthdata.nasa.gov/kms/concepts/concept_scheme/sciencekeywords, GCMDPROV:GCMD Providers:https://gcmd.earthdata.nasa.gov/kms/concepts/concept_scheme/providers, GCMDLOC:GCMD Locations:https://gcmd.earthdata.nasa.gov/kms/concepts/concept_scheme/locations&quot; ;
+		NC_DOUBLE :geospatial_lat_min = 16.62393 ;
+		NC_DOUBLE :geospatial_lat_max = 90 ;
+		NC_DOUBLE :geospatial_lon_min = -180 ;
+		NC_DOUBLE :geospatial_lon_max = 180 ;
+		NC_DOUBLE :geospatial_vertical_min = 0 ;
+		NC_DOUBLE :geospatial_vertical_max = 0 ;
+		NC_CHAR :sensor = &quot;SSM/I,SSMIS&quot; ;
+		NC_CHAR :platform = &quot;DMSP-F&lt;10,11,13,14,15&gt;,DMSP-F&lt;16,17,18&gt;&quot; ;
+		NC_CHAR :source = &quot;FCDR of SMMR / SSMI / SSMIS Brightness Temperatures R4 from EUMETSAT Climate Monitoring SAF (doi:10.5676/EUM_SAF_CM/FCDR_MWI/V004), ERA5&quot; ;
+		NC_CHAR :time_coverage_start = &quot;2007-09-15T00:00:00Z&quot; ;
+		NC_CHAR :time_coverage_end = &quot;2007-09-16T00:00:00Z&quot; ;
+		NC_CHAR :time_coverage_duration = &quot;P1D&quot; ;
+		NC_CHAR :time_coverage_resolution = &quot;P1D&quot; ;
+		NC_CHAR :project = &quot;Climate Change Initiative - European Space Agency&quot; ;
+		NC_CHAR :institution = &quot;Norwegian Meteorological Institute&quot; ;
+		NC_CHAR :creator_name = &quot;Norwegian Meteorological Institute&quot; ;
+		NC_CHAR :creator_type = &quot;institution&quot; ;
+		NC_CHAR :creator_url = &quot;http://met.no&quot; ;
+		NC_CHAR :creator_email = &quot;forskning@met.no&quot; ;
+		NC_CHAR :license = &quot;Free and open access&quot; ;
+		NC_CHAR :references = &quot;A Product User Guide (PUG), an Algorithm Theoretical Basis Document (ATBD) and a Validation Report (PVASR) are available from the doi landing page and from https://climate.esa.int/seaice&quot; ;
+		NC_CHAR :history = &quot;2023-04-20T21:46:46Z creation&quot; ;
+		NC_CHAR :date_created = &quot;2023-04-20&quot; ;
+		NC_CHAR :cdm_data_type = &quot;Grid&quot; ;
+		NC_CHAR :spatial_resolution = &quot;12.5 km grid spacing&quot; ;
+		NC_CHAR :algorithm = &quot;reSICCI3LF: SIC from 19/37GHz channels, pan-sharpened with SIC from near-90GHz channels.&quot; ;
+		NC_CHAR :geospatial_bounds_crs = &quot;EPSG:6931&quot; ;
+		NC_CHAR :contributor_name = &quot;Thomas Lavergne,Atle Soerensen,Rasmus Tonboe,Matilde Kreiner,Roberto Saldo,Anton Birkedal,Fabrizio Baordo,Trygve Aspenes,Steinar Eastwood&quot; ;
+		NC_CHAR :contributor_role = &quot;PrincipalInvestigator,author,author,author,author,author,author,author,author&quot; ;
+		NC_CHAR :product_version = &quot;3.0&quot; ;
+		NC_CHAR :tracking_id = &quot;0a5f4360-8c19-40aa-a09a-bab17eb0b6fc&quot; ;
+		NC_CHAR :naming_authority = &quot;NERC EDS Centre for Environmental Data Analysis&quot; ;
+		NC_CHAR :Conventions = &quot;CF-1.7,ACDD-1.3&quot; ;
+		NC_CHAR :standard_name_vocabulary = &quot;CF Standard Name Table (Version 80, 07 February 2023)&quot; ;
+		NC_CHAR :product_name = &quot;cci_HRssmi_sea_ice_conc_climate_data_record&quot; ;
+		NC_CHAR :id = &quot;10.5285/eade27004395466aaa006135e1b2ad1a&quot; ;
+		NC_CHAR :format_version = &quot;CCI Data Standards v2.3&quot; ;
+		NC_CHAR :key_variables = &quot;ice_conc&quot; ;
+		NC_CHAR :DODS_EXTRA.Unlimited_Dimension = &quot;time&quot; ;
+}
+</pre></div>
 </div>
-<p>Instead we need to create a 2D grid of values, like this:</p>
+</div>
+</div>
+<p>The <em>ice_conc</em> variable has 3 dimensions; xc, yc and time. However, since there is only one time slice in this dataset, this is essentially a 2D variable.</p>
+<p>Let’s write the <em>ice_conc</em> variable to a dataframe alongside the <em>xc</em> and <em>yc</em> coordinate variables.</p>
 <div class="cell docutils container">
 <div class="cell_input docutils container">
-<div class="highlight-r notranslate"><div class="highlight"><pre><span></span><span class="n">df</span><span class="w"> </span><span class="o">&lt;-</span><span class="w"> </span><span class="nf">expand.grid</span><span class="p">(</span><span class="n">lon</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="n">lon</span><span class="p">,</span><span class="w"> </span><span class="n">lat</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="n">lat</span><span class="p">)</span>
-<span class="nf">head</span><span class="p">(</span><span class="n">df</span><span class="p">)</span>
+<div class="highlight-r notranslate"><div class="highlight"><pre><span></span><span class="n">xc</span><span class="w"> </span><span class="o">&lt;-</span><span class="w"> </span><span class="nf">var.get.nc</span><span class="p">(</span><span class="n">data</span><span class="p">,</span><span class="w"> </span><span class="s">&#39;xc&#39;</span><span class="p">)</span>
+<span class="n">yc</span><span class="w"> </span><span class="o">&lt;-</span><span class="w"> </span><span class="nf">var.get.nc</span><span class="p">(</span><span class="n">data</span><span class="p">,</span><span class="w"> </span><span class="s">&#39;yc&#39;</span><span class="p">)</span>
+<span class="n">ice_conc</span><span class="w"> </span><span class="o">&lt;-</span><span class="w"> </span><span class="nf">var.get.nc</span><span class="p">(</span><span class="n">data</span><span class="p">,</span><span class="w"> </span><span class="s">&#39;ice_conc&#39;</span><span class="p">)</span>
+<span class="nf">dim</span><span class="p">(</span><span class="n">ice_conc</span><span class="p">)</span><span class="w"> </span><span class="c1"># Showing that this is 2D, not 3D.</span>
 </pre></div>
 </div>
 </div>
 <div class="cell_output docutils container">
-<div class="output text_html"><table class="dataframe">
-<caption>A data.frame: 6 × 2</caption>
-<thead>
-	<tr><th></th><th scope=col>lon</th><th scope=col>lat</th></tr>
-	<tr><th></th><th scope=col>&lt;dbl[1d]&gt;</th><th scope=col>&lt;dbl[1d]&gt;</th></tr>
-</thead>
-<tbody>
-	<tr><th scope=row>1</th><td> 2.5</td><td>-87.5</td></tr>
-	<tr><th scope=row>2</th><td> 7.5</td><td>-87.5</td></tr>
-	<tr><th scope=row>3</th><td>12.5</td><td>-87.5</td></tr>
-	<tr><th scope=row>4</th><td>17.5</td><td>-87.5</td></tr>
-	<tr><th scope=row>5</th><td>22.5</td><td>-87.5</td></tr>
-	<tr><th scope=row>6</th><td>27.5</td><td>-87.5</td></tr>
-</tbody>
-</table>
+<div class="output text_html"><style>
+.list-inline {list-style: none; margin:0; padding: 0}
+.list-inline>li {display: inline-block}
+.list-inline>li:not(:last-child)::after {content: "\00b7"; padding: 0 .5ex}
+</style>
+<ol class=list-inline><li>864</li><li>864</li></ol>
 </div></div>
 </div>
-<p>Now adding the <em>anom</em> variable can be done like this:</p>
+<p>The order of the dimensions is important. <em>xc</em> and then <em>yc</em>.</p>
+<p>So the values are sorted such that all the values cooresponding to the first <em>xc</em> coordinate are first, before moving onto the second <em>xc</em> coordinate.</p>
+<p>Now let’s create a 1D vector of the <em>ice_conc</em> data.</p>
 <div class="cell docutils container">
 <div class="cell_input docutils container">
-<div class="highlight-r notranslate"><div class="highlight"><pre><span></span><span class="n">df</span><span class="o">$</span><span class="n">anom</span><span class="w"> </span><span class="o">&lt;-</span><span class="w"> </span><span class="nf">as.vector</span><span class="p">(</span><span class="n">anom</span><span class="p">)</span>
+<div class="highlight-r notranslate"><div class="highlight"><pre><span></span><span class="n">ice_conc_vector</span><span class="w"> </span><span class="o">&lt;-</span><span class="w"> </span><span class="nf">as.vector</span><span class="p">(</span><span class="n">ice_conc</span><span class="p">)</span>
+</pre></div>
+</div>
+</div>
+</div>
+<p>We then need to extend the <em>xc</em> coordinate values by repeating the first <em>xc</em> value 864 times before moving onto the second value.</p>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-r notranslate"><div class="highlight"><pre><span></span><span class="n">xc_repeat</span><span class="w"> </span><span class="o">&lt;-</span><span class="w"> </span><span class="nf">rep</span><span class="p">(</span><span class="n">xc</span><span class="p">,</span><span class="w"> </span><span class="n">each</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="nf">length</span><span class="p">(</span><span class="n">yc</span><span class="p">))</span>
+<span class="n">xc_repeat</span>
+</pre></div>
+</div>
+</div>
+<div class="cell_output docutils container">
+<div class="output text_html"><style>
+.list-inline {list-style: none; margin:0; padding: 0}
+.list-inline>li {display: inline-block}
+.list-inline>li:not(:last-child)::after {content: "\00b7"; padding: 0 .5ex}
+</style>
+<ol class=list-inline><li>-5393.75</li><li>-5393.75</li><li>-5393.75</li><li>-5393.75</li><li>-5393.75</li><li>-5393.75</li><li>-5393.75</li><li>-5393.75</li><li>-5393.75</li><li>-5393.75</li><li>-5393.75</li><li>-5393.75</li><li>-5393.75</li><li>-5393.75</li><li>-5393.75</li><li>-5393.75</li><li>-5393.75</li><li>-5393.75</li><li>-5393.75</li><li>-5393.75</li><li>-5393.75</li><li>-5393.75</li><li>-5393.75</li><li>-5393.75</li><li>-5393.75</li><li>-5393.75</li><li>-5393.75</li><li>-5393.75</li><li>-5393.75</li><li>-5393.75</li><li>-5393.75</li><li>-5393.75</li><li>-5393.75</li><li>-5393.75</li><li>-5393.75</li><li>-5393.75</li><li>-5393.75</li><li>-5393.75</li><li>-5393.75</li><li>-5393.75</li><li>-5393.75</li><li>-5393.75</li><li>-5393.75</li><li>-5393.75</li><li>-5393.75</li><li>-5393.75</li><li>-5393.75</li><li>-5393.75</li><li>-5393.75</li><li>-5393.75</li><li>-5393.75</li><li>-5393.75</li><li>-5393.75</li><li>-5393.75</li><li>-5393.75</li><li>-5393.75</li><li>-5393.75</li><li>-5393.75</li><li>-5393.75</li><li>-5393.75</li><li>-5393.75</li><li>-5393.75</li><li>-5393.75</li><li>-5393.75</li><li>-5393.75</li><li>-5393.75</li><li>-5393.75</li><li>-5393.75</li><li>-5393.75</li><li>-5393.75</li><li>-5393.75</li><li>-5393.75</li><li>-5393.75</li><li>-5393.75</li><li>-5393.75</li><li>-5393.75</li><li>-5393.75</li><li>-5393.75</li><li>-5393.75</li><li>-5393.75</li><li>-5393.75</li><li>-5393.75</li><li>-5393.75</li><li>-5393.75</li><li>-5393.75</li><li>-5393.75</li><li>-5393.75</li><li>-5393.75</li><li>-5393.75</li><li>-5393.75</li><li>-5393.75</li><li>-5393.75</li><li>-5393.75</li><li>-5393.75</li><li>-5393.75</li><li>-5393.75</li><li>-5393.75</li><li>-5393.75</li><li>-5393.75</li><li>-5393.75</li><li>-5393.75</li><li>-5393.75</li><li>-5393.75</li><li>-5393.75</li><li>-5393.75</li><li>-5393.75</li><li>-5393.75</li><li>-5393.75</li><li>-5393.75</li><li>-5393.75</li><li>-5393.75</li><li>-5393.75</li><li>-5393.75</li><li>-5393.75</li><li>-5393.75</li><li>-5393.75</li><li>-5393.75</li><li>-5393.75</li><li>-5393.75</li><li>-5393.75</li><li>-5393.75</li><li>-5393.75</li><li>-5393.75</li><li>-5393.75</li><li>-5393.75</li><li>-5393.75</li><li>-5393.75</li><li>-5393.75</li><li>-5393.75</li><li>-5393.75</li><li>-5393.75</li><li>-5393.75</li><li>-5393.75</li><li>-5393.75</li><li>-5393.75</li><li>-5393.75</li><li>-5393.75</li><li>-5393.75</li><li>-5393.75</li><li>-5393.75</li><li>-5393.75</li><li>-5393.75</li><li>-5393.75</li><li>-5393.75</li><li>-5393.75</li><li>-5393.75</li><li>-5393.75</li><li>-5393.75</li><li>-5393.75</li><li>-5393.75</li><li>-5393.75</li><li>-5393.75</li><li>-5393.75</li><li>-5393.75</li><li>-5393.75</li><li>-5393.75</li><li>-5393.75</li><li>-5393.75</li><li>-5393.75</li><li>-5393.75</li><li>-5393.75</li><li>-5393.75</li><li>-5393.75</li><li>-5393.75</li><li>-5393.75</li><li>-5393.75</li><li>-5393.75</li><li>-5393.75</li><li>-5393.75</li><li>-5393.75</li><li>-5393.75</li><li>-5393.75</li><li>-5393.75</li><li>-5393.75</li><li>-5393.75</li><li>-5393.75</li><li>-5393.75</li><li>-5393.75</li><li>-5393.75</li><li>-5393.75</li><li>-5393.75</li><li>-5393.75</li><li>-5393.75</li><li>-5393.75</li><li>-5393.75</li><li>-5393.75</li><li>-5393.75</li><li>-5393.75</li><li>-5393.75</li><li>-5393.75</li><li>-5393.75</li><li>-5393.75</li><li>-5393.75</li><li>-5393.75</li><li>-5393.75</li><li>-5393.75</li><li>-5393.75</li><li>-5393.75</li><li>-5393.75</li><li>-5393.75</li><li>⋯</li><li>5393.75</li><li>5393.75</li><li>5393.75</li><li>5393.75</li><li>5393.75</li><li>5393.75</li><li>5393.75</li><li>5393.75</li><li>5393.75</li><li>5393.75</li><li>5393.75</li><li>5393.75</li><li>5393.75</li><li>5393.75</li><li>5393.75</li><li>5393.75</li><li>5393.75</li><li>5393.75</li><li>5393.75</li><li>5393.75</li><li>5393.75</li><li>5393.75</li><li>5393.75</li><li>5393.75</li><li>5393.75</li><li>5393.75</li><li>5393.75</li><li>5393.75</li><li>5393.75</li><li>5393.75</li><li>5393.75</li><li>5393.75</li><li>5393.75</li><li>5393.75</li><li>5393.75</li><li>5393.75</li><li>5393.75</li><li>5393.75</li><li>5393.75</li><li>5393.75</li><li>5393.75</li><li>5393.75</li><li>5393.75</li><li>5393.75</li><li>5393.75</li><li>5393.75</li><li>5393.75</li><li>5393.75</li><li>5393.75</li><li>5393.75</li><li>5393.75</li><li>5393.75</li><li>5393.75</li><li>5393.75</li><li>5393.75</li><li>5393.75</li><li>5393.75</li><li>5393.75</li><li>5393.75</li><li>5393.75</li><li>5393.75</li><li>5393.75</li><li>5393.75</li><li>5393.75</li><li>5393.75</li><li>5393.75</li><li>5393.75</li><li>5393.75</li><li>5393.75</li><li>5393.75</li><li>5393.75</li><li>5393.75</li><li>5393.75</li><li>5393.75</li><li>5393.75</li><li>5393.75</li><li>5393.75</li><li>5393.75</li><li>5393.75</li><li>5393.75</li><li>5393.75</li><li>5393.75</li><li>5393.75</li><li>5393.75</li><li>5393.75</li><li>5393.75</li><li>5393.75</li><li>5393.75</li><li>5393.75</li><li>5393.75</li><li>5393.75</li><li>5393.75</li><li>5393.75</li><li>5393.75</li><li>5393.75</li><li>5393.75</li><li>5393.75</li><li>5393.75</li><li>5393.75</li><li>5393.75</li><li>5393.75</li><li>5393.75</li><li>5393.75</li><li>5393.75</li><li>5393.75</li><li>5393.75</li><li>5393.75</li><li>5393.75</li><li>5393.75</li><li>5393.75</li><li>5393.75</li><li>5393.75</li><li>5393.75</li><li>5393.75</li><li>5393.75</li><li>5393.75</li><li>5393.75</li><li>5393.75</li><li>5393.75</li><li>5393.75</li><li>5393.75</li><li>5393.75</li><li>5393.75</li><li>5393.75</li><li>5393.75</li><li>5393.75</li><li>5393.75</li><li>5393.75</li><li>5393.75</li><li>5393.75</li><li>5393.75</li><li>5393.75</li><li>5393.75</li><li>5393.75</li><li>5393.75</li><li>5393.75</li><li>5393.75</li><li>5393.75</li><li>5393.75</li><li>5393.75</li><li>5393.75</li><li>5393.75</li><li>5393.75</li><li>5393.75</li><li>5393.75</li><li>5393.75</li><li>5393.75</li><li>5393.75</li><li>5393.75</li><li>5393.75</li><li>5393.75</li><li>5393.75</li><li>5393.75</li><li>5393.75</li><li>5393.75</li><li>5393.75</li><li>5393.75</li><li>5393.75</li><li>5393.75</li><li>5393.75</li><li>5393.75</li><li>5393.75</li><li>5393.75</li><li>5393.75</li><li>5393.75</li><li>5393.75</li><li>5393.75</li><li>5393.75</li><li>5393.75</li><li>5393.75</li><li>5393.75</li><li>5393.75</li><li>5393.75</li><li>5393.75</li><li>5393.75</li><li>5393.75</li><li>5393.75</li><li>5393.75</li><li>5393.75</li><li>5393.75</li><li>5393.75</li><li>5393.75</li><li>5393.75</li><li>5393.75</li><li>5393.75</li><li>5393.75</li><li>5393.75</li><li>5393.75</li><li>5393.75</li><li>5393.75</li><li>5393.75</li><li>5393.75</li><li>5393.75</li><li>5393.75</li><li>5393.75</li><li>5393.75</li><li>5393.75</li><li>5393.75</li><li>5393.75</li><li>5393.75</li></ol>
+</div></div>
+</div>
+<p>For the <em>yc</em> coordinate, we need to repeat the whole list 864 times.</p>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-r notranslate"><div class="highlight"><pre><span></span><span class="n">yc_repeat</span><span class="w"> </span><span class="o">&lt;-</span><span class="w"> </span><span class="nf">rep</span><span class="p">(</span><span class="n">yc</span><span class="p">,</span><span class="w"> </span><span class="n">times</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="nf">length</span><span class="p">(</span><span class="n">xc</span><span class="p">))</span>
+<span class="n">yc_repeat</span>
+</pre></div>
+</div>
+</div>
+<div class="cell_output docutils container">
+<div class="output text_html"><style>
+.list-inline {list-style: none; margin:0; padding: 0}
+.list-inline>li {display: inline-block}
+.list-inline>li:not(:last-child)::after {content: "\00b7"; padding: 0 .5ex}
+</style>
+<ol class=list-inline><li>5393.75</li><li>5381.25</li><li>5368.75</li><li>5356.25</li><li>5343.75</li><li>5331.25</li><li>5318.75</li><li>5306.25</li><li>5293.75</li><li>5281.25</li><li>5268.75</li><li>5256.25</li><li>5243.75</li><li>5231.25</li><li>5218.75</li><li>5206.25</li><li>5193.75</li><li>5181.25</li><li>5168.75</li><li>5156.25</li><li>5143.75</li><li>5131.25</li><li>5118.75</li><li>5106.25</li><li>5093.75</li><li>5081.25</li><li>5068.75</li><li>5056.25</li><li>5043.75</li><li>5031.25</li><li>5018.75</li><li>5006.25</li><li>4993.75</li><li>4981.25</li><li>4968.75</li><li>4956.25</li><li>4943.75</li><li>4931.25</li><li>4918.75</li><li>4906.25</li><li>4893.75</li><li>4881.25</li><li>4868.75</li><li>4856.25</li><li>4843.75</li><li>4831.25</li><li>4818.75</li><li>4806.25</li><li>4793.75</li><li>4781.25</li><li>4768.75</li><li>4756.25</li><li>4743.75</li><li>4731.25</li><li>4718.75</li><li>4706.25</li><li>4693.75</li><li>4681.25</li><li>4668.75</li><li>4656.25</li><li>4643.75</li><li>4631.25</li><li>4618.75</li><li>4606.25</li><li>4593.75</li><li>4581.25</li><li>4568.75</li><li>4556.25</li><li>4543.75</li><li>4531.25</li><li>4518.75</li><li>4506.25</li><li>4493.75</li><li>4481.25</li><li>4468.75</li><li>4456.25</li><li>4443.75</li><li>4431.25</li><li>4418.75</li><li>4406.25</li><li>4393.75</li><li>4381.25</li><li>4368.75</li><li>4356.25</li><li>4343.75</li><li>4331.25</li><li>4318.75</li><li>4306.25</li><li>4293.75</li><li>4281.25</li><li>4268.75</li><li>4256.25</li><li>4243.75</li><li>4231.25</li><li>4218.75</li><li>4206.25</li><li>4193.75</li><li>4181.25</li><li>4168.75</li><li>4156.25</li><li>4143.75</li><li>4131.25</li><li>4118.75</li><li>4106.25</li><li>4093.75</li><li>4081.25</li><li>4068.75</li><li>4056.25</li><li>4043.75</li><li>4031.25</li><li>4018.75</li><li>4006.25</li><li>3993.75</li><li>3981.25</li><li>3968.75</li><li>3956.25</li><li>3943.75</li><li>3931.25</li><li>3918.75</li><li>3906.25</li><li>3893.75</li><li>3881.25</li><li>3868.75</li><li>3856.25</li><li>3843.75</li><li>3831.25</li><li>3818.75</li><li>3806.25</li><li>3793.75</li><li>3781.25</li><li>3768.75</li><li>3756.25</li><li>3743.75</li><li>3731.25</li><li>3718.75</li><li>3706.25</li><li>3693.75</li><li>3681.25</li><li>3668.75</li><li>3656.25</li><li>3643.75</li><li>3631.25</li><li>3618.75</li><li>3606.25</li><li>3593.75</li><li>3581.25</li><li>3568.75</li><li>3556.25</li><li>3543.75</li><li>3531.25</li><li>3518.75</li><li>3506.25</li><li>3493.75</li><li>3481.25</li><li>3468.75</li><li>3456.25</li><li>3443.75</li><li>3431.25</li><li>3418.75</li><li>3406.25</li><li>3393.75</li><li>3381.25</li><li>3368.75</li><li>3356.25</li><li>3343.75</li><li>3331.25</li><li>3318.75</li><li>3306.25</li><li>3293.75</li><li>3281.25</li><li>3268.75</li><li>3256.25</li><li>3243.75</li><li>3231.25</li><li>3218.75</li><li>3206.25</li><li>3193.75</li><li>3181.25</li><li>3168.75</li><li>3156.25</li><li>3143.75</li><li>3131.25</li><li>3118.75</li><li>3106.25</li><li>3093.75</li><li>3081.25</li><li>3068.75</li><li>3056.25</li><li>3043.75</li><li>3031.25</li><li>3018.75</li><li>3006.25</li><li>2993.75</li><li>2981.25</li><li>2968.75</li><li>2956.25</li><li>2943.75</li><li>2931.25</li><li>2918.75</li><li>2906.25</li><li>⋯</li><li>-2906.25</li><li>-2918.75</li><li>-2931.25</li><li>-2943.75</li><li>-2956.25</li><li>-2968.75</li><li>-2981.25</li><li>-2993.75</li><li>-3006.25</li><li>-3018.75</li><li>-3031.25</li><li>-3043.75</li><li>-3056.25</li><li>-3068.75</li><li>-3081.25</li><li>-3093.75</li><li>-3106.25</li><li>-3118.75</li><li>-3131.25</li><li>-3143.75</li><li>-3156.25</li><li>-3168.75</li><li>-3181.25</li><li>-3193.75</li><li>-3206.25</li><li>-3218.75</li><li>-3231.25</li><li>-3243.75</li><li>-3256.25</li><li>-3268.75</li><li>-3281.25</li><li>-3293.75</li><li>-3306.25</li><li>-3318.75</li><li>-3331.25</li><li>-3343.75</li><li>-3356.25</li><li>-3368.75</li><li>-3381.25</li><li>-3393.75</li><li>-3406.25</li><li>-3418.75</li><li>-3431.25</li><li>-3443.75</li><li>-3456.25</li><li>-3468.75</li><li>-3481.25</li><li>-3493.75</li><li>-3506.25</li><li>-3518.75</li><li>-3531.25</li><li>-3543.75</li><li>-3556.25</li><li>-3568.75</li><li>-3581.25</li><li>-3593.75</li><li>-3606.25</li><li>-3618.75</li><li>-3631.25</li><li>-3643.75</li><li>-3656.25</li><li>-3668.75</li><li>-3681.25</li><li>-3693.75</li><li>-3706.25</li><li>-3718.75</li><li>-3731.25</li><li>-3743.75</li><li>-3756.25</li><li>-3768.75</li><li>-3781.25</li><li>-3793.75</li><li>-3806.25</li><li>-3818.75</li><li>-3831.25</li><li>-3843.75</li><li>-3856.25</li><li>-3868.75</li><li>-3881.25</li><li>-3893.75</li><li>-3906.25</li><li>-3918.75</li><li>-3931.25</li><li>-3943.75</li><li>-3956.25</li><li>-3968.75</li><li>-3981.25</li><li>-3993.75</li><li>-4006.25</li><li>-4018.75</li><li>-4031.25</li><li>-4043.75</li><li>-4056.25</li><li>-4068.75</li><li>-4081.25</li><li>-4093.75</li><li>-4106.25</li><li>-4118.75</li><li>-4131.25</li><li>-4143.75</li><li>-4156.25</li><li>-4168.75</li><li>-4181.25</li><li>-4193.75</li><li>-4206.25</li><li>-4218.75</li><li>-4231.25</li><li>-4243.75</li><li>-4256.25</li><li>-4268.75</li><li>-4281.25</li><li>-4293.75</li><li>-4306.25</li><li>-4318.75</li><li>-4331.25</li><li>-4343.75</li><li>-4356.25</li><li>-4368.75</li><li>-4381.25</li><li>-4393.75</li><li>-4406.25</li><li>-4418.75</li><li>-4431.25</li><li>-4443.75</li><li>-4456.25</li><li>-4468.75</li><li>-4481.25</li><li>-4493.75</li><li>-4506.25</li><li>-4518.75</li><li>-4531.25</li><li>-4543.75</li><li>-4556.25</li><li>-4568.75</li><li>-4581.25</li><li>-4593.75</li><li>-4606.25</li><li>-4618.75</li><li>-4631.25</li><li>-4643.75</li><li>-4656.25</li><li>-4668.75</li><li>-4681.25</li><li>-4693.75</li><li>-4706.25</li><li>-4718.75</li><li>-4731.25</li><li>-4743.75</li><li>-4756.25</li><li>-4768.75</li><li>-4781.25</li><li>-4793.75</li><li>-4806.25</li><li>-4818.75</li><li>-4831.25</li><li>-4843.75</li><li>-4856.25</li><li>-4868.75</li><li>-4881.25</li><li>-4893.75</li><li>-4906.25</li><li>-4918.75</li><li>-4931.25</li><li>-4943.75</li><li>-4956.25</li><li>-4968.75</li><li>-4981.25</li><li>-4993.75</li><li>-5006.25</li><li>-5018.75</li><li>-5031.25</li><li>-5043.75</li><li>-5056.25</li><li>-5068.75</li><li>-5081.25</li><li>-5093.75</li><li>-5106.25</li><li>-5118.75</li><li>-5131.25</li><li>-5143.75</li><li>-5156.25</li><li>-5168.75</li><li>-5181.25</li><li>-5193.75</li><li>-5206.25</li><li>-5218.75</li><li>-5231.25</li><li>-5243.75</li><li>-5256.25</li><li>-5268.75</li><li>-5281.25</li><li>-5293.75</li><li>-5306.25</li><li>-5318.75</li><li>-5331.25</li><li>-5343.75</li><li>-5356.25</li><li>-5368.75</li><li>-5381.25</li><li>-5393.75</li></ol>
+</div></div>
+</div>
+<p>And now let’s combing them all in a dataframe and export the data.</p>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-r notranslate"><div class="highlight"><pre><span></span><span class="n">df</span><span class="w"> </span><span class="o">&lt;-</span><span class="w"> </span><span class="nf">data.frame</span><span class="p">(</span>
+<span class="w">  </span><span class="n">Xc</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="n">xc_repeat</span><span class="p">,</span>
+<span class="w">  </span><span class="n">Yc</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="n">yc_repeat</span><span class="p">,</span>
+<span class="w">  </span><span class="n">SeaIceConcentration</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="n">ice_conc_vector</span>
+<span class="p">)</span>
 <span class="nf">head</span><span class="p">(</span><span class="n">df</span><span class="p">)</span>
 </pre></div>
 </div>
@@ -942,30 +1122,207 @@ variables:
 <div class="output text_html"><table class="dataframe">
 <caption>A data.frame: 6 × 3</caption>
 <thead>
-	<tr><th></th><th scope=col>lon</th><th scope=col>lat</th><th scope=col>anom</th></tr>
-	<tr><th></th><th scope=col>&lt;dbl[1d]&gt;</th><th scope=col>&lt;dbl[1d]&gt;</th><th scope=col>&lt;dbl&gt;</th></tr>
+	<tr><th></th><th scope=col>Xc</th><th scope=col>Yc</th><th scope=col>SeaIceConcentration</th></tr>
+	<tr><th></th><th scope=col>&lt;dbl&gt;</th><th scope=col>&lt;dbl&gt;</th><th scope=col>&lt;dbl&gt;</th></tr>
 </thead>
 <tbody>
-	<tr><th scope=row>1</th><td> 2.5</td><td>-87.5</td><td>NA</td></tr>
-	<tr><th scope=row>2</th><td> 7.5</td><td>-87.5</td><td>NA</td></tr>
-	<tr><th scope=row>3</th><td>12.5</td><td>-87.5</td><td>NA</td></tr>
-	<tr><th scope=row>4</th><td>17.5</td><td>-87.5</td><td>NA</td></tr>
-	<tr><th scope=row>5</th><td>22.5</td><td>-87.5</td><td>NA</td></tr>
-	<tr><th scope=row>6</th><td>27.5</td><td>-87.5</td><td>NA</td></tr>
+	<tr><th scope=row>1</th><td>-5393.75</td><td>5393.75</td><td>0</td></tr>
+	<tr><th scope=row>2</th><td>-5393.75</td><td>5381.25</td><td>0</td></tr>
+	<tr><th scope=row>3</th><td>-5393.75</td><td>5368.75</td><td>0</td></tr>
+	<tr><th scope=row>4</th><td>-5393.75</td><td>5356.25</td><td>0</td></tr>
+	<tr><th scope=row>5</th><td>-5393.75</td><td>5343.75</td><td>0</td></tr>
+	<tr><th scope=row>6</th><td>-5393.75</td><td>5331.25</td><td>0</td></tr>
 </tbody>
 </table>
 </div></div>
 </div>
-<p>Finally, we can write out the data just like before</p>
+<p>Let’s add the latitude and longitude values as separate columns.</p>
 <div class="cell docutils container">
 <div class="cell_input docutils container">
-<div class="highlight-r notranslate"><div class="highlight"><pre><span></span><span class="nf">write_xlsx</span><span class="p">(</span><span class="n">df</span><span class="p">,</span><span class="w"> </span><span class="nf">paste</span><span class="p">(</span><span class="s">&#39;../data/exported_from_notebooks/temperature_anomalies_&#39;</span><span class="p">,</span><span class="n">desired_date</span><span class="p">,</span><span class="s">&#39;.xlsx&#39;</span><span class="p">,</span><span class="w"> </span><span class="n">sep</span><span class="o">=</span><span class="s">&#39;&#39;</span><span class="p">))</span>
-<span class="nf">write.csv</span><span class="p">(</span><span class="n">df</span><span class="p">,</span><span class="w"> </span><span class="nf">paste</span><span class="p">(</span><span class="s">&#39;../data/exported_from_notebooks/temperature_anomalies_&#39;</span><span class="p">,</span><span class="n">desired_date</span><span class="p">,</span><span class="s">&#39;.csv&#39;</span><span class="p">,</span><span class="w"> </span><span class="n">sep</span><span class="o">=</span><span class="s">&#39;&#39;</span><span class="p">),</span><span class="w"> </span><span class="n">row.names</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="kc">FALSE</span><span class="p">)</span>
+<div class="highlight-r notranslate"><div class="highlight"><pre><span></span><span class="n">latitude</span><span class="w"> </span><span class="o">&lt;-</span><span class="w"> </span><span class="nf">var.get.nc</span><span class="p">(</span><span class="n">data</span><span class="p">,</span><span class="w"> </span><span class="s">&quot;lat&quot;</span><span class="p">)</span>
+<span class="n">latitude_vector</span><span class="w"> </span><span class="o">&lt;-</span><span class="w"> </span><span class="nf">as.vector</span><span class="p">(</span><span class="n">latitude</span><span class="p">)</span>
+<span class="n">df</span><span class="o">$</span><span class="n">latitude</span><span class="w"> </span><span class="o">&lt;-</span><span class="w"> </span><span class="n">latitude_vector</span>
+
+<span class="n">longitude</span><span class="w"> </span><span class="o">&lt;-</span><span class="w"> </span><span class="nf">var.get.nc</span><span class="p">(</span><span class="n">data</span><span class="p">,</span><span class="w"> </span><span class="s">&quot;lon&quot;</span><span class="p">)</span>
+<span class="n">longitude_vector</span><span class="w"> </span><span class="o">&lt;-</span><span class="w"> </span><span class="nf">as.vector</span><span class="p">(</span><span class="n">longitude</span><span class="p">)</span>
+<span class="n">df</span><span class="o">$</span><span class="n">longitude</span><span class="w"> </span><span class="o">&lt;-</span><span class="w"> </span><span class="n">longitude_vector</span>
+
+<span class="nf">head</span><span class="p">(</span><span class="n">df</span><span class="p">)</span>
+<span class="nf">write_xlsx</span><span class="p">(</span><span class="n">df</span><span class="p">,</span><span class="w"> </span><span class="s">&#39;../data/exported_from_notebooks/2d_data.xlsx&#39;</span><span class="p">)</span>
+<span class="nf">write.csv</span><span class="p">(</span><span class="n">df</span><span class="p">,</span><span class="w"> </span><span class="s">&#39;../data/exported_from_notebooks/2d_data.csv&#39;</span><span class="p">,</span><span class="w"> </span><span class="n">row.names</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="kc">FALSE</span><span class="p">)</span>
+</pre></div>
+</div>
+</div>
+<div class="cell_output docutils container">
+<div class="output text_html"><table class="dataframe">
+<caption>A data.frame: 6 × 5</caption>
+<thead>
+	<tr><th></th><th scope=col>Xc</th><th scope=col>Yc</th><th scope=col>SeaIceConcentration</th><th scope=col>latitude</th><th scope=col>longitude</th></tr>
+	<tr><th></th><th scope=col>&lt;dbl&gt;</th><th scope=col>&lt;dbl&gt;</th><th scope=col>&lt;dbl&gt;</th><th scope=col>&lt;dbl&gt;</th><th scope=col>&lt;dbl&gt;</th></tr>
+</thead>
+<tbody>
+	<tr><th scope=row>1</th><td>-5393.75</td><td>5393.75</td><td>0</td><td>16.52435</td><td>-135.0000</td></tr>
+	<tr><th scope=row>2</th><td>-5393.75</td><td>5381.25</td><td>0</td><td>16.62387</td><td>-135.0665</td></tr>
+	<tr><th scope=row>3</th><td>-5393.75</td><td>5368.75</td><td>0</td><td>16.72321</td><td>-135.1331</td></tr>
+	<tr><th scope=row>4</th><td>-5393.75</td><td>5356.25</td><td>0</td><td>16.82236</td><td>-135.1999</td></tr>
+	<tr><th scope=row>5</th><td>-5393.75</td><td>5343.75</td><td>0</td><td>16.92134</td><td>-135.2668</td></tr>
+	<tr><th scope=row>6</th><td>-5393.75</td><td>5331.25</td><td>0</td><td>17.02014</td><td>-135.3339</td></tr>
+</tbody>
+</table>
+</div></div>
+</div>
+</section>
+</section>
+<section class="tex2jax_ignore mathjax_ignore" id="variables-with-3-dimensions">
+<h1>Variables with 3 dimensions<a class="headerlink" href="#variables-with-3-dimensions" title="Permalink to this heading">#</a></h1>
+<p>Let’s look at the same data we used in <a class="reference internal" href="01_opening_and_understanding.html"><span class="doc std std-doc">tutorial #01</span></a>.</p>
+<p>If you use these data, please cite them as recommended below:</p>
+<p><em>H.-M. Zhang, B. Huang, J. H. Lawrimore, M. J. Menne, and T. M. Smith (2019): NOAA Global Surface Temperature Dataset (NOAAGlobalTemp), Version 5.0. NOAA National Centers for Environmental Information. doi:10.25921/9qth-2p70 Accessed 2024-04-09.</em></p>
+<p>Let’s load in the data, and extract the data from the <em>anom</em> varaible.</p>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-r notranslate"><div class="highlight"><pre><span></span><span class="n">url</span><span class="w"> </span><span class="o">&lt;-</span><span class="w"> </span><span class="s">&#39;https://www.ncei.noaa.gov/thredds/dodsC/noaa-global-temp-v5/NOAAGlobalTemp_v5.0.0_gridded_s188001_e202212_c20230108T133308.nc&#39;</span>
+<span class="n">data</span><span class="w"> </span><span class="o">&lt;-</span><span class="w"> </span><span class="nf">open.nc</span><span class="p">(</span><span class="n">url</span><span class="p">)</span>
+<span class="nf">print.nc</span><span class="p">(</span><span class="n">data</span><span class="p">)</span>
+</pre></div>
+</div>
+</div>
+<div class="cell_output docutils container">
+<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>netcdf classic {
+dimensions:
+	lat = 36 ;
+	lon = 72 ;
+	time = 1716 ;
+	z = 1 ;
+variables:
+	NC_FLOAT time(time) ;
+		NC_CHAR time:long_name = &quot;reference time of global temperature anomalies&quot; ;
+		NC_CHAR time:standard_name = &quot;time&quot; ;
+		NC_CHAR time:coverage_content_type = &quot;coordinate&quot; ;
+		NC_CHAR time:units = &quot;days since 1800-01-01 00:00:00&quot; ;
+		NC_CHAR time:calendar = &quot;gregorian&quot; ;
+		NC_CHAR time:axis = &quot;T&quot; ;
+	NC_FLOAT lat(lat) ;
+		NC_CHAR lat:long_name = &quot;Latitude&quot; ;
+		NC_CHAR lat:standard_name = &quot;latitude&quot; ;
+		NC_CHAR lat:coverage_content_type = &quot;coordinate&quot; ;
+		NC_CHAR lat:units = &quot;degrees_north&quot; ;
+		NC_CHAR lat:grids = &quot;Uniform grid from -87.5 to 87.5 by 5&quot; ;
+		NC_FLOAT lat:valid_min = -87.5 ;
+		NC_FLOAT lat:valid_max = 87.5 ;
+		NC_CHAR lat:axis = &quot;Y&quot; ;
+		NC_CHAR lat:_CoordinateAxisType = &quot;Lat&quot; ;
+		NC_CHAR lat:coordinate_defines = &quot;center&quot; ;
+	NC_FLOAT lon(lon) ;
+		NC_CHAR lon:long_name = &quot;Longitude&quot; ;
+		NC_CHAR lon:standard_name = &quot;longitude&quot; ;
+		NC_CHAR lon:coverage_content_type = &quot;coordinate&quot; ;
+		NC_CHAR lon:units = &quot;degrees_east&quot; ;
+		NC_CHAR lon:grids = &quot;Uniform grid from 2.5 to 357.5 by 5&quot; ;
+		NC_CHAR lon:axis = &quot;X&quot; ;
+		NC_FLOAT lon:valid_min = 2.5 ;
+		NC_FLOAT lon:valid_max = 357.5 ;
+		NC_CHAR lon:_CoordinateAxisType = &quot;Lon&quot; ;
+		NC_CHAR lon:coordinate_defines = &quot;center&quot; ;
+	NC_FLOAT z(z) ;
+		NC_CHAR z:long_name = &quot;height of surface temperature&quot; ;
+		NC_CHAR z:standard_name = &quot;height&quot; ;
+		NC_CHAR z:coverage_content_type = &quot;coordinate&quot; ;
+		NC_CHAR z:geospatial_bounds_vertical_crs = &quot;EPSG:5703&quot; ;
+		NC_CHAR z:units = &quot;meters&quot; ;
+		NC_CHAR z:positive = &quot;up&quot; ;
+		NC_FLOAT z:valid_min = 0 ;
+		NC_FLOAT z:valid_max = 0 ;
+		NC_CHAR z:axis = &quot;Z&quot; ;
+		NC_CHAR z:_CoordinateAxisType = &quot;Height&quot; ;
+		NC_CHAR z:comment = &quot;Actual measurement depth of in situ sea surface temperature varies from 0.2 to 10 m, but corrected to the nominal depth of buoy at 0.2 m; for air temperature over land is 2m.&quot; ;
+	NC_FLOAT anom(lon, lat, z, time) ;
+		NC_CHAR anom:long_name = &quot;Global Temperature Anomalies&quot; ;
+		NC_CHAR anom:standard_name = &quot;surface_temperature_anomaly&quot; ;
+		NC_CHAR anom:coverage_content_type = &quot;physicalMeasurement&quot; ;
+		NC_CHAR anom:units = &quot;degrees C&quot; ;
+		NC_FLOAT anom:missing_value = -999.900024414062 ;
+		NC_FLOAT anom:_FillValue = -999.900024414062 ;
+		NC_FLOAT anom:add_offset = 0 ;
+		NC_FLOAT anom:scale_factor = 1 ;
+		NC_FLOAT anom:valid_min = -40 ;
+		NC_FLOAT anom:valid_max = 40 ;
+		NC_CHAR anom:coordinates = &quot;time z lat lon&quot; ;
+
+// global attributes:
+		NC_CHAR :Conventions = &quot;CF-1.6, ACDD-1.3&quot; ;
+		NC_CHAR :title = &quot;NOAA Merged Land Ocean Global Surface Temperature Analysis (NOAAGlobalTemp)&quot; ;
+		NC_CHAR :summary = &quot;NOAAGlobalTemp is a merged land-ocean surface temperature analysis, formerly abbreviated as MLOST. The SST dataset is the Extended Reconstructed Sea Surface Temperature (ERSST) and the land surface air temperature dataset is from the Global Historical Climatology Network Monthly (GHCN-M) database.&quot; ;
+		NC_CHAR :institution = &quot;DOC/NOAA/NESDIS/National Centers for Environmental Information(NCEI)&quot; ;
+		NC_CHAR :id = &quot; gov.noaa.ncdc:C00934 &quot; ;
+		NC_CHAR :naming_authority = &quot; gov.noaa.ncei &quot; ;
+		NC_CHAR :project = &quot; NOAAGlobalTemp &quot; ;
+		NC_CHAR :platform = &quot;Ships, moored buoys, surface drifting buoys, Argo floats, and weather stations&quot; ;
+		NC_CHAR :instrument = &quot;Conventional thermometers&quot; ;
+		NC_CHAR :history = &quot;Version 5.0.0, blending ERSST V5 and GHCN-M V4.&quot; ;
+		NC_CHAR :comment = &quot;Merged land ocean surface temperature anomalies.&quot; ;
+		NC_CHAR :product_version = &quot;5.0.0&quot; ;
+		NC_CHAR :source = &quot;NOAAGlobalTemp combines a global sea surface temperature with a global land surface air temperature data&quot; ;
+		NC_CHAR :ncei_template_version = &quot;NCEI_NetCDF_Grid_Template_v2.0&quot; ;
+		NC_CHAR :Metadata_Conventions = &quot;Unidata Dataset Discovery v1.0&quot; ;
+		NC_CHAR :license = &quot;These data are available for use without restriction.&quot; ;
+		NC_CHAR :creator_name = &quot;Boyin Huang, Xungang Yin, Ph.D&quot; ;
+		NC_CHAR :creator_email = &quot;Boyin.Huang@noaa.gov, Xungang.Yin@noaa.gov&quot; ;
+		NC_CHAR :creator_type = &quot;group&quot; ;
+		NC_CHAR :creator_institution = &quot;US DOC/NOAA/NESDIS/National Centers for Environmental Information(NCEI)&quot; ;
+		NC_CHAR :contributor_name = &quot;Huai-min Zhang, Ph.D&quot; ;
+		NC_CHAR :contributor_role = &quot;Chief, NOAA/NESDIS/NCEI/CCOG/OSB Ocean Surface Section&quot; ;
+		NC_CHAR :publisher_name = &quot;NCEI&quot; ;
+		NC_CHAR :publisher_institution = &quot;NCEI&quot; ;
+		NC_CHAR :publisher_url = &quot;https://www.ncdc.noaa.gov/&quot; ;
+		NC_CHAR :publisher_email = &quot;ncei.info@noaa.gov&quot; ;
+		NC_CHAR :publisher_type = &quot;institution&quot; ;
+		NC_CHAR :keywords = &quot;Earth Science &gt; Oceans &gt; Ocean Temperature &gt; Sea Surface Temperature, Earth Science &gt; Atmosphere &gt; Atmospheric Temperature &gt; Surface Temperature &gt; Air Temperature&quot; ;
+		NC_CHAR :keywords_vocabulary = &quot;NASA Global Change Master Directory (GCMD) Science Keywords&quot; ;
+		NC_CHAR :standard_name_vocabulary = &quot;Climate and Forecast (CF) Standard Name Table (Version 46, 25 July 2017)&quot; ;
+		NC_CHAR :date_created = &quot;2023-01-08T18:33:09Z&quot; ;
+		NC_CHAR :necdf_version_id = &quot;4.2.1.1&quot; ;
+		NC_CHAR :netcdf_creator_name = &quot;Yongsheng Zhang, Ph.D&quot; ;
+		NC_CHAR :netcdf_creator_email = &quot;yongsheng.zhang@noaa.gov&quot; ;
+		NC_CHAR :dataset_citation_product = &quot;NOAA Merged Land Ocean Global Surface Temperature Analysis (NOAAGlobalTemp)&quot; ;
+		NC_CHAR :dataset_citation_version = &quot;5.0.0&quot; ;
+		NC_CHAR :dataset_citation_institution = &quot;NOAA/NESDIS/NCEI, Asheville, NC, USA&quot; ;
+		NC_CHAR :dataset_citation_url = &quot;https://doi.org/10.25921/9qth-2p70&quot; ;
+		NC_CHAR :metadata_link = &quot;https://doi.org/10.25921/9qth-2p70&quot; ;
+		NC_CHAR :cdm_data_type = &quot;Grid&quot; ;
+		NC_CHAR :grid_mapping_name = &quot;latitude_longitude&quot; ;
+		NC_CHAR :processing_level = &quot;NOAA Processing Level 4&quot; ;
+		NC_FLOAT :geospatial_lon_min = 2.5 ;
+		NC_FLOAT :geospatial_lon_max = 357.5 ;
+		NC_CHAR :geospatial_lon_units = &quot;degrees_east&quot; ;
+		NC_CHAR :geospatial_lon_resolution = &quot;5.0 degree&quot; ;
+		NC_FLOAT :geospatial_lat_min = -87.5 ;
+		NC_FLOAT :geospatial_lat_max = 87.5 ;
+		NC_CHAR :geospatial_lat_units = &quot;degrees_north&quot; ;
+		NC_CHAR :geospatial_lat_resolution = &quot;5.0 degree&quot; ;
+		NC_CHAR :geospatial_bounds = &quot;POLYGON ((2.5 -87.5, 2.5 87.5, 357.5 87.5, 357.5 -87.5, 2.5 -87.5))&quot; ;
+		NC_CHAR :geospatial_bounds_crs = &quot;EPSG:4326&quot; ;
+		NC_FLOAT :geospatial_vertical_min = 0 ;
+		NC_FLOAT :geospatial_vertical_max = 0 ;
+		NC_CHAR :geospatial_vertical_units = &quot;meters&quot; ;
+		NC_CHAR :geospatial_vertical_resolution = &quot;0.f&quot; ;
+		NC_CHAR :geospatial_vertical_positive = &quot;up&quot; ;
+		NC_CHAR :time_coverage_start = &quot;1880-01&quot; ;
+		NC_CHAR :time_coverage_end = &quot;2022-12&quot; ;
+		NC_CHAR :time_coverage_resolution = &quot;P1M&quot; ;
+		NC_CHAR :time_coverage_duration = &quot;P143Y0M&quot; ;
+		NC_CHAR :references = &quot;Vose, R. S., et al., 2012: NOAAs merged land-ocean surface temperature analysis. Bulletin of the American Meteorological Society, 93, 1677-1685. doi: 10.1175/BAMS-D-11-00241.1. Huang, B., Peter W. Thorne, et. al, 2017: Extended Reconstructed Sea Surface Temperature version 5 (ERSSTv5), Upgrades, validations, and intercomparisons. J. Climate, 30, 8179-8205. doi: 10.1175/JCLI-D-16-0836.1&quot; ;
+		NC_CHAR :climatology = &quot;Climatology is based on 1971-2000 monthly climatology&quot; ;
+		NC_CHAR :acknowledgment = &quot;The NOAA Global Surface Temperature Dataset is provided by the NOAA National Centers for Environmental Information(NCEI)&quot; ;
+		NC_CHAR :date_modified = &quot;2023-01-08T18:33:09Z&quot; ;
+		NC_CHAR :date_issued = &quot;2023-01-08T18:33:09Z&quot; ;
+}
 </pre></div>
 </div>
 </div>
 </div>
-<p>Now let’s try and write all the data (the whole time series) to a dataframe - so 3D data.</p>
+<p>The anom variable actually has 4 dimensions (lon, lat, z and time). However, the z dimension is equal to 1, which means all the values are from the same elevation. Therefore, the data are essentially  3D.</p>
+<p>Let’s start by extracting the latitude, longitude and time variables as 1D vectors, and converting the time values to timestamps.</p>
 <div class="cell docutils container">
 <div class="cell_input docutils container">
 <div class="highlight-r notranslate"><div class="highlight"><pre><span></span><span class="n">lat</span><span class="w"> </span><span class="o">&lt;-</span><span class="w"> </span><span class="nf">var.get.nc</span><span class="p">(</span><span class="n">data</span><span class="p">,</span><span class="w"> </span><span class="s">&#39;lat&#39;</span><span class="p">)</span>
@@ -974,24 +1331,76 @@ variables:
 
 <span class="c1"># Convert time to readable dates</span>
 <span class="n">start_date</span><span class="w"> </span><span class="o">&lt;-</span><span class="w"> </span><span class="nf">as.Date</span><span class="p">(</span><span class="s">&quot;1800-01-01&quot;</span><span class="p">)</span>
-<span class="n">date</span><span class="w"> </span><span class="o">&lt;-</span><span class="w"> </span><span class="nf">as.Date</span><span class="p">(</span><span class="n">time</span><span class="p">,</span><span class="w"> </span><span class="n">origin</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="n">start_date</span><span class="p">)</span>
-
-<span class="n">anom</span><span class="w"> </span><span class="o">&lt;-</span><span class="w"> </span><span class="nf">var.get.nc</span><span class="p">(</span><span class="n">data</span><span class="p">,</span><span class="w"> </span><span class="s">&#39;anom&#39;</span><span class="p">,</span><span class="w"> </span><span class="n">start</span><span class="o">=</span><span class="nf">c</span><span class="p">(</span><span class="kc">NA</span><span class="p">,</span><span class="w"> </span><span class="kc">NA</span><span class="p">,</span><span class="w"> </span><span class="m">1</span><span class="p">,</span><span class="w"> </span><span class="kc">NA</span><span class="p">),</span><span class="w"> </span><span class="n">count</span><span class="o">=</span><span class="nf">c</span><span class="p">(</span><span class="kc">NA</span><span class="p">,</span><span class="kc">NA</span><span class="p">,</span><span class="m">1</span><span class="p">,</span><span class="kc">NA</span><span class="p">))</span>
-<span class="n">anom_flat</span><span class="w"> </span><span class="o">&lt;-</span><span class="w"> </span><span class="nf">as.vector</span><span class="p">(</span><span class="n">anom</span><span class="p">)</span>
-
-<span class="n">lat_repeat</span><span class="w"> </span><span class="o">&lt;-</span><span class="w"> </span><span class="nf">rep</span><span class="p">(</span><span class="n">lat</span><span class="p">,</span><span class="w"> </span><span class="n">each</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="nf">length</span><span class="p">(</span><span class="n">lon</span><span class="p">)</span><span class="w"> </span><span class="o">*</span><span class="w"> </span><span class="nf">length</span><span class="p">(</span><span class="n">time</span><span class="p">))</span>
-<span class="n">lon_repeat</span><span class="w"> </span><span class="o">&lt;-</span><span class="w"> </span><span class="nf">rep</span><span class="p">(</span><span class="nf">rep</span><span class="p">(</span><span class="n">lon</span><span class="p">,</span><span class="w"> </span><span class="n">each</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="nf">length</span><span class="p">(</span><span class="n">time</span><span class="p">)),</span><span class="w"> </span><span class="n">times</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="nf">length</span><span class="p">(</span><span class="n">lat</span><span class="p">))</span>
-<span class="n">date_repeat</span><span class="w"> </span><span class="o">&lt;-</span><span class="w"> </span><span class="nf">rep</span><span class="p">(</span><span class="n">date</span><span class="p">,</span><span class="w"> </span><span class="n">times</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="nf">length</span><span class="p">(</span><span class="n">lat</span><span class="p">)</span><span class="w"> </span><span class="o">*</span><span class="w"> </span><span class="nf">length</span><span class="p">(</span><span class="n">lon</span><span class="p">))</span>
-
-<span class="n">df</span><span class="w"> </span><span class="o">&lt;-</span><span class="w"> </span><span class="nf">data.frame</span><span class="p">(</span>
-<span class="w">  </span><span class="n">date</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="n">date_repeat</span><span class="p">,</span>
-<span class="w">  </span><span class="n">latitude</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="n">lat_repeat</span><span class="p">,</span>
-<span class="w">  </span><span class="n">longitude</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="n">lon_repeat</span><span class="p">,</span>
-<span class="w">  </span><span class="n">anom</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="n">anom_flat</span>
+<span class="n">timestamps</span><span class="w"> </span><span class="o">&lt;-</span><span class="w"> </span><span class="nf">as.Date</span><span class="p">(</span><span class="n">time</span><span class="p">,</span><span class="w"> </span><span class="n">origin</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="n">start_date</span><span class="p">)</span>
+</pre></div>
+</div>
+</div>
+</div>
+<p>Now let’s extract the temperature anomaly values. We can convert the 3D matrix into a 1D vector.</p>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-r notranslate"><div class="highlight"><pre><span></span><span class="n">anom</span><span class="w"> </span><span class="o">&lt;-</span><span class="w"> </span><span class="nf">var.get.nc</span><span class="p">(</span><span class="n">data</span><span class="p">,</span><span class="w"> </span><span class="s">&#39;anom&#39;</span><span class="p">)</span>
+<span class="n">anom_vector</span><span class="w"> </span><span class="o">&lt;-</span><span class="w"> </span><span class="nf">as.vector</span><span class="p">(</span><span class="n">anom</span><span class="p">)</span>
+</pre></div>
+</div>
+</div>
+</div>
+<p>The order of the dimensions is now important. We have longitude, latitude and then time.</p>
+<p>This means that the anomaly values are sorted such that the all the values from the first longitude come first.</p>
+<p>The values are next sorted by common latitude, and finally by common time.</p>
+<p>It is a 3D grid has 72 points of longitude, 36 points of latitude, and 1716 points in time.</p>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-r notranslate"><div class="highlight"><pre><span></span><span class="nf">dim</span><span class="p">(</span><span class="n">anom</span><span class="p">)</span>
+</pre></div>
+</div>
+</div>
+<div class="cell_output docutils container">
+<div class="output text_html"><style>
+.list-inline {list-style: none; margin:0; padding: 0}
+.list-inline>li {display: inline-block}
+.list-inline>li:not(:last-child)::after {content: "\00b7"; padding: 0 .5ex}
+</style>
+<ol class=list-inline><li>72</li><li>36</li><li>1716</li></ol>
+</div></div>
+</div>
+<p>So when flattening the first dimension, longitude, to a 1D vector, we need to repeat the first value 36 x 1716 times before moving onto the second value.</p>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-r notranslate"><div class="highlight"><pre><span></span><span class="n">lon_repeat</span><span class="w"> </span><span class="o">&lt;-</span><span class="w"> </span><span class="nf">rep</span><span class="p">(</span><span class="n">lon</span><span class="p">,</span><span class="w"> </span><span class="n">each</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="nf">length</span><span class="p">(</span><span class="n">time</span><span class="p">)</span><span class="w"> </span><span class="o">*</span><span class="w"> </span><span class="nf">length</span><span class="p">(</span><span class="n">lat</span><span class="p">))</span>
+</pre></div>
+</div>
+</div>
+</div>
+<p>To flatten the second dimension, latitude, to a 1D vector, we need repeat the first value 1716 times before moving on to the second value. Then, after we have reached the last latitude, we need to start from the beginning and repeat 72 times.</p>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-r notranslate"><div class="highlight"><pre><span></span><span class="n">lat_repeat</span><span class="w"> </span><span class="o">&lt;-</span><span class="w"> </span><span class="nf">rep</span><span class="p">(</span><span class="nf">rep</span><span class="p">(</span><span class="n">lat</span><span class="p">,</span><span class="w"> </span><span class="n">each</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="nf">length</span><span class="p">(</span><span class="n">time</span><span class="p">)),</span><span class="w"> </span><span class="n">times</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="nf">length</span><span class="p">(</span><span class="n">lon</span><span class="p">))</span>
+</pre></div>
+</div>
+</div>
+</div>
+<p>Finally, for the third dimension, time, we need to list all the timestamps in order first, and then repeat the list 36 x 72 times.</p>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-r notranslate"><div class="highlight"><pre><span></span><span class="n">timestamps_repeat</span><span class="w"> </span><span class="o">&lt;-</span><span class="w"> </span><span class="nf">rep</span><span class="p">(</span><span class="n">timestamps</span><span class="p">,</span><span class="w"> </span><span class="n">times</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="nf">length</span><span class="p">(</span><span class="n">lon</span><span class="p">)</span><span class="w"> </span><span class="o">*</span><span class="w"> </span><span class="nf">length</span><span class="p">(</span><span class="n">lat</span><span class="p">))</span>
+</pre></div>
+</div>
+</div>
+</div>
+<p>Finally, let’s write the data to a dataframe and export them.</p>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-r notranslate"><div class="highlight"><pre><span></span><span class="n">df</span><span class="w"> </span><span class="o">&lt;-</span><span class="w"> </span><span class="nf">data.frame</span><span class="p">(</span>
+<span class="w">  </span><span class="n">Timestamp</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="n">timestamps_repeat</span><span class="p">,</span>
+<span class="w">  </span><span class="n">Latitude</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="n">lat_repeat</span><span class="p">,</span>
+<span class="w">  </span><span class="n">Longitude</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="n">lon_repeat</span><span class="p">,</span>
+<span class="w">  </span><span class="n">TemperatureAnomalies</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="n">anom_vector</span>
 <span class="p">)</span>
 
 <span class="nf">head</span><span class="p">(</span><span class="n">df</span><span class="p">)</span>
-<span class="nf">write.csv</span><span class="p">(</span><span class="n">df</span><span class="p">,</span><span class="w"> </span><span class="s">&#39;../data/exported_from_notebooks/temperature_anomalies_all_dates.csv&#39;</span><span class="p">,</span><span class="w"> </span><span class="n">row.names</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="kc">FALSE</span><span class="p">)</span>
+<span class="nf">write.csv</span><span class="p">(</span><span class="n">df</span><span class="p">,</span><span class="w"> </span><span class="s">&#39;../data/exported_from_notebooks/3d_data.csv&#39;</span><span class="p">,</span><span class="w"> </span><span class="n">row.names</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="kc">FALSE</span><span class="p">)</span>
+<span class="c1"># There are too many rows in this data frame to convert it to a XLSX file</span>
 </pre></div>
 </div>
 </div>
@@ -999,7 +1408,7 @@ variables:
 <div class="output text_html"><table class="dataframe">
 <caption>A data.frame: 6 × 4</caption>
 <thead>
-	<tr><th></th><th scope=col>date</th><th scope=col>latitude</th><th scope=col>longitude</th><th scope=col>anom</th></tr>
+	<tr><th></th><th scope=col>Timestamp</th><th scope=col>Latitude</th><th scope=col>Longitude</th><th scope=col>TemperatureAnomalies</th></tr>
 	<tr><th></th><th scope=col>&lt;date&gt;</th><th scope=col>&lt;dbl&gt;</th><th scope=col>&lt;dbl&gt;</th><th scope=col>&lt;dbl&gt;</th></tr>
 </thead>
 <tbody>
@@ -1013,7 +1422,6 @@ variables:
 </table>
 </div></div>
 </div>
-</section>
 <section id="how-to-cite-this-course">
 <h2>How to cite this course<a class="headerlink" href="#how-to-cite-this-course" title="Permalink to this heading">#</a></h2>
 <p>If you think this course contributed to the work you are doing, consider citing it in your list of references. Here is a recommended citation:</p>
@@ -1086,10 +1494,17 @@ variables:
   </div>
   <nav class="bd-toc-nav page-toc">
     <ul class="visible nav section-nav flex-column">
+<li class="toc-h1 nav-item toc-entry"><a class="reference internal nav-link" href="#">03: Extracting data to different formats</a><ul class="visible nav section-nav flex-column">
 <li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#variables-with-1-dimension">Variables with 1 dimension</a></li>
-<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#variables-with-multiple-dimensions">Variables with multiple dimensions</a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#variables-with-2-dimensions">Variables with 2 dimensions</a></li>
+</ul>
+</li>
+<li class="toc-h1 nav-item toc-entry"><a class="reference internal nav-link" href="#variables-with-3-dimensions">Variables with 3 dimensions</a><ul class="visible nav section-nav flex-column">
 <li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#how-to-cite-this-course">How to cite this course</a></li>
 </ul>
+</li>
+</ul>
+
   </nav></div>
 
 </div></div>

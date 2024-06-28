@@ -37,8 +37,8 @@ nbclient.exceptions.CellTimeoutError: A cell timed out while it was being execut
 The message was: Cell execution timed out.
 Here is a preview of the cell contents:
 -------------------
-["lat <- var.get.nc(data, 'lat')", "lon <- var.get.nc(data, 'lon')", 'time <- var.get.nc(data, "time")', '', '# Convert time to readable dates']
+['latitude <- var.get.nc(data, "lat")', 'latitude_vector <- as.vector(latitude)', 'df$latitude <- latitude_vector', '', 'longitude <- var.get.nc(data, "lon")']
 ...
-['  anom = anom_flat', ')', '', 'head(df)', "write.csv(df, '../data/exported_from_notebooks/temperature_anomalies_all_dates.csv', row.names = FALSE)"]
+['df$longitude <- longitude_vector', '', 'head(df)', "write_xlsx(df, '../data/exported_from_notebooks/2d_data.xlsx')", "write.csv(df, '../data/exported_from_notebooks/2d_data.csv', row.names = FALSE)"]
 -------------------
 
