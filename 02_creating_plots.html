@@ -171,6 +171,7 @@ const thebe_selector_output = ".output, .cell_output"
 <li class="toctree-l1"><a class="reference internal" href="01_opening_and_understanding.html">01: Opening and understanding</a></li>
 <li class="toctree-l1 current active"><a class="current reference internal" href="#">02: Creating Plots</a></li>
 <li class="toctree-l1"><a class="reference internal" href="03_extracting_data_to_different_formats.html">03: Extracting data to different formats</a></li>
+
 <li class="toctree-l1"><a class="reference internal" href="04_creating_a_cfnetcdf_file.html">04: Creating a CF-NetCDF file</a></li>
 </ul>
 
@@ -394,18 +395,15 @@ document.write(`
 <p>In this chapter we will look at how to plot data from a NetCDF file. We will look at a 1D data variable as well as some 2D data that we will plot on a map. Let’s load in some libraries that we will use.</p>
 <div class="cell docutils container">
 <div class="cell_input docutils container">
-<div class="highlight-r notranslate"><div class="highlight"><pre><span></span><span class="c1">#install.packages(&quot;RNetCDF&quot;)</span>
-<span class="c1">#install.packages(&quot;ggplot2&quot;)</span>
-<span class="nf">library</span><span class="p">(</span><span class="n">RNetCDF</span><span class="p">)</span>
+<div class="highlight-r notranslate"><div class="highlight"><pre><span></span><span class="nf">if </span><span class="p">(</span><span class="o">!</span><span class="nf">requireNamespace</span><span class="p">(</span><span class="s">&quot;ggplot2&quot;</span><span class="p">,</span><span class="w"> </span><span class="n">quietly</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="kc">TRUE</span><span class="p">))</span><span class="w"> </span><span class="p">{</span>
+<span class="w">  </span><span class="nf">install.packages</span><span class="p">(</span><span class="s">&quot;ggplot2&quot;</span><span class="p">)</span>
+<span class="p">}</span>
 <span class="nf">library</span><span class="p">(</span><span class="n">ggplot2</span><span class="p">)</span>
-</pre></div>
-</div>
-</div>
-<div class="cell_output docutils container">
-<div class="output traceback highlight-ipythontb notranslate"><div class="highlight"><pre><span></span>Error in library(ggplot2): there is no package called ‘ggplot2’
-Traceback:
-
-1. library(ggplot2)
+<span class="nf">library</span><span class="p">(</span><span class="n">RNetCDF</span><span class="p">)</span>
+<span class="nf">if </span><span class="p">(</span><span class="o">!</span><span class="nf">requireNamespace</span><span class="p">(</span><span class="s">&quot;maps&quot;</span><span class="p">,</span><span class="w"> </span><span class="n">quietly</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="kc">TRUE</span><span class="p">))</span><span class="w"> </span><span class="p">{</span>
+<span class="w">  </span><span class="nf">install.packages</span><span class="p">(</span><span class="s">&quot;maps&quot;</span><span class="p">)</span>
+<span class="p">}</span>
+<span class="nf">library</span><span class="p">(</span><span class="n">maps</span><span class="p">)</span>
 </pre></div>
 </div>
 </div>
@@ -439,6 +437,9 @@ Traceback:
 </pre></div>
 </div>
 </div>
+<div class="cell_output docutils container">
+<img alt="_images/b118ec91b498cea306147b9ae414177f355ed99fb13d2b90232541d93df9744e.png" src="_images/b118ec91b498cea306147b9ae414177f355ed99fb13d2b90232541d93df9744e.png" />
+</div>
 </div>
 <p>Let’s turn that around so depth is increasing going downwards.</p>
 <div class="cell docutils container">
@@ -455,6 +456,9 @@ Traceback:
 </pre></div>
 </div>
 </div>
+<div class="cell_output docutils container">
+<img alt="_images/24c1e63a26412e5967175b2185b46f39c1778185a026ba1bc54fa05de8ec02a0.png" src="_images/24c1e63a26412e5967175b2185b46f39c1778185a026ba1bc54fa05de8ec02a0.png" />
+</div>
 </div>
 <p>We can alternatively make a scatter plot.</p>
 <div class="cell docutils container">
@@ -470,6 +474,9 @@ Traceback:
 <span class="p">)</span>
 </pre></div>
 </div>
+</div>
+<div class="cell_output docutils container">
+<img alt="_images/0f6a4ec8d6d66f920195c658d74b87d08ded1333e37c2f78dd45aa0f5c019bf2.png" src="_images/0f6a4ec8d6d66f920195c658d74b87d08ded1333e37c2f78dd45aa0f5c019bf2.png" />
 </div>
 </div>
 <div class="cell docutils container">
@@ -508,6 +515,9 @@ Traceback:
 <span class="p">)</span>
 </pre></div>
 </div>
+</div>
+<div class="cell_output docutils container">
+<img alt="_images/ba679b822f79ead896f6931ab73dc48caa11337dc1dbf317b10d79995c927f31.png" src="_images/ba679b822f79ead896f6931ab73dc48caa11337dc1dbf317b10d79995c927f31.png" />
 </div>
 </div>
 <div class="cell docutils container">
@@ -555,6 +565,9 @@ Traceback:
 </pre></div>
 </div>
 </div>
+<div class="cell_output docutils container">
+<img alt="_images/3fb56ea02c92202fa795795fc4930fef7f8db99507c36081513a870b74e5e823.png" src="_images/3fb56ea02c92202fa795795fc4930fef7f8db99507c36081513a870b74e5e823.png" />
+</div>
 </div>
 </section>
 <section id="plotting-2d-data-on-a-map">
@@ -595,6 +608,9 @@ Traceback:
 </pre></div>
 </div>
 </div>
+<div class="cell_output docutils container">
+<img alt="_images/4cfaafd9adc31b330ecd63356af1e217bfa4fea8fab640f5123e6d9af404547b.png" src="_images/4cfaafd9adc31b330ecd63356af1e217bfa4fea8fab640f5123e6d9af404547b.png" />
+</div>
 </div>
 <p>That is very basic! Let’s use ggplot.</p>
 <p>The longitudes need to be adjusted to between -180° and 180° to align with the coastlines in the map.</p>
@@ -612,6 +628,9 @@ Traceback:
 </pre></div>
 </div>
 </div>
+<div class="cell_output docutils container">
+<img alt="_images/dd6afe7e921e353e8749b1c85c2bace0aa1f0cdba0aee024d36beef0237f81a2.png" src="_images/dd6afe7e921e353e8749b1c85c2bace0aa1f0cdba0aee024d36beef0237f81a2.png" />
+</div>
 </div>
 <p>Let’s add the coastlines and country borders now.</p>
 <div class="cell docutils container">
@@ -624,6 +643,9 @@ Traceback:
 <span class="w">               </span><span class="n">color</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="s">&quot;black&quot;</span><span class="p">,</span><span class="w"> </span><span class="n">fill</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="kc">NA</span><span class="p">)</span>
 </pre></div>
 </div>
+</div>
+<div class="cell_output docutils container">
+<img alt="_images/98a3d2fc4e28202277da77a734d00338bda5777810b931442d999fe13b8b92f0.png" src="_images/98a3d2fc4e28202277da77a734d00338bda5777810b931442d999fe13b8b92f0.png" />
 </div>
 </div>
 <p>We need to shift the longitude values in our dataframe to be between -180 and 180 instead of 0 and 360-</p>
@@ -645,6 +667,9 @@ Traceback:
 </pre></div>
 </div>
 </div>
+<div class="cell_output docutils container">
+<img alt="_images/9174814f4d94459492e94b0550c04eb0c2ac0e801177f8b1de04af9ddc837bc6.png" src="_images/9174814f4d94459492e94b0550c04eb0c2ac0e801177f8b1de04af9ddc837bc6.png" />
+</div>
 </div>
 <p>We can adjust the aspect ratio</p>
 <div class="cell docutils container">
@@ -657,6 +682,9 @@ Traceback:
 <span class="w">               </span><span class="n">color</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="s">&quot;black&quot;</span><span class="p">,</span><span class="w"> </span><span class="n">fill</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="kc">NA</span><span class="p">)</span>
 </pre></div>
 </div>
+</div>
+<div class="cell_output docutils container">
+<img alt="_images/85c84971742667f2754516a59185cf34c64f747319fca16cdfd145e389ae2648.png" src="_images/85c84971742667f2754516a59185cf34c64f747319fca16cdfd145e389ae2648.png" />
 </div>
 </div>
 <p>Let’s remove the grey box by using <code class="docutils literal notranslate"><span class="pre">theme_minimal</span></code>.</p>
@@ -671,6 +699,9 @@ Traceback:
 <span class="w">               </span><span class="n">color</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="s">&quot;black&quot;</span><span class="p">,</span><span class="w"> </span><span class="n">fill</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="kc">NA</span><span class="p">)</span>
 </pre></div>
 </div>
+</div>
+<div class="cell_output docutils container">
+<img alt="_images/5f2ed3cb8705a379fe2acac9147e4023d68070b4805ea9176a5df1c84ce5d917.png" src="_images/5f2ed3cb8705a379fe2acac9147e4023d68070b4805ea9176a5df1c84ce5d917.png" />
 </div>
 </div>
 <p>We might also want to change the label on our colour palette to something more understandable. Let’s also move the colour bar to below the axis.</p>
@@ -688,6 +719,9 @@ Traceback:
 </pre></div>
 </div>
 </div>
+<div class="cell_output docutils container">
+<img alt="_images/9263be23f11e934ccb31919ee033b4ae51899df5bf242cfcc4d10480be26cb2a.png" src="_images/9263be23f11e934ccb31919ee033b4ae51899df5bf242cfcc4d10480be26cb2a.png" />
+</div>
 </div>
 <p>Finally, let’s add a title.</p>
 <div class="cell docutils container">
@@ -704,6 +738,9 @@ Traceback:
 <span class="w">               </span><span class="n">color</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="s">&quot;black&quot;</span><span class="p">,</span><span class="w"> </span><span class="n">fill</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="kc">NA</span><span class="p">)</span>
 </pre></div>
 </div>
+</div>
+<div class="cell_output docutils container">
+<img alt="_images/60f24e813924d397d1ab1379ab7560f741ee0d194f4412772648b0a3f965c65f.png" src="_images/60f24e813924d397d1ab1379ab7560f741ee0d194f4412772648b0a3f965c65f.png" />
 </div>
 </div>
 <p>Maybe we want to zoom in on a certain region.</p>
@@ -723,6 +760,14 @@ Traceback:
 <span class="w">               </span><span class="n">color</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="s">&quot;black&quot;</span><span class="p">,</span><span class="w"> </span><span class="n">fill</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="kc">NA</span><span class="p">)</span>
 </pre></div>
 </div>
+</div>
+<div class="cell_output docutils container">
+<div class="output stderr highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>Warning message:
+“Removed 2480 rows containing missing values or values outside the scale range
+(`geom_tile()`).”
+</pre></div>
+</div>
+<img alt="_images/c49c360aa5ff4dc3e3755910e3cddc444aa6abc2a5efafc76a7c1273f44a5ce0.png" src="_images/c49c360aa5ff4dc3e3755910e3cddc444aa6abc2a5efafc76a7c1273f44a5ce0.png" />
 </div>
 </div>
 <p>Finally, let’s write that as a function so you can easily run it for whichever date you want to. Here’s the whole code including the bits before the function, so you can easily take this with you and run it yourself.</p>
@@ -773,6 +818,11 @@ Traceback:
 <span class="nf">plot_temp_anomaly</span><span class="p">(</span><span class="nf">as.Date</span><span class="p">(</span><span class="s">&#39;2020-01-01&#39;</span><span class="p">),</span><span class="w"> </span><span class="n">data</span><span class="p">)</span>
 </pre></div>
 </div>
+</div>
+<div class="cell_output docutils container">
+<img alt="_images/0cfefb75caf731fd33fc4aa2fe4b0da2e05f95dac8cb27c3ee54b86ac5148413.png" src="_images/0cfefb75caf731fd33fc4aa2fe4b0da2e05f95dac8cb27c3ee54b86ac5148413.png" />
+<img alt="_images/f95fc123de4b2e23b05109a32094e59fa7dea3e4a17c1a1bb957efa2e6f16a10.png" src="_images/f95fc123de4b2e23b05109a32094e59fa7dea3e4a17c1a1bb957efa2e6f16a10.png" />
+<img alt="_images/4fc22878183903b1bff83e92ab6f2a7e53832ac81bca02be5d207e770a30dd01.png" src="_images/4fc22878183903b1bff83e92ab6f2a7e53832ac81bca02be5d207e770a30dd01.png" />
 </div>
 </div>
 <p>This is only a short demonstration of how easy it can be to plot data out of a CF-NetCDF file. R is great for plotting data and data analysis and there are many good tutorials online, so go and explore!</p>
