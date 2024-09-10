@@ -172,6 +172,7 @@ const thebe_selector_output = ".output, .cell_output"
 <li class="toctree-l1"><a class="reference internal" href="01_opening_and_understanding.html">01: Opening and understanding</a></li>
 <li class="toctree-l1"><a class="reference internal" href="02_creating_plots.html">02: Creating Plots</a></li>
 <li class="toctree-l1"><a class="reference internal" href="03_extracting_data_to_different_formats.html">03: Extracting data to different formats</a></li>
+
 <li class="toctree-l1 current active"><a class="current reference internal" href="#">04: Creating a CF-NetCDF file</a></li>
 </ul>
 
@@ -458,7 +459,7 @@ dimensions:
 </div>
 </div>
 <p>You then need to add a coordinate variable (I’ll again call it <em>depth</em>) which has a dimension of <em>depth</em>. It is quite common for the dimension and coordinate variable to have the same name.</p>
-<p>First we define the variable. Below the first argument <em>ncds</em> is my NetCDF file, <em>depth</em> is the name I am giving to the dimension, <em>NC_INT</em> means the values will be integers, and the final argument <em>depth</em> says that this variable has one dimension call depth.</p>
+<p>First we define the variable. In the <code class="docutils literal notranslate"><span class="pre">var.get.nc</span></code> function below, the first argument <em>ncds</em> is my NetCDF file, <em>depth</em> is the name I am giving to the dimension, <em>NC_INT</em> is stating that the values will be integers, and the final argument <em>depth</em> says that this variable has one dimension called depth.</p>
 <div class="cell docutils container">
 <div class="cell_input docutils container">
 <div class="highlight-r notranslate"><div class="highlight"><pre><span></span><span class="nf">var.def.nc</span><span class="p">(</span><span class="n">ncds</span><span class="p">,</span><span class="s">&quot;depth&quot;</span><span class="p">,</span><span class="s">&quot;NC_INT&quot;</span><span class="p">,</span><span class="s">&quot;depth&quot;</span><span class="p">)</span>
@@ -548,8 +549,9 @@ variables:
 </div>
 <p>There are specific recommendations on how time should be stored in NetCDF-CF files. I will try to explain briefly here, and there is a nice explanation here too: <a class="reference external" href="https://www.unidata.ucar.edu/software/netcdf/time/recs.html">https://www.unidata.ucar.edu/software/netcdf/time/recs.html</a></p>
 <p>It is most common to have a dimension named “time” as well as a coordinate variable with the same name. Let’s discuss the variable first.</p>
-<p>The “time” variable has units that count from a user defined origin, for example “hours since 2020-01-01 00:00 UTC” or “days since 2014-01-01”. The units may be in years, days, seconds, nanoseconds, etc. Whilst this approach may seem strange at a glance, it allows the times to be stored in conventional numerical formats such as integers or floats, and to our desired precision. This is much more efficient than using a long timestamp string for each coordinate.</p>
+<p>The “time” variable has units that count from a user defined origin, for example “hours since 2020-01-01 00:00 UTC” or “days since 2014-01-01”. The units may be in years, days, seconds, nanoseconds, etc. Whilst this approach may seem strange at a glance, it allows the times to be stored in a conventional numerical format such as integers or floats, and to our desired precision. This is much more efficient than using a long timestamp string for each time.</p>
 <p>Some softwares (e.g. xarray in Python, Panoply) know how to interpret this and will convert the data into timestamps in when you extract the data from a CF-NetCDF file. Unfortunately, at the time of writing, RNetCDF can not do this.</p>
+<p>Let’s see how we can convert our list of timestamps above into this format.</p>
 <div class="cell docutils container">
 <div class="cell_input docutils container">
 <div class="highlight-r notranslate"><div class="highlight"><pre><span></span><span class="c1"># Calculate the time differences in hours since the first timestamp</span>
@@ -632,7 +634,7 @@ variables:
 </section>
 <section id="data-variables">
 <h2>Data Variables<a class="headerlink" href="#data-variables" title="Permalink to this heading">#</a></h2>
-<p>Now let’s add some data variables. Starting from the NetCDF file created directly above that has multiple dimensions.</p>
+<p>Now let’s add some data variables.</p>
 <p>You can choose what name you assign for each variable. This is not standardised, but be sensible and clear. I will show you how to make your data variables conform to the CF conventions using variable attributes in the next section.</p>
 <section id="d-variable">
 <h3>1D variable<a class="headerlink" href="#d-variable" title="Permalink to this heading">#</a></h3>
@@ -648,7 +650,7 @@ variables:
 <span class="nf">var.def.nc</span><span class="p">(</span><span class="n">ncds</span><span class="p">,</span><span class="s">&quot;depth&quot;</span><span class="p">,</span><span class="s">&quot;NC_INT&quot;</span><span class="p">,</span><span class="s">&quot;depth&quot;</span><span class="p">)</span>
 <span class="nf">var.put.nc</span><span class="p">(</span><span class="n">ncds</span><span class="p">,</span><span class="w"> </span><span class="s">&quot;depth&quot;</span><span class="p">,</span><span class="w"> </span><span class="n">depths</span><span class="p">)</span>
 
-<span class="c1"># Data variable with 1 dimension</span>
+<span class="c1"># Data variable (chlorophyll_a) with 1 dimension (depth)</span>
 <span class="nf">var.def.nc</span><span class="p">(</span><span class="n">ncds</span><span class="p">,</span><span class="s">&quot;chlorophyll_a&quot;</span><span class="p">,</span><span class="w"> </span><span class="s">&quot;NC_DOUBLE&quot;</span><span class="p">,</span><span class="w"> </span><span class="s">&quot;depth&quot;</span><span class="p">)</span>
 <span class="nf">var.put.nc</span><span class="p">(</span><span class="n">ncds</span><span class="p">,</span><span class="s">&quot;chlorophyll_a&quot;</span><span class="p">,</span><span class="w"> </span><span class="n">chlorophyll_a</span><span class="p">)</span>
 <span class="nf">print.nc</span><span class="p">(</span><span class="n">ncds</span><span class="p">)</span>
@@ -689,10 +691,10 @@ variables:
 </div>
 </div>
 <div class="cell_output docutils container">
-<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>            [,1]     [,2]
-[1,] 0.006746668 7.072877
-[2,] 2.427205718 7.512966
-[3,] 3.995843008 8.875598
+<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>          [,1]      [,2]
+[1,] 5.4183771 4.1929467
+[2,] 0.5210648 0.4176515
+[3,] 5.7647897 3.6753942
 </pre></div>
 </div>
 </div>
@@ -729,10 +731,10 @@ variables:
 }
 </pre></div>
 </div>
-<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>            [,1]     [,2]
-[1,] 0.006746668 7.072877
-[2,] 2.427205718 7.512966
-[3,] 3.995843008 8.875598
+<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>          [,1]      [,2]
+[1,] 5.4183771 4.1929467
+[2,] 0.5210648 0.4176515
+[3,] 5.7647897 3.6753942
 </pre></div>
 </div>
 </div>
@@ -778,23 +780,23 @@ variables:
 <div class="cell_output docutils container">
 <div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>, , 1
 
-          [,1]      [,2]      [,3]
-[1,] 0.7378683 0.7632724 1.3497407
-[2,] 1.1297617 0.7281608 0.3089237
-[3,] 0.8852834 0.8071538 1.4563060
-[4,] 1.6461949 1.4149698 0.3467044
-[5,] 1.2651997 1.6330159 1.9648974
-[6,] 0.4972041 1.0990290 1.9946141
+          [,1]       [,2]      [,3]
+[1,] 0.9600407 0.99207516 1.8177707
+[2,] 0.1784756 0.88239999 0.1223792
+[3,] 0.9260579 0.23390289 0.6543067
+[4,] 0.1192682 1.57188438 0.7362745
+[5,] 0.8863773 0.03657229 0.9604009
+[6,] 1.3880040 1.49334065 1.8301399
 
 , , 2
 
           [,1]      [,2]      [,3]
-[1,] 1.9005102 1.0983505 1.4121690
-[2,] 1.2623425 0.7391690 1.5924651
-[3,] 1.1554081 0.8991226 0.2394562
-[4,] 0.9192146 1.0971142 0.9754731
-[5,] 0.3057705 0.3559349 0.8854389
-[6,] 1.3503461 0.4055826 0.5901712
+[1,] 1.8302520 0.4667581 0.8080242
+[2,] 1.3151506 1.7297338 1.2713220
+[3,] 0.8345177 1.5941170 1.3256790
+[4,] 1.3493702 0.9415859 1.2376321
+[5,] 0.9199027 1.6856792 0.4565640
+[6,] 1.5457984 0.1848856 0.9062077
 </pre></div>
 </div>
 <div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>netcdf classic {
@@ -815,8 +817,8 @@ variables:
 </section>
 <section id="d-data-from-data-frame">
 <h3>3D data from data frame<a class="headerlink" href="#d-data-from-data-frame" title="Permalink to this heading">#</a></h3>
-<p>What if you have your data in Excel or a CSV file or some other tabular format? We can load in the data to a dataframe (above) and then convert the data to a 3D array.</p>
-<p>I’ll create a dummy dataframe here.</p>
+<p>What if you have your data in Excel or a CSV file or some other tabular format? We can load in the data to a dataframe and then convert the data to a 3D array.</p>
+<p>The code below is simply creating a dummy dataframe to use in this example.</p>
 <div class="cell docutils container">
 <div class="cell_input docutils container">
 <div class="highlight-r notranslate"><div class="highlight"><pre><span></span><span class="n">depths</span><span class="w"> </span><span class="o">&lt;-</span><span class="w"> </span><span class="nf">c</span><span class="p">(</span><span class="m">0</span><span class="p">,</span><span class="m">10</span><span class="p">,</span><span class="m">20</span><span class="p">,</span><span class="m">30</span><span class="p">,</span><span class="m">50</span><span class="p">,</span><span class="m">100</span><span class="p">)</span>
@@ -862,12 +864,12 @@ variables:
 	<tr><th></th><th scope=col>&lt;dbl&gt;</th><th scope=col>&lt;dbl&gt;</th><th scope=col>&lt;dbl&gt;</th><th scope=col>&lt;dbl&gt;</th></tr>
 </thead>
 <tbody>
-	<tr><th scope=row>1</th><td>0</td><td>78.5271</td><td>30.1515</td><td>34.95121</td></tr>
-	<tr><th scope=row>2</th><td>0</td><td>78.5271</td><td>28.5810</td><td>31.38647</td></tr>
-	<tr><th scope=row>3</th><td>0</td><td>79.2316</td><td>30.1515</td><td>33.82106</td></tr>
-	<tr><th scope=row>4</th><td>0</td><td>79.2316</td><td>28.5810</td><td>32.84098</td></tr>
-	<tr><th scope=row>5</th><td>0</td><td>80.3261</td><td>30.1515</td><td>33.13868</td></tr>
-	<tr><th scope=row>6</th><td>0</td><td>80.3261</td><td>28.5810</td><td>34.76885</td></tr>
+	<tr><th scope=row>1</th><td>0</td><td>78.5271</td><td>30.1515</td><td>33.09826</td></tr>
+	<tr><th scope=row>2</th><td>0</td><td>78.5271</td><td>28.5810</td><td>32.60869</td></tr>
+	<tr><th scope=row>3</th><td>0</td><td>79.2316</td><td>30.1515</td><td>31.91330</td></tr>
+	<tr><th scope=row>4</th><td>0</td><td>79.2316</td><td>28.5810</td><td>30.75419</td></tr>
+	<tr><th scope=row>5</th><td>0</td><td>80.3261</td><td>30.1515</td><td>33.12827</td></tr>
+	<tr><th scope=row>6</th><td>0</td><td>80.3261</td><td>28.5810</td><td>31.32666</td></tr>
 </tbody>
 </table>
 </div></div>
@@ -884,26 +886,27 @@ variables:
 <div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>, , 1
 
          [,1]     [,2]     [,3]
-[1,] 34.95121 33.93619 33.35741
-[2,] 31.38647 32.72915 34.35160
-[3,] 33.82106 34.21903 33.34154
-[4,] 32.84098 30.79808 33.77941
-[5,] 33.13868 34.84651 32.41679
-[6,] 34.76885 33.91881 30.42228
+[1,] 33.09826 30.54771 31.41081
+[2,] 32.60869 31.33299 32.16000
+[3,] 31.91330 33.34187 33.34417
+[4,] 30.75419 34.32185 32.34614
+[5,] 33.12827 31.17905 34.33076
+[6,] 31.32666 31.49208 32.38646
 
 , , 2
 
          [,1]     [,2]     [,3]
-[1,] 31.31581 33.92391 33.07140
-[2,] 32.56664 33.69165 33.14205
-[3,] 32.51224 32.38099 32.72667
-[4,] 30.85710 32.91478 33.45412
-[5,] 34.85481 30.21363 31.70215
-[6,] 31.64318 32.51365 34.49260
+[1,] 30.73761 33.96041 32.29761
+[2,] 30.85692 31.43880 32.59018
+[3,] 31.75448 33.06561 31.03969
+[4,] 34.08271 33.58487 30.20442
+[5,] 31.52565 32.03381 33.87938
+[6,] 33.66632 34.40638 30.00484
 </pre></div>
 </div>
 </div>
 </div>
+<p>Now we just need to write the data to a NetCDF file, including our 3D array.</p>
 <div class="cell docutils container">
 <div class="cell_input docutils container">
 <div class="highlight-r notranslate"><div class="highlight"><pre><span></span><span class="n">ncds</span><span class="w"> </span><span class="o">&lt;-</span><span class="w"> </span><span class="nf">create.nc</span><span class="p">(</span><span class="s">&quot;../data/exported_from_notebooks/3d_sea_water_salinity.nc&quot;</span><span class="p">)</span>
@@ -949,19 +952,18 @@ variables:
 </section>
 <section id="metadata-attributes">
 <h2>Metadata (attributes)<a class="headerlink" href="#metadata-attributes" title="Permalink to this heading">#</a></h2>
-<p>Hurrah! Your data are in the xarray dataset object. But are you ready to export a NetCDF file? Will that file be compliant with the FAIR principles? No! We need metadata.</p>
+<p>Hurrah! Your data are in a NetCDF file. But is that file be compliant with the FAIR principles? No! We need metadata.</p>
 <p>Variable attributes are metadata that describe the variables. Global attributes are metadata that describe the file as a whole. You can find a list of attributes here provided by the Climate &amp; Forecast (CF) conventions:
 <a class="reference external" href="https://cfconventions.org/Data/cf-conventions/cf-conventions-1.11/cf-conventions.html#attribute-appendix">https://cfconventions.org/Data/cf-conventions/cf-conventions-1.11/cf-conventions.html#attribute-appendix</a></p>
 <p>The table in the link above specifies which attributes can be used as global attributes and which can be used as variable attributes. Some attributes can be used as either.</p>
 <p>The CF conventions are light on discovery metadata. Discovery metadata are metadata that can be used to find data. For example, when and where the data were collected and by whom, some keywords etc. So we also use the ACDD convention - The Attribute Convention for Data Discovery.
 <a class="reference external" href="https://wiki.esipfed.org/Attribute_Convention_for_Data_Discovery_1-3">https://wiki.esipfed.org/Attribute_Convention_for_Data_Discovery_1-3</a></p>
-<p>This is a list of recommendations. SIOS advises that people follow the requirements of the Arctic Data Centre, here. Requirements are a more effective way to encourage consistency than recommendations. These requirements are compliant with the ACDD conventions:
+<p>This is a list of recommendations. SIOS advises that people follow the requirements of the Arctic Data Centre, linked below. Requirements are a more effective way to encourage consistency than recommendations. These requirements are compliant with the ACDD conventions:
 <a class="reference external" href="https://adc.met.no/node/4">https://adc.met.no/node/4</a></p>
 <section id="variable-attributes">
 <h3>Variable attributes<a class="headerlink" href="#variable-attributes" title="Permalink to this heading">#</a></h3>
 <p>The CF conventions provide examples of which variable attributes you should be including in your CF-NetCDF file. For example for latitude:
 <a class="reference external" href="https://cfconventions.org/Data/cf-conventions/cf-conventions-1.10/cf-conventions.html#latitude-coordinate">https://cfconventions.org/Data/cf-conventions/cf-conventions-1.10/cf-conventions.html#latitude-coordinate</a></p>
-<p>Let’s replicate that setup.</p>
 <p>Additionally, the ACDD convention recommends that and attribute <em>coverage_content_type</em> is also added, which is used to state whether the data are <em>modelResult</em>, <em>physicalMeasurement</em> or something else, see the list here:
 <a class="reference external" href="https://wiki.esipfed.org/Attribute_Convention_for_Data_Discovery_1-3#Highly_Recommended_Variable_Attributes">https://wiki.esipfed.org/Attribute_Convention_for_Data_Discovery_1-3#Highly_Recommended_Variable_Attributes</a></p>
 <p>And remember we might want to select additional applicable attributes for our variables from this section of the CF conventions:
@@ -1033,7 +1035,7 @@ variables:
 <p>And remember we might want to select additional applicable global attributes from this section of the CF conventions:
 <a class="reference external" href="https://cfconventions.org/Data/cf-conventions/cf-conventions-1.11/cf-conventions.html#attribute-appendix">https://cfconventions.org/Data/cf-conventions/cf-conventions-1.11/cf-conventions.html#attribute-appendix</a></p>
 <p>Go through and add each required attribute and any others you wish to. You are also welcome to add any custom attributes on top of these requirements.</p>
-<p>In RNetCDF, the syntax for adding a global attribute is the same as for adding a variable attribute, but we use a special variable name <em>NC_GLOBAL</em>.</p>
+<p>In RNetCDF, the syntax for adding a global attribute is the same as for adding a variable attribute, but we use a special “variable” name <em>NC_GLOBAL</em>.</p>
 <div class="cell docutils container">
 <div class="cell_input docutils container">
 <div class="highlight-r notranslate"><div class="highlight"><pre><span></span><span class="c1"># Define the global attributes as an R list</span>
@@ -1127,6 +1129,7 @@ variables:
 </div>
 </div>
 <p>In this case, it makes sense to add some attributes based on information we have already provided.</p>
+<p>For example, the geospatial limits can be derived from our data.</p>
 <div class="cell docutils container">
 <div class="cell_input docutils container">
 <div class="highlight-r notranslate"><div class="highlight"><pre><span></span><span class="nf">att.put.nc</span><span class="p">(</span><span class="n">ncds</span><span class="p">,</span><span class="w"> </span><span class="s">&quot;NC_GLOBAL&quot;</span><span class="p">,</span><span class="w"> </span><span class="s">&quot;geospatial_lat_min&quot;</span><span class="p">,</span><span class="w"> </span><span class="s">&quot;NC_FLOAT&quot;</span><span class="p">,</span><span class="w"> </span><span class="nf">min</span><span class="p">(</span><span class="n">lat</span><span class="p">))</span>
@@ -1204,8 +1207,8 @@ variables:
 		NC_FLOAT :geospatial_lat_max = 80.3261032104492 ;
 		NC_FLOAT :geospatial_lon_min = 28.5809993743896 ;
 		NC_FLOAT :geospatial_lon_max = 28.5809993743896 ;
-		NC_CHAR :date_created = &quot;2024-05-31T09:27:13Z&quot; ;
-		NC_CHAR :history = &quot;File created at 2024-05-31 09:27:13.680088 using RNetCDF by Luke Marsden&quot; ;
+		NC_CHAR :date_created = &quot;2024-09-10T12:17:09Z&quot; ;
+		NC_CHAR :history = &quot;File created at 2024-09-10 12:17:09.803297 using RNetCDF by Luke Marsden&quot; ;
 }
 </pre></div>
 </div>
