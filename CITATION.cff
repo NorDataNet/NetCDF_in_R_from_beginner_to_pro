@@ -12,7 +12,7 @@ abstract: '<p>Want to learn how to work with NetCDF files? Know a bit of R? You 
   and the Attribute Convention for Data Discovery (ACDD - https://wiki.esipfed.org/Attribute_Convention_for_Data_Discovery_1-3),
   and how to make sure your files are compliant with them.</p>
 
-  <p>You can view the Jupyter book at https://lhmarsden.github.io/NetCDF_in_R_from_beginner_to_pro</p>'
+  <p>You can view the Jupyter book at https://nordatanet.github.io/NetCDF_in_R_from_beginner_to_pro</p>'
 authors:
 - affiliation: Norwegian Meteorological Institute
   family-names: Marsden
