@@ -172,7 +172,6 @@ const thebe_selector_output = ".output, .cell_output"
 <li class="toctree-l1"><a class="reference internal" href="01_opening_and_understanding.html">01: Opening and understanding</a></li>
 <li class="toctree-l1"><a class="reference internal" href="02_creating_plots.html">02: Creating Plots</a></li>
 <li class="toctree-l1"><a class="reference internal" href="03_extracting_data_to_different_formats.html">03: Extracting data to different formats</a></li>
-
 <li class="toctree-l1 current active"><a class="current reference internal" href="#">04: Creating a CF-NetCDF file</a></li>
 </ul>
 
@@ -379,6 +378,7 @@ document.write(`
 <li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#id1">2D variable</a></li>
 <li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#id2">3D variable</a></li>
 <li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#d-data-from-data-frame">3D data from data frame</a></li>
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#data-on-irregular-grids-or-instruments-that-move">Data on irregular grids or instruments that move</a></li>
 </ul>
 </li>
 <li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#metadata-attributes">Metadata (attributes)</a><ul class="nav section-nav flex-column">
@@ -605,8 +605,8 @@ variables:
 <span class="nf">dim.def.nc</span><span class="p">(</span><span class="n">ncds</span><span class="p">,</span><span class="s">&quot;longitude&quot;</span><span class="p">,</span><span class="nf">length</span><span class="p">(</span><span class="n">longitudes</span><span class="p">))</span>
 
 <span class="nf">var.def.nc</span><span class="p">(</span><span class="n">ncds</span><span class="p">,</span><span class="s">&quot;depth&quot;</span><span class="p">,</span><span class="s">&quot;NC_INT&quot;</span><span class="p">,</span><span class="s">&quot;depth&quot;</span><span class="p">)</span>
-<span class="nf">var.def.nc</span><span class="p">(</span><span class="n">ncds</span><span class="p">,</span><span class="s">&quot;latitude&quot;</span><span class="p">,</span><span class="s">&quot;NC_DOUBLE&quot;</span><span class="p">,</span><span class="s">&quot;latitude&quot;</span><span class="p">)</span><span class="w"> </span><span class="c1"># Values have decimal places, so NC_DOUBLE</span>
-<span class="nf">var.def.nc</span><span class="p">(</span><span class="n">ncds</span><span class="p">,</span><span class="s">&quot;longitude&quot;</span><span class="p">,</span><span class="s">&quot;NC_DOUBLE&quot;</span><span class="p">,</span><span class="s">&quot;longitude&quot;</span><span class="p">)</span><span class="w"> </span><span class="c1"># Values have decimal places, so NC_DOUBLE</span>
+<span class="nf">var.def.nc</span><span class="p">(</span><span class="n">ncds</span><span class="p">,</span><span class="s">&quot;latitude&quot;</span><span class="p">,</span><span class="s">&quot;NC_FLOAT&quot;</span><span class="p">,</span><span class="s">&quot;latitude&quot;</span><span class="p">)</span><span class="w"> </span><span class="c1"># Values have decimal places, so NC_FLOAT</span>
+<span class="nf">var.def.nc</span><span class="p">(</span><span class="n">ncds</span><span class="p">,</span><span class="s">&quot;longitude&quot;</span><span class="p">,</span><span class="s">&quot;NC_FLOAT&quot;</span><span class="p">,</span><span class="s">&quot;longitude&quot;</span><span class="p">)</span><span class="w"> </span><span class="c1"># Values have decimal places, so NC_FLOAT</span>
 
 <span class="nf">var.put.nc</span><span class="p">(</span><span class="n">ncds</span><span class="p">,</span><span class="w"> </span><span class="s">&quot;depth&quot;</span><span class="p">,</span><span class="w"> </span><span class="n">depths</span><span class="p">)</span>
 <span class="nf">var.put.nc</span><span class="p">(</span><span class="n">ncds</span><span class="p">,</span><span class="w"> </span><span class="s">&quot;latitude&quot;</span><span class="p">,</span><span class="w"> </span><span class="n">latitudes</span><span class="p">)</span>
@@ -623,8 +623,8 @@ dimensions:
 	longitude = 2 ;
 variables:
 	NC_INT depth(depth) ;
-	NC_DOUBLE latitude(latitude) ;
-	NC_DOUBLE longitude(longitude) ;
+	NC_FLOAT latitude(latitude) ;
+	NC_FLOAT longitude(longitude) ;
 }
 </pre></div>
 </div>
@@ -651,7 +651,7 @@ variables:
 <span class="nf">var.put.nc</span><span class="p">(</span><span class="n">ncds</span><span class="p">,</span><span class="w"> </span><span class="s">&quot;depth&quot;</span><span class="p">,</span><span class="w"> </span><span class="n">depths</span><span class="p">)</span>
 
 <span class="c1"># Data variable (chlorophyll_a) with 1 dimension (depth)</span>
-<span class="nf">var.def.nc</span><span class="p">(</span><span class="n">ncds</span><span class="p">,</span><span class="s">&quot;chlorophyll_a&quot;</span><span class="p">,</span><span class="w"> </span><span class="s">&quot;NC_DOUBLE&quot;</span><span class="p">,</span><span class="w"> </span><span class="s">&quot;depth&quot;</span><span class="p">)</span>
+<span class="nf">var.def.nc</span><span class="p">(</span><span class="n">ncds</span><span class="p">,</span><span class="s">&quot;chlorophyll_a&quot;</span><span class="p">,</span><span class="w"> </span><span class="s">&quot;NC_FLOAT&quot;</span><span class="p">,</span><span class="w"> </span><span class="s">&quot;depth&quot;</span><span class="p">)</span>
 <span class="nf">var.put.nc</span><span class="p">(</span><span class="n">ncds</span><span class="p">,</span><span class="s">&quot;chlorophyll_a&quot;</span><span class="p">,</span><span class="w"> </span><span class="n">chlorophyll_a</span><span class="p">)</span>
 <span class="nf">print.nc</span><span class="p">(</span><span class="n">ncds</span><span class="p">)</span>
 <span class="nf">print</span><span class="p">(</span><span class="nf">var.get.nc</span><span class="p">(</span><span class="n">ncds</span><span class="p">,</span><span class="s">&quot;chlorophyll_a&quot;</span><span class="p">))</span>
@@ -664,7 +664,7 @@ dimensions:
 	depth = 6 ;
 variables:
 	NC_INT depth(depth) ;
-	NC_DOUBLE chlorophyll_a(depth) ;
+	NC_FLOAT chlorophyll_a(depth) ;
 }
 </pre></div>
 </div>
@@ -692,9 +692,9 @@ variables:
 </div>
 <div class="cell_output docutils container">
 <div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>         [,1]     [,2]
-[1,] 2.417279 4.223918
-[2,] 2.847261 8.864336
-[3,] 7.281250 5.695519
+[1,] 1.126785 5.047341
+[2,] 8.887539 9.400357
+[3,] 8.159304 8.833639
 </pre></div>
 </div>
 </div>
@@ -706,13 +706,13 @@ variables:
 <span class="c1"># Dimensions and coordinate variables</span>
 <span class="nf">dim.def.nc</span><span class="p">(</span><span class="n">ncds</span><span class="p">,</span><span class="s">&quot;latitude&quot;</span><span class="p">,</span><span class="nf">length</span><span class="p">(</span><span class="n">latitudes</span><span class="p">))</span>
 <span class="nf">dim.def.nc</span><span class="p">(</span><span class="n">ncds</span><span class="p">,</span><span class="s">&quot;longitude&quot;</span><span class="p">,</span><span class="nf">length</span><span class="p">(</span><span class="n">longitudes</span><span class="p">))</span>
-<span class="nf">var.def.nc</span><span class="p">(</span><span class="n">ncds</span><span class="p">,</span><span class="s">&quot;latitude&quot;</span><span class="p">,</span><span class="s">&quot;NC_DOUBLE&quot;</span><span class="p">,</span><span class="s">&quot;latitude&quot;</span><span class="p">)</span>
-<span class="nf">var.def.nc</span><span class="p">(</span><span class="n">ncds</span><span class="p">,</span><span class="s">&quot;longitude&quot;</span><span class="p">,</span><span class="s">&quot;NC_DOUBLE&quot;</span><span class="p">,</span><span class="s">&quot;longitude&quot;</span><span class="p">)</span>
+<span class="nf">var.def.nc</span><span class="p">(</span><span class="n">ncds</span><span class="p">,</span><span class="s">&quot;latitude&quot;</span><span class="p">,</span><span class="s">&quot;NC_FLOAT&quot;</span><span class="p">,</span><span class="s">&quot;latitude&quot;</span><span class="p">)</span>
+<span class="nf">var.def.nc</span><span class="p">(</span><span class="n">ncds</span><span class="p">,</span><span class="s">&quot;longitude&quot;</span><span class="p">,</span><span class="s">&quot;NC_FLOAT&quot;</span><span class="p">,</span><span class="s">&quot;longitude&quot;</span><span class="p">)</span>
 <span class="nf">var.put.nc</span><span class="p">(</span><span class="n">ncds</span><span class="p">,</span><span class="w"> </span><span class="s">&quot;latitude&quot;</span><span class="p">,</span><span class="w"> </span><span class="n">latitudes</span><span class="p">)</span>
 <span class="nf">var.put.nc</span><span class="p">(</span><span class="n">ncds</span><span class="p">,</span><span class="w"> </span><span class="s">&quot;longitude&quot;</span><span class="p">,</span><span class="w"> </span><span class="n">longitudes</span><span class="p">)</span>
 
 <span class="c1"># Data variable with 2 dimensions</span>
-<span class="nf">var.def.nc</span><span class="p">(</span><span class="n">ncds</span><span class="p">,</span><span class="w"> </span><span class="s">&quot;wind_speed&quot;</span><span class="p">,</span><span class="w"> </span><span class="s">&quot;NC_DOUBLE&quot;</span><span class="p">,</span><span class="w"> </span><span class="nf">c</span><span class="p">(</span><span class="s">&quot;latitude&quot;</span><span class="p">,</span><span class="w"> </span><span class="s">&quot;longitude&quot;</span><span class="p">))</span>
+<span class="nf">var.def.nc</span><span class="p">(</span><span class="n">ncds</span><span class="p">,</span><span class="w"> </span><span class="s">&quot;wind_speed&quot;</span><span class="p">,</span><span class="w"> </span><span class="s">&quot;NC_FLOAT&quot;</span><span class="p">,</span><span class="w"> </span><span class="nf">c</span><span class="p">(</span><span class="s">&quot;latitude&quot;</span><span class="p">,</span><span class="w"> </span><span class="s">&quot;longitude&quot;</span><span class="p">))</span>
 <span class="nf">var.put.nc</span><span class="p">(</span><span class="n">ncds</span><span class="p">,</span><span class="w"> </span><span class="s">&quot;wind_speed&quot;</span><span class="p">,</span><span class="w"> </span><span class="n">wind_speed</span><span class="p">)</span>
 <span class="nf">print.nc</span><span class="p">(</span><span class="n">ncds</span><span class="p">)</span>
 <span class="nf">print</span><span class="p">(</span><span class="nf">var.get.nc</span><span class="p">(</span><span class="n">ncds</span><span class="p">,</span><span class="w"> </span><span class="s">&quot;wind_speed&quot;</span><span class="p">))</span>
@@ -725,16 +725,16 @@ dimensions:
 	latitude = 3 ;
 	longitude = 2 ;
 variables:
-	NC_DOUBLE latitude(latitude) ;
-	NC_DOUBLE longitude(longitude) ;
-	NC_DOUBLE wind_speed(latitude, longitude) ;
+	NC_FLOAT latitude(latitude) ;
+	NC_FLOAT longitude(longitude) ;
+	NC_FLOAT wind_speed(latitude, longitude) ;
 }
 </pre></div>
 </div>
 <div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>         [,1]     [,2]
-[1,] 2.417279 4.223918
-[2,] 2.847261 8.864336
-[3,] 7.281250 5.695519
+[1,] 1.126785 5.047341
+[2,] 8.887539 9.400357
+[3,] 8.159304 8.833639
 </pre></div>
 </div>
 </div>
@@ -762,15 +762,15 @@ variables:
 <span class="nf">dim.def.nc</span><span class="p">(</span><span class="n">ncds</span><span class="p">,</span><span class="s">&quot;longitude&quot;</span><span class="p">,</span><span class="nf">length</span><span class="p">(</span><span class="n">longitudes</span><span class="p">))</span>
 
 <span class="nf">var.def.nc</span><span class="p">(</span><span class="n">ncds</span><span class="p">,</span><span class="s">&quot;depth&quot;</span><span class="p">,</span><span class="s">&quot;NC_INT&quot;</span><span class="p">,</span><span class="s">&quot;depth&quot;</span><span class="p">)</span>
-<span class="nf">var.def.nc</span><span class="p">(</span><span class="n">ncds</span><span class="p">,</span><span class="s">&quot;latitude&quot;</span><span class="p">,</span><span class="s">&quot;NC_DOUBLE&quot;</span><span class="p">,</span><span class="s">&quot;latitude&quot;</span><span class="p">)</span>
-<span class="nf">var.def.nc</span><span class="p">(</span><span class="n">ncds</span><span class="p">,</span><span class="s">&quot;longitude&quot;</span><span class="p">,</span><span class="s">&quot;NC_DOUBLE&quot;</span><span class="p">,</span><span class="s">&quot;longitude&quot;</span><span class="p">)</span>
+<span class="nf">var.def.nc</span><span class="p">(</span><span class="n">ncds</span><span class="p">,</span><span class="s">&quot;latitude&quot;</span><span class="p">,</span><span class="s">&quot;NC_FLOAT&quot;</span><span class="p">,</span><span class="s">&quot;latitude&quot;</span><span class="p">)</span>
+<span class="nf">var.def.nc</span><span class="p">(</span><span class="n">ncds</span><span class="p">,</span><span class="s">&quot;longitude&quot;</span><span class="p">,</span><span class="s">&quot;NC_FLOAT&quot;</span><span class="p">,</span><span class="s">&quot;longitude&quot;</span><span class="p">)</span>
 
 <span class="nf">var.put.nc</span><span class="p">(</span><span class="n">ncds</span><span class="p">,</span><span class="w"> </span><span class="s">&quot;depth&quot;</span><span class="p">,</span><span class="w"> </span><span class="n">depths</span><span class="p">)</span>
 <span class="nf">var.put.nc</span><span class="p">(</span><span class="n">ncds</span><span class="p">,</span><span class="w"> </span><span class="s">&quot;latitude&quot;</span><span class="p">,</span><span class="w"> </span><span class="n">latitudes</span><span class="p">)</span>
 <span class="nf">var.put.nc</span><span class="p">(</span><span class="n">ncds</span><span class="p">,</span><span class="w"> </span><span class="s">&quot;longitude&quot;</span><span class="p">,</span><span class="w"> </span><span class="n">longitudes</span><span class="p">)</span>
 
 <span class="c1"># Data variable with 3 dimensions</span>
-<span class="nf">var.def.nc</span><span class="p">(</span><span class="n">ncds</span><span class="p">,</span><span class="w"> </span><span class="s">&quot;sea_water_temperature&quot;</span><span class="p">,</span><span class="w"> </span><span class="s">&quot;NC_DOUBLE&quot;</span><span class="p">,</span><span class="w"> </span><span class="nf">c</span><span class="p">(</span><span class="s">&quot;depth&quot;</span><span class="p">,</span><span class="w"> </span><span class="s">&quot;latitude&quot;</span><span class="p">,</span><span class="w"> </span><span class="s">&quot;longitude&quot;</span><span class="p">))</span>
+<span class="nf">var.def.nc</span><span class="p">(</span><span class="n">ncds</span><span class="p">,</span><span class="w"> </span><span class="s">&quot;sea_water_temperature&quot;</span><span class="p">,</span><span class="w"> </span><span class="s">&quot;NC_FLOAT&quot;</span><span class="p">,</span><span class="w"> </span><span class="nf">c</span><span class="p">(</span><span class="s">&quot;depth&quot;</span><span class="p">,</span><span class="w"> </span><span class="s">&quot;latitude&quot;</span><span class="p">,</span><span class="w"> </span><span class="s">&quot;longitude&quot;</span><span class="p">))</span>
 <span class="nf">var.put.nc</span><span class="p">(</span><span class="n">ncds</span><span class="p">,</span><span class="w"> </span><span class="s">&quot;sea_water_temperature&quot;</span><span class="p">,</span><span class="w"> </span><span class="n">sea_water_temperature</span><span class="p">)</span>
 
 <span class="nf">print.nc</span><span class="p">(</span><span class="n">ncds</span><span class="p">)</span>
@@ -781,22 +781,22 @@ variables:
 <div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>, , 1
 
           [,1]       [,2]      [,3]
-[1,] 0.2192106 0.97881853 0.3899084
-[2,] 1.8307338 1.07027111 1.9103431
-[3,] 0.1459867 1.63592614 0.1195577
-[4,] 1.6857902 0.09287637 0.7248024
-[5,] 0.7439714 0.10988773 1.0016021
-[6,] 1.6354612 1.33528473 1.8290940
+[1,] 1.4600492 0.79683272 1.9163276
+[2,] 0.7582974 1.40238438 1.0688181
+[3,] 0.3909919 0.67533753 1.5191798
+[4,] 0.5537859 0.09794865 0.9812949
+[5,] 1.1249723 0.72273931 0.6813011
+[6,] 0.4239313 1.18422261 0.9646504
 
 , , 2
 
-          [,1]      [,2]      [,3]
-[1,] 0.2084767 0.2897415 0.8730278
-[2,] 0.6429248 1.8304936 0.7982864
-[3,] 0.7950911 1.1848665 0.3689373
-[4,] 1.0655528 1.9700567 1.5185438
-[5,] 1.1777665 1.2883684 1.9053141
-[6,] 0.5131218 0.1143346 1.3820632
+           [,1]     [,2]      [,3]
+[1,] 0.66122312 1.027755 1.9270902
+[2,] 1.84714583 1.017123 0.5934121
+[3,] 0.42856756 1.140463 0.5079613
+[4,] 0.03872161 1.907137 1.8075470
+[5,] 0.05285427 1.331064 0.9805267
+[6,] 0.01936931 1.188295 0.6381921
 </pre></div>
 </div>
 <div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>netcdf classic {
@@ -806,9 +806,9 @@ dimensions:
 	longitude = 2 ;
 variables:
 	NC_INT depth(depth) ;
-	NC_DOUBLE latitude(latitude) ;
-	NC_DOUBLE longitude(longitude) ;
-	NC_DOUBLE sea_water_temperature(depth, latitude, longitude) ;
+	NC_FLOAT latitude(latitude) ;
+	NC_FLOAT longitude(longitude) ;
+	NC_FLOAT sea_water_temperature(depth, latitude, longitude) ;
 }
 </pre></div>
 </div>
@@ -864,12 +864,12 @@ variables:
 	<tr><th></th><th scope=col>&lt;dbl&gt;</th><th scope=col>&lt;dbl&gt;</th><th scope=col>&lt;dbl&gt;</th><th scope=col>&lt;dbl&gt;</th></tr>
 </thead>
 <tbody>
-	<tr><th scope=row>1</th><td>0</td><td>78.5271</td><td>30.1515</td><td>31.43247</td></tr>
-	<tr><th scope=row>2</th><td>0</td><td>78.5271</td><td>28.5810</td><td>32.77985</td></tr>
-	<tr><th scope=row>3</th><td>0</td><td>79.2316</td><td>30.1515</td><td>31.01513</td></tr>
-	<tr><th scope=row>4</th><td>0</td><td>79.2316</td><td>28.5810</td><td>33.98775</td></tr>
-	<tr><th scope=row>5</th><td>0</td><td>80.3261</td><td>30.1515</td><td>31.09911</td></tr>
-	<tr><th scope=row>6</th><td>0</td><td>80.3261</td><td>28.5810</td><td>34.92851</td></tr>
+	<tr><th scope=row>1</th><td>0</td><td>78.5271</td><td>30.1515</td><td>32.05537</td></tr>
+	<tr><th scope=row>2</th><td>0</td><td>78.5271</td><td>28.5810</td><td>31.58155</td></tr>
+	<tr><th scope=row>3</th><td>0</td><td>79.2316</td><td>30.1515</td><td>30.87217</td></tr>
+	<tr><th scope=row>4</th><td>0</td><td>79.2316</td><td>28.5810</td><td>34.96761</td></tr>
+	<tr><th scope=row>5</th><td>0</td><td>80.3261</td><td>30.1515</td><td>31.52145</td></tr>
+	<tr><th scope=row>6</th><td>0</td><td>80.3261</td><td>28.5810</td><td>32.10410</td></tr>
 </tbody>
 </table>
 </div></div>
@@ -886,22 +886,22 @@ variables:
 <div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>, , 1
 
          [,1]     [,2]     [,3]
-[1,] 31.43247 33.22003 34.94704
-[2,] 32.77985 31.80172 31.68084
-[3,] 31.01513 33.87099 31.01840
-[4,] 33.98775 33.36873 34.05313
-[5,] 31.09911 34.25030 34.60958
-[6,] 34.92851 31.62490 34.96053
+[1,] 32.05537 30.21060 31.34534
+[2,] 31.58155 33.60838 30.77404
+[3,] 30.87217 33.63616 34.96378
+[4,] 34.96761 32.58509 34.01767
+[5,] 31.52145 30.70935 33.01764
+[6,] 32.10410 33.03469 33.19217
 
 , , 2
 
          [,1]     [,2]     [,3]
-[1,] 34.46485 34.49782 32.70917
-[2,] 30.23559 31.38842 34.01482
-[3,] 30.54723 32.04755 30.39357
-[4,] 33.42751 30.41355 33.46536
-[5,] 34.17533 34.01783 34.03475
-[6,] 30.13384 30.64630 34.87913
+[1,] 31.04850 31.04404 33.82903
+[2,] 31.70005 32.60234 33.78785
+[3,] 33.70153 32.17074 33.02361
+[4,] 30.34104 31.86938 30.68502
+[5,] 30.39491 34.78257 31.51383
+[6,] 30.61338 33.23753 34.79905
 </pre></div>
 </div>
 </div>
@@ -917,15 +917,15 @@ variables:
 <span class="nf">dim.def.nc</span><span class="p">(</span><span class="n">ncds</span><span class="p">,</span><span class="s">&quot;longitude&quot;</span><span class="p">,</span><span class="nf">length</span><span class="p">(</span><span class="n">longitudes</span><span class="p">))</span>
 
 <span class="nf">var.def.nc</span><span class="p">(</span><span class="n">ncds</span><span class="p">,</span><span class="s">&quot;depth&quot;</span><span class="p">,</span><span class="s">&quot;NC_INT&quot;</span><span class="p">,</span><span class="s">&quot;depth&quot;</span><span class="p">)</span>
-<span class="nf">var.def.nc</span><span class="p">(</span><span class="n">ncds</span><span class="p">,</span><span class="s">&quot;latitude&quot;</span><span class="p">,</span><span class="s">&quot;NC_DOUBLE&quot;</span><span class="p">,</span><span class="s">&quot;latitude&quot;</span><span class="p">)</span>
-<span class="nf">var.def.nc</span><span class="p">(</span><span class="n">ncds</span><span class="p">,</span><span class="s">&quot;longitude&quot;</span><span class="p">,</span><span class="s">&quot;NC_DOUBLE&quot;</span><span class="p">,</span><span class="s">&quot;longitude&quot;</span><span class="p">)</span>
+<span class="nf">var.def.nc</span><span class="p">(</span><span class="n">ncds</span><span class="p">,</span><span class="s">&quot;latitude&quot;</span><span class="p">,</span><span class="s">&quot;NC_FLOAT&quot;</span><span class="p">,</span><span class="s">&quot;latitude&quot;</span><span class="p">)</span>
+<span class="nf">var.def.nc</span><span class="p">(</span><span class="n">ncds</span><span class="p">,</span><span class="s">&quot;longitude&quot;</span><span class="p">,</span><span class="s">&quot;NC_FLOAT&quot;</span><span class="p">,</span><span class="s">&quot;longitude&quot;</span><span class="p">)</span>
 
 <span class="nf">var.put.nc</span><span class="p">(</span><span class="n">ncds</span><span class="p">,</span><span class="w"> </span><span class="s">&quot;depth&quot;</span><span class="p">,</span><span class="w"> </span><span class="n">depths</span><span class="p">)</span>
 <span class="nf">var.put.nc</span><span class="p">(</span><span class="n">ncds</span><span class="p">,</span><span class="w"> </span><span class="s">&quot;latitude&quot;</span><span class="p">,</span><span class="w"> </span><span class="n">latitudes</span><span class="p">)</span>
 <span class="nf">var.put.nc</span><span class="p">(</span><span class="n">ncds</span><span class="p">,</span><span class="w"> </span><span class="s">&quot;longitude&quot;</span><span class="p">,</span><span class="w"> </span><span class="n">longitudes</span><span class="p">)</span>
 
 <span class="c1"># Data variable with 3 dimensions</span>
-<span class="nf">var.def.nc</span><span class="p">(</span><span class="n">ncds</span><span class="p">,</span><span class="w"> </span><span class="s">&quot;salinity&quot;</span><span class="p">,</span><span class="w"> </span><span class="s">&quot;NC_DOUBLE&quot;</span><span class="p">,</span><span class="w"> </span><span class="nf">c</span><span class="p">(</span><span class="s">&quot;depth&quot;</span><span class="p">,</span><span class="w"> </span><span class="s">&quot;latitude&quot;</span><span class="p">,</span><span class="w"> </span><span class="s">&quot;longitude&quot;</span><span class="p">))</span>
+<span class="nf">var.def.nc</span><span class="p">(</span><span class="n">ncds</span><span class="p">,</span><span class="w"> </span><span class="s">&quot;salinity&quot;</span><span class="p">,</span><span class="w"> </span><span class="s">&quot;NC_FLOAT&quot;</span><span class="p">,</span><span class="w"> </span><span class="nf">c</span><span class="p">(</span><span class="s">&quot;depth&quot;</span><span class="p">,</span><span class="w"> </span><span class="s">&quot;latitude&quot;</span><span class="p">,</span><span class="w"> </span><span class="s">&quot;longitude&quot;</span><span class="p">))</span>
 <span class="nf">var.put.nc</span><span class="p">(</span><span class="n">ncds</span><span class="p">,</span><span class="w"> </span><span class="s">&quot;salinity&quot;</span><span class="p">,</span><span class="w"> </span><span class="n">salinity_3d_array</span><span class="p">)</span>
 
 <span class="nf">print.nc</span><span class="p">(</span><span class="n">ncds</span><span class="p">)</span>
@@ -940,9 +940,97 @@ dimensions:
 	longitude = 2 ;
 variables:
 	NC_INT depth(depth) ;
-	NC_DOUBLE latitude(latitude) ;
-	NC_DOUBLE longitude(longitude) ;
-	NC_DOUBLE salinity(depth, latitude, longitude) ;
+	NC_FLOAT latitude(latitude) ;
+	NC_FLOAT longitude(longitude) ;
+	NC_FLOAT salinity(depth, latitude, longitude) ;
+}
+</pre></div>
+</div>
+</div>
+</div>
+</section>
+<section id="data-on-irregular-grids-or-instruments-that-move">
+<h3>Data on irregular grids or instruments that move<a class="headerlink" href="#data-on-irregular-grids-or-instruments-that-move" title="Permalink to this heading">#</a></h3>
+<p>Sometimes your data don’t fall on a regular grid. Sometimes you have an instrument that moves whilst recording data every second, for example. In these scenarios, it is not practical to try to assign multiple dimensions to your data. You will end of with a lot of empty space in your file.</p>
+<p>Instead, you can use a single dimension, <em>time</em>, and make each of your coordinate variables (e.g. latitude, longitude, depth) 1D with <em>time</em> as the only dimension.</p>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-r notranslate"><div class="highlight"><pre><span></span><span class="n">ncds</span><span class="w"> </span><span class="o">&lt;-</span><span class="w"> </span><span class="nf">create.nc</span><span class="p">(</span><span class="s">&quot;../data/exported_from_notebooks/instrument_that_moves.nc&quot;</span><span class="p">)</span>
+
+<span class="c1"># Define dimensions</span>
+<span class="nf">dim.def.nc</span><span class="p">(</span><span class="n">ncds</span><span class="p">,</span><span class="w"> </span><span class="s">&quot;time&quot;</span><span class="p">,</span><span class="w"> </span><span class="m">10</span><span class="p">)</span>
+
+<span class="c1"># Define variables using time as the dimension</span>
+<span class="nf">var.def.nc</span><span class="p">(</span><span class="n">ncds</span><span class="p">,</span><span class="w"> </span><span class="s">&quot;time&quot;</span><span class="p">,</span><span class="w"> </span><span class="s">&quot;NC_INT&quot;</span><span class="p">,</span><span class="w"> </span><span class="nf">c</span><span class="p">(</span><span class="s">&quot;time&quot;</span><span class="p">))</span>
+<span class="nf">var.def.nc</span><span class="p">(</span><span class="n">ncds</span><span class="p">,</span><span class="w"> </span><span class="s">&quot;latitude&quot;</span><span class="p">,</span><span class="w"> </span><span class="s">&quot;NC_FLOAT&quot;</span><span class="p">,</span><span class="w"> </span><span class="nf">c</span><span class="p">(</span><span class="s">&quot;time&quot;</span><span class="p">))</span>
+<span class="nf">var.def.nc</span><span class="p">(</span><span class="n">ncds</span><span class="p">,</span><span class="w"> </span><span class="s">&quot;longitude&quot;</span><span class="p">,</span><span class="w"> </span><span class="s">&quot;NC_FLOAT&quot;</span><span class="p">,</span><span class="w"> </span><span class="nf">c</span><span class="p">(</span><span class="s">&quot;time&quot;</span><span class="p">))</span>
+<span class="nf">var.def.nc</span><span class="p">(</span><span class="n">ncds</span><span class="p">,</span><span class="w"> </span><span class="s">&quot;depth&quot;</span><span class="p">,</span><span class="w"> </span><span class="s">&quot;NC_FLOAT&quot;</span><span class="p">,</span><span class="w"> </span><span class="nf">c</span><span class="p">(</span><span class="s">&quot;time&quot;</span><span class="p">))</span>
+
+<span class="c1"># Create example data</span>
+<span class="n">time_data</span><span class="w"> </span><span class="o">&lt;-</span><span class="w"> </span><span class="nf">seq</span><span class="p">(</span><span class="m">1</span><span class="p">,</span><span class="w"> </span><span class="m">10</span><span class="p">)</span>
+<span class="n">latitude_data</span><span class="w"> </span><span class="o">&lt;-</span><span class="w"> </span><span class="nf">rep</span><span class="p">(</span><span class="m">35.0</span><span class="p">,</span><span class="w"> </span><span class="m">10</span><span class="p">)</span>
+<span class="n">longitude_data</span><span class="w"> </span><span class="o">&lt;-</span><span class="w"> </span><span class="nf">seq</span><span class="p">(</span><span class="m">-120.0</span><span class="p">,</span><span class="w"> </span><span class="m">-119.0</span><span class="p">,</span><span class="w"> </span><span class="n">length.out</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="m">10</span><span class="p">)</span>
+<span class="n">depth_data</span><span class="w"> </span><span class="o">&lt;-</span><span class="w"> </span><span class="nf">rep</span><span class="p">(</span><span class="m">10</span><span class="p">,</span><span class="w"> </span><span class="m">10</span><span class="p">)</span>
+
+<span class="c1"># Write data to the variables</span>
+<span class="nf">var.put.nc</span><span class="p">(</span><span class="n">ncds</span><span class="p">,</span><span class="w"> </span><span class="s">&quot;time&quot;</span><span class="p">,</span><span class="w"> </span><span class="n">time_data</span><span class="p">)</span>
+<span class="nf">var.put.nc</span><span class="p">(</span><span class="n">ncds</span><span class="p">,</span><span class="w"> </span><span class="s">&quot;latitude&quot;</span><span class="p">,</span><span class="w"> </span><span class="n">latitude_data</span><span class="p">)</span>
+<span class="nf">var.put.nc</span><span class="p">(</span><span class="n">ncds</span><span class="p">,</span><span class="w"> </span><span class="s">&quot;longitude&quot;</span><span class="p">,</span><span class="w"> </span><span class="n">longitude_data</span><span class="p">)</span>
+<span class="nf">var.put.nc</span><span class="p">(</span><span class="n">ncds</span><span class="p">,</span><span class="w"> </span><span class="s">&quot;depth&quot;</span><span class="p">,</span><span class="w"> </span><span class="n">depth_data</span><span class="p">)</span>
+
+<span class="nf">print.nc</span><span class="p">(</span><span class="n">ncds</span><span class="p">)</span>
+</pre></div>
+</div>
+</div>
+<div class="cell_output docutils container">
+<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>netcdf classic {
+dimensions:
+	time = 10 ;
+variables:
+	NC_INT time(time) ;
+	NC_FLOAT latitude(time) ;
+	NC_FLOAT longitude(time) ;
+	NC_FLOAT depth(time) ;
+}
+</pre></div>
+</div>
+</div>
+</div>
+<p>If all the points were recorded at the same time (e.g. a point cloud) you can use an arbitrary dimension called something like <em>point</em> and make each coordinate and data variable 1D.</p>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-r notranslate"><div class="highlight"><pre><span></span><span class="n">ncds</span><span class="w"> </span><span class="o">&lt;-</span><span class="w"> </span><span class="nf">create.nc</span><span class="p">(</span><span class="s">&quot;../data/exported_from_notebooks/irregular_grid.nc&quot;</span><span class="p">)</span>
+
+<span class="c1"># Define dimensions</span>
+<span class="nf">dim.def.nc</span><span class="p">(</span><span class="n">ncds</span><span class="p">,</span><span class="w"> </span><span class="s">&quot;point&quot;</span><span class="p">,</span><span class="w"> </span><span class="m">10</span><span class="p">)</span>
+
+<span class="c1"># Define variables using point as the dimension</span>
+<span class="nf">var.def.nc</span><span class="p">(</span><span class="n">ncds</span><span class="p">,</span><span class="w"> </span><span class="s">&quot;latitude&quot;</span><span class="p">,</span><span class="w"> </span><span class="s">&quot;NC_FLOAT&quot;</span><span class="p">,</span><span class="w"> </span><span class="nf">c</span><span class="p">(</span><span class="s">&quot;point&quot;</span><span class="p">))</span>
+<span class="nf">var.def.nc</span><span class="p">(</span><span class="n">ncds</span><span class="p">,</span><span class="w"> </span><span class="s">&quot;longitude&quot;</span><span class="p">,</span><span class="w"> </span><span class="s">&quot;NC_FLOAT&quot;</span><span class="p">,</span><span class="w"> </span><span class="nf">c</span><span class="p">(</span><span class="s">&quot;point&quot;</span><span class="p">))</span>
+<span class="nf">var.def.nc</span><span class="p">(</span><span class="n">ncds</span><span class="p">,</span><span class="w"> </span><span class="s">&quot;depth&quot;</span><span class="p">,</span><span class="w"> </span><span class="s">&quot;NC_FLOAT&quot;</span><span class="p">,</span><span class="w"> </span><span class="nf">c</span><span class="p">(</span><span class="s">&quot;point&quot;</span><span class="p">))</span>
+
+<span class="c1"># Create example data</span>
+<span class="n">latitude_data</span><span class="w"> </span><span class="o">&lt;-</span><span class="w"> </span><span class="nf">rep</span><span class="p">(</span><span class="m">35.0</span><span class="p">,</span><span class="w"> </span><span class="m">10</span><span class="p">)</span>
+<span class="n">longitude_data</span><span class="w"> </span><span class="o">&lt;-</span><span class="w"> </span><span class="nf">seq</span><span class="p">(</span><span class="m">-120.0</span><span class="p">,</span><span class="w"> </span><span class="m">-119.0</span><span class="p">,</span><span class="w"> </span><span class="n">length.out</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="m">10</span><span class="p">)</span>
+<span class="n">depth_data</span><span class="w"> </span><span class="o">&lt;-</span><span class="w"> </span><span class="nf">rep</span><span class="p">(</span><span class="m">10</span><span class="p">,</span><span class="w"> </span><span class="m">10</span><span class="p">)</span>
+
+<span class="c1"># Write data to the variables</span>
+<span class="nf">var.put.nc</span><span class="p">(</span><span class="n">ncds</span><span class="p">,</span><span class="w"> </span><span class="s">&quot;latitude&quot;</span><span class="p">,</span><span class="w"> </span><span class="n">latitude_data</span><span class="p">)</span>
+<span class="nf">var.put.nc</span><span class="p">(</span><span class="n">ncds</span><span class="p">,</span><span class="w"> </span><span class="s">&quot;longitude&quot;</span><span class="p">,</span><span class="w"> </span><span class="n">longitude_data</span><span class="p">)</span>
+<span class="nf">var.put.nc</span><span class="p">(</span><span class="n">ncds</span><span class="p">,</span><span class="w"> </span><span class="s">&quot;depth&quot;</span><span class="p">,</span><span class="w"> </span><span class="n">depth_data</span><span class="p">)</span>
+
+<span class="nf">print.nc</span><span class="p">(</span><span class="n">ncds</span><span class="p">)</span>
+</pre></div>
+</div>
+</div>
+<div class="cell_output docutils container">
+<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>netcdf classic {
+dimensions:
+	point = 10 ;
+variables:
+	NC_FLOAT latitude(point) ;
+	NC_FLOAT longitude(point) ;
+	NC_FLOAT depth(point) ;
 }
 </pre></div>
 </div>
@@ -966,8 +1054,51 @@ variables:
 <a class="reference external" href="https://cfconventions.org/Data/cf-conventions/cf-conventions-1.10/cf-conventions.html#latitude-coordinate">https://cfconventions.org/Data/cf-conventions/cf-conventions-1.10/cf-conventions.html#latitude-coordinate</a></p>
 <p>Additionally, the ACDD convention recommends that and attribute <em>coverage_content_type</em> is also added, which is used to state whether the data are <em>modelResult</em>, <em>physicalMeasurement</em> or something else, see the list here:
 <a class="reference external" href="https://wiki.esipfed.org/Attribute_Convention_for_Data_Discovery_1-3#Highly_Recommended_Variable_Attributes">https://wiki.esipfed.org/Attribute_Convention_for_Data_Discovery_1-3#Highly_Recommended_Variable_Attributes</a></p>
+<p>Descriptions for the different options for <em>coverage_content_type</em> can be found here:
+<a class="reference external" href="https://wiki.esipfed.org/ISO_19115_and_19115-2_CodeList_Dictionaries#MD_CoverageContentTypeCode">https://wiki.esipfed.org/ISO_19115_and_19115-2_CodeList_Dictionaries#MD_CoverageContentTypeCode</a></p>
 <p>And remember we might want to select additional applicable attributes for our variables from this section of the CF conventions:
 <a class="reference external" href="https://cfconventions.org/Data/cf-conventions/cf-conventions-1.11/cf-conventions.html#attribute-appendix">https://cfconventions.org/Data/cf-conventions/cf-conventions-1.11/cf-conventions.html#attribute-appendix</a></p>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-r notranslate"><div class="highlight"><pre><span></span><span class="n">ncds</span><span class="w"> </span><span class="o">&lt;-</span><span class="w"> </span><span class="nf">create.nc</span><span class="p">(</span><span class="s">&quot;../data/exported_from_notebooks/3d_sea_water_salinity.nc&quot;</span><span class="p">)</span>
+
+<span class="c1"># Dimensions and coordinate variables</span>
+<span class="nf">dim.def.nc</span><span class="p">(</span><span class="n">ncds</span><span class="p">,</span><span class="s">&quot;depth&quot;</span><span class="p">,</span><span class="nf">length</span><span class="p">(</span><span class="n">depths</span><span class="p">))</span>
+<span class="nf">dim.def.nc</span><span class="p">(</span><span class="n">ncds</span><span class="p">,</span><span class="s">&quot;latitude&quot;</span><span class="p">,</span><span class="nf">length</span><span class="p">(</span><span class="n">latitudes</span><span class="p">))</span>
+<span class="nf">dim.def.nc</span><span class="p">(</span><span class="n">ncds</span><span class="p">,</span><span class="s">&quot;longitude&quot;</span><span class="p">,</span><span class="nf">length</span><span class="p">(</span><span class="n">longitudes</span><span class="p">))</span>
+
+<span class="nf">var.def.nc</span><span class="p">(</span><span class="n">ncds</span><span class="p">,</span><span class="s">&quot;depth&quot;</span><span class="p">,</span><span class="s">&quot;NC_INT&quot;</span><span class="p">,</span><span class="s">&quot;depth&quot;</span><span class="p">)</span>
+<span class="nf">var.def.nc</span><span class="p">(</span><span class="n">ncds</span><span class="p">,</span><span class="s">&quot;latitude&quot;</span><span class="p">,</span><span class="s">&quot;NC_FLOAT&quot;</span><span class="p">,</span><span class="s">&quot;latitude&quot;</span><span class="p">)</span>
+<span class="nf">var.def.nc</span><span class="p">(</span><span class="n">ncds</span><span class="p">,</span><span class="s">&quot;longitude&quot;</span><span class="p">,</span><span class="s">&quot;NC_FLOAT&quot;</span><span class="p">,</span><span class="s">&quot;longitude&quot;</span><span class="p">)</span>
+
+<span class="nf">var.put.nc</span><span class="p">(</span><span class="n">ncds</span><span class="p">,</span><span class="w"> </span><span class="s">&quot;depth&quot;</span><span class="p">,</span><span class="w"> </span><span class="n">depths</span><span class="p">)</span>
+<span class="nf">var.put.nc</span><span class="p">(</span><span class="n">ncds</span><span class="p">,</span><span class="w"> </span><span class="s">&quot;latitude&quot;</span><span class="p">,</span><span class="w"> </span><span class="n">latitudes</span><span class="p">)</span>
+<span class="nf">var.put.nc</span><span class="p">(</span><span class="n">ncds</span><span class="p">,</span><span class="w"> </span><span class="s">&quot;longitude&quot;</span><span class="p">,</span><span class="w"> </span><span class="n">longitudes</span><span class="p">)</span>
+
+<span class="c1"># Data variable with 3 dimensions</span>
+<span class="nf">var.def.nc</span><span class="p">(</span><span class="n">ncds</span><span class="p">,</span><span class="w"> </span><span class="s">&quot;salinity&quot;</span><span class="p">,</span><span class="w"> </span><span class="s">&quot;NC_FLOAT&quot;</span><span class="p">,</span><span class="w"> </span><span class="nf">c</span><span class="p">(</span><span class="s">&quot;depth&quot;</span><span class="p">,</span><span class="w"> </span><span class="s">&quot;latitude&quot;</span><span class="p">,</span><span class="w"> </span><span class="s">&quot;longitude&quot;</span><span class="p">))</span>
+<span class="nf">var.put.nc</span><span class="p">(</span><span class="n">ncds</span><span class="p">,</span><span class="w"> </span><span class="s">&quot;salinity&quot;</span><span class="p">,</span><span class="w"> </span><span class="n">salinity_3d_array</span><span class="p">)</span>
+
+<span class="nf">print.nc</span><span class="p">(</span><span class="n">ncds</span><span class="p">)</span>
+</pre></div>
+</div>
+</div>
+<div class="cell_output docutils container">
+<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>netcdf classic {
+dimensions:
+	depth = 6 ;
+	latitude = 3 ;
+	longitude = 2 ;
+variables:
+	NC_INT depth(depth) ;
+	NC_FLOAT latitude(latitude) ;
+	NC_FLOAT longitude(longitude) ;
+	NC_FLOAT salinity(depth, latitude, longitude) ;
+}
+</pre></div>
+</div>
+</div>
+</div>
 <div class="cell docutils container">
 <div class="cell_input docutils container">
 <div class="highlight-r notranslate"><div class="highlight"><pre><span></span><span class="nf">att.put.nc</span><span class="p">(</span><span class="n">ncds</span><span class="p">,</span><span class="w"> </span><span class="s">&quot;latitude&quot;</span><span class="p">,</span><span class="w"> </span><span class="s">&quot;standard_name&quot;</span><span class="p">,</span><span class="w"> </span><span class="s">&quot;NC_CHAR&quot;</span><span class="p">,</span><span class="w"> </span><span class="s">&quot;latitude&quot;</span><span class="p">)</span>
@@ -1008,17 +1139,17 @@ variables:
 		NC_CHAR depth:units = &quot;meters&quot; ;
 		NC_CHAR depth:coverage_content_type = &quot;coordinate&quot; ;
 		NC_CHAR depth:positive = &quot;down&quot; ;
-	NC_DOUBLE latitude(latitude) ;
+	NC_FLOAT latitude(latitude) ;
 		NC_CHAR latitude:standard_name = &quot;latitude&quot; ;
 		NC_CHAR latitude:long_name = &quot;latitude&quot; ;
 		NC_CHAR latitude:units = &quot;degrees_north&quot; ;
 		NC_CHAR latitude:coverage_content_type = &quot;coordinate&quot; ;
-	NC_DOUBLE longitude(longitude) ;
+	NC_FLOAT longitude(longitude) ;
 		NC_CHAR longitude:standard_name = &quot;longitude&quot; ;
 		NC_CHAR longitude:long_name = &quot;longitude&quot; ;
 		NC_CHAR longitude:units = &quot;degrees_east&quot; ;
 		NC_CHAR longitude:coverage_content_type = &quot;coordinate&quot; ;
-	NC_DOUBLE salinity(depth, latitude, longitude) ;
+	NC_FLOAT salinity(depth, latitude, longitude) ;
 		NC_CHAR salinity:standard_name = &quot;sea_water_salinity&quot; ;
 		NC_CHAR salinity:long_name = &quot;a description about the variable in your own words&quot; ;
 		NC_CHAR salinity:units = &quot;psu&quot; ;
@@ -1086,17 +1217,17 @@ variables:
 		NC_CHAR depth:units = &quot;meters&quot; ;
 		NC_CHAR depth:coverage_content_type = &quot;coordinate&quot; ;
 		NC_CHAR depth:positive = &quot;down&quot; ;
-	NC_DOUBLE latitude(latitude) ;
+	NC_FLOAT latitude(latitude) ;
 		NC_CHAR latitude:standard_name = &quot;latitude&quot; ;
 		NC_CHAR latitude:long_name = &quot;latitude&quot; ;
 		NC_CHAR latitude:units = &quot;degrees_north&quot; ;
 		NC_CHAR latitude:coverage_content_type = &quot;coordinate&quot; ;
-	NC_DOUBLE longitude(longitude) ;
+	NC_FLOAT longitude(longitude) ;
 		NC_CHAR longitude:standard_name = &quot;longitude&quot; ;
 		NC_CHAR longitude:long_name = &quot;longitude&quot; ;
 		NC_CHAR longitude:units = &quot;degrees_east&quot; ;
 		NC_CHAR longitude:coverage_content_type = &quot;coordinate&quot; ;
-	NC_DOUBLE salinity(depth, latitude, longitude) ;
+	NC_FLOAT salinity(depth, latitude, longitude) ;
 		NC_CHAR salinity:standard_name = &quot;sea_water_salinity&quot; ;
 		NC_CHAR salinity:long_name = &quot;a description about the variable in your own words&quot; ;
 		NC_CHAR salinity:units = &quot;psu&quot; ;
@@ -1147,7 +1278,7 @@ variables:
 <span class="nf">attr</span><span class="p">(</span><span class="n">dtnow</span><span class="p">,</span><span class="w"> </span><span class="s">&quot;tzone&quot;</span><span class="p">)</span><span class="w"> </span><span class="o">&lt;-</span><span class="w"> </span><span class="s">&quot;UTC&quot;</span>
 <span class="n">dt8601</span><span class="w"> </span><span class="o">&lt;-</span><span class="w"> </span><span class="nf">format</span><span class="p">(</span><span class="n">dtnow</span><span class="p">,</span><span class="w"> </span><span class="s">&quot;%Y-%m-%dT%H:%M:%SZ&quot;</span><span class="p">)</span><span class="w"> </span><span class="c1"># date and time in ISO 8601 format</span>
 <span class="nf">att.put.nc</span><span class="p">(</span><span class="n">ncds</span><span class="p">,</span><span class="w"> </span><span class="s">&quot;NC_GLOBAL&quot;</span><span class="p">,</span><span class="w"> </span><span class="s">&quot;date_created&quot;</span><span class="p">,</span><span class="w"> </span><span class="s">&quot;NC_CHAR&quot;</span><span class="p">,</span><span class="w"> </span><span class="n">dt8601</span><span class="p">)</span>
-<span class="n">history</span><span class="w"> </span><span class="o">&lt;-</span><span class="w"> </span><span class="nf">paste</span><span class="p">(</span><span class="s">&quot;File created at&quot;</span><span class="p">,</span><span class="w"> </span><span class="n">dtnow</span><span class="p">,</span><span class="w"> </span><span class="s">&quot;using RNetCDF by Luke Marsden&quot;</span><span class="p">)</span>
+<span class="n">history</span><span class="w"> </span><span class="o">&lt;-</span><span class="w"> </span><span class="nf">paste</span><span class="p">(</span><span class="s">&quot;File created at&quot;</span><span class="p">,</span><span class="w"> </span><span class="n">dt8601</span><span class="p">,</span><span class="w"> </span><span class="s">&quot;using RNetCDF by Luke Marsden&quot;</span><span class="p">)</span>
 <span class="nf">att.put.nc</span><span class="p">(</span><span class="n">ncds</span><span class="p">,</span><span class="w"> </span><span class="s">&quot;NC_GLOBAL&quot;</span><span class="p">,</span><span class="w"> </span><span class="s">&quot;history&quot;</span><span class="p">,</span><span class="w"> </span><span class="s">&quot;NC_CHAR&quot;</span><span class="p">,</span><span class="w"> </span><span class="n">history</span><span class="p">)</span>
 <span class="nf">print.nc</span><span class="p">(</span><span class="n">ncds</span><span class="p">)</span>
 </pre></div>
@@ -1166,17 +1297,17 @@ variables:
 		NC_CHAR depth:units = &quot;meters&quot; ;
 		NC_CHAR depth:coverage_content_type = &quot;coordinate&quot; ;
 		NC_CHAR depth:positive = &quot;down&quot; ;
-	NC_DOUBLE latitude(latitude) ;
+	NC_FLOAT latitude(latitude) ;
 		NC_CHAR latitude:standard_name = &quot;latitude&quot; ;
 		NC_CHAR latitude:long_name = &quot;latitude&quot; ;
 		NC_CHAR latitude:units = &quot;degrees_north&quot; ;
 		NC_CHAR latitude:coverage_content_type = &quot;coordinate&quot; ;
-	NC_DOUBLE longitude(longitude) ;
+	NC_FLOAT longitude(longitude) ;
 		NC_CHAR longitude:standard_name = &quot;longitude&quot; ;
 		NC_CHAR longitude:long_name = &quot;longitude&quot; ;
 		NC_CHAR longitude:units = &quot;degrees_east&quot; ;
 		NC_CHAR longitude:coverage_content_type = &quot;coordinate&quot; ;
-	NC_DOUBLE salinity(depth, latitude, longitude) ;
+	NC_FLOAT salinity(depth, latitude, longitude) ;
 		NC_CHAR salinity:standard_name = &quot;sea_water_salinity&quot; ;
 		NC_CHAR salinity:long_name = &quot;a description about the variable in your own words&quot; ;
 		NC_CHAR salinity:units = &quot;psu&quot; ;
@@ -1207,8 +1338,8 @@ variables:
 		NC_FLOAT :geospatial_lat_max = 80.3261032104492 ;
 		NC_FLOAT :geospatial_lon_min = 28.5809993743896 ;
 		NC_FLOAT :geospatial_lon_max = 28.5809993743896 ;
-		NC_CHAR :date_created = &quot;2024-09-25T12:58:32Z&quot; ;
-		NC_CHAR :history = &quot;File created at 2024-09-25 12:58:32.610995 using RNetCDF by Luke Marsden&quot; ;
+		NC_CHAR :date_created = &quot;2024-10-11T13:32:56Z&quot; ;
+		NC_CHAR :history = &quot;File created at 2024-10-11T13:32:56Z using RNetCDF by Luke Marsden&quot; ;
 }
 </pre></div>
 </div>
@@ -1304,6 +1435,7 @@ variables:
 <li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#id1">2D variable</a></li>
 <li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#id2">3D variable</a></li>
 <li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#d-data-from-data-frame">3D data from data frame</a></li>
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#data-on-irregular-grids-or-instruments-that-move">Data on irregular grids or instruments that move</a></li>
 </ul>
 </li>
 <li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#metadata-attributes">Metadata (attributes)</a><ul class="nav section-nav flex-column">
