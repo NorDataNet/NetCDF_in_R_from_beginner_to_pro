@@ -401,6 +401,16 @@ document.write(`
                   
   <section class="tex2jax_ignore mathjax_ignore" id="creating-a-cf-netcdf-file">
 <h1>04: Creating a CF-NetCDF file<a class="headerlink" href="#creating-a-cf-netcdf-file" title="Permalink to this heading">#</a></h1>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-r notranslate"><div class="highlight"><pre><span></span><span class="nf">library</span><span class="p">(</span><span class="n">IRdisplay</span><span class="p">)</span>
+<span class="nf">display_html</span><span class="p">(</span><span class="s">&#39;&lt;iframe width=&quot;560&quot; height=&quot;315&quot; src=&quot;https://www.youtube.com/embed/IZDygRjfMIg?si=9Jp4P2k5daOikmJV&quot; frameborder=&quot;0&quot; allowfullscreen&gt;&lt;/iframe&gt;&#39;</span><span class="p">)</span>
+</pre></div>
+</div>
+</div>
+<div class="cell_output docutils container">
+<div class="output text_html"><iframe width="560" height="315" src="https://www.youtube.com/embed/IZDygRjfMIg?si=9Jp4P2k5daOikmJV" frameborder="0" allowfullscreen></iframe></div></div>
+</div>
 <p>In this session we will create a basic NetCDF file that compliant with the Attribute Convention for Data Discovery (ACDD) and Climate and Forecast (CF) convention.</p>
 <p>Firstly, let’s import the libraries that we will work with.</p>
 <div class="cell docutils container">
@@ -692,9 +702,9 @@ variables:
 </div>
 <div class="cell_output docutils container">
 <div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>         [,1]     [,2]
-[1,] 1.126785 5.047341
-[2,] 8.887539 9.400357
-[3,] 8.159304 8.833639
+[1,] 5.734686 3.243470
+[2,] 7.617893 2.318425
+[3,] 3.316931 7.016739
 </pre></div>
 </div>
 </div>
@@ -732,9 +742,9 @@ variables:
 </pre></div>
 </div>
 <div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>         [,1]     [,2]
-[1,] 1.126785 5.047341
-[2,] 8.887539 9.400357
-[3,] 8.159304 8.833639
+[1,] 5.734686 3.243470
+[2,] 7.617893 2.318425
+[3,] 3.316931 7.016739
 </pre></div>
 </div>
 </div>
@@ -781,22 +791,22 @@ variables:
 <div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>, , 1
 
           [,1]       [,2]      [,3]
-[1,] 1.4600492 0.79683272 1.9163276
-[2,] 0.7582974 1.40238438 1.0688181
-[3,] 0.3909919 0.67533753 1.5191798
-[4,] 0.5537859 0.09794865 0.9812949
-[5,] 1.1249723 0.72273931 0.6813011
-[6,] 0.4239313 1.18422261 0.9646504
+[1,] 0.8094903 0.76118706 1.2408141
+[2,] 1.4316365 1.80988373 1.2337254
+[3,] 0.2142685 0.00168447 1.6689923
+[4,] 0.5448078 0.48451312 0.4078551
+[5,] 0.9243428 0.23839650 0.6491477
+[6,] 1.5084980 1.78478335 0.1019812
 
 , , 2
 
-           [,1]     [,2]      [,3]
-[1,] 0.66122312 1.027755 1.9270902
-[2,] 1.84714583 1.017123 0.5934121
-[3,] 0.42856756 1.140463 0.5079613
-[4,] 0.03872161 1.907137 1.8075470
-[5,] 0.05285427 1.331064 0.9805267
-[6,] 0.01936931 1.188295 0.6381921
+           [,1]       [,2]      [,3]
+[1,] 0.05114846 1.95800969 1.1021331
+[2,] 1.14057254 0.08993623 1.3976797
+[3,] 0.82082577 0.63020738 0.5110562
+[4,] 0.63302837 1.81392065 1.2528194
+[5,] 1.13992176 0.78656754 0.9194456
+[6,] 1.27260120 1.33143783 1.5350169
 </pre></div>
 </div>
 <div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>netcdf classic {
@@ -864,12 +874,12 @@ variables:
 	<tr><th></th><th scope=col>&lt;dbl&gt;</th><th scope=col>&lt;dbl&gt;</th><th scope=col>&lt;dbl&gt;</th><th scope=col>&lt;dbl&gt;</th></tr>
 </thead>
 <tbody>
-	<tr><th scope=row>1</th><td>0</td><td>78.5271</td><td>30.1515</td><td>32.05537</td></tr>
-	<tr><th scope=row>2</th><td>0</td><td>78.5271</td><td>28.5810</td><td>31.58155</td></tr>
-	<tr><th scope=row>3</th><td>0</td><td>79.2316</td><td>30.1515</td><td>30.87217</td></tr>
-	<tr><th scope=row>4</th><td>0</td><td>79.2316</td><td>28.5810</td><td>34.96761</td></tr>
-	<tr><th scope=row>5</th><td>0</td><td>80.3261</td><td>30.1515</td><td>31.52145</td></tr>
-	<tr><th scope=row>6</th><td>0</td><td>80.3261</td><td>28.5810</td><td>32.10410</td></tr>
+	<tr><th scope=row>1</th><td>0</td><td>78.5271</td><td>30.1515</td><td>33.42550</td></tr>
+	<tr><th scope=row>2</th><td>0</td><td>78.5271</td><td>28.5810</td><td>34.04202</td></tr>
+	<tr><th scope=row>3</th><td>0</td><td>79.2316</td><td>30.1515</td><td>34.58183</td></tr>
+	<tr><th scope=row>4</th><td>0</td><td>79.2316</td><td>28.5810</td><td>30.25576</td></tr>
+	<tr><th scope=row>5</th><td>0</td><td>80.3261</td><td>30.1515</td><td>33.63557</td></tr>
+	<tr><th scope=row>6</th><td>0</td><td>80.3261</td><td>28.5810</td><td>33.04292</td></tr>
 </tbody>
 </table>
 </div></div>
@@ -886,22 +896,22 @@ variables:
 <div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>, , 1
 
          [,1]     [,2]     [,3]
-[1,] 32.05537 30.21060 31.34534
-[2,] 31.58155 33.60838 30.77404
-[3,] 30.87217 33.63616 34.96378
-[4,] 34.96761 32.58509 34.01767
-[5,] 31.52145 30.70935 33.01764
-[6,] 32.10410 33.03469 33.19217
+[1,] 33.42550 33.53527 33.84588
+[2,] 34.04202 30.83869 33.34692
+[3,] 34.58183 34.57929 33.91021
+[4,] 30.25576 34.88842 34.74495
+[5,] 33.63557 33.49634 32.94992
+[6,] 33.04292 30.41398 34.97071
 
 , , 2
 
          [,1]     [,2]     [,3]
-[1,] 31.04850 31.04404 33.82903
-[2,] 31.70005 32.60234 33.78785
-[3,] 33.70153 32.17074 33.02361
-[4,] 30.34104 31.86938 30.68502
-[5,] 30.39491 34.78257 31.51383
-[6,] 30.61338 33.23753 34.79905
+[1,] 33.99032 33.18225 33.36128
+[2,] 30.07425 32.28305 31.70092
+[3,] 31.80735 34.32434 34.08890
+[4,] 33.71095 31.18969 34.83206
+[5,] 30.34847 32.11048 32.14931
+[6,] 34.54513 31.45586 34.57356
 </pre></div>
 </div>
 </div>
@@ -1338,8 +1348,8 @@ variables:
 		NC_FLOAT :geospatial_lat_max = 80.3261032104492 ;
 		NC_FLOAT :geospatial_lon_min = 28.5809993743896 ;
 		NC_FLOAT :geospatial_lon_max = 28.5809993743896 ;
-		NC_CHAR :date_created = &quot;2024-10-11T13:32:56Z&quot; ;
-		NC_CHAR :history = &quot;File created at 2024-10-11T13:32:56Z using RNetCDF by Luke Marsden&quot; ;
+		NC_CHAR :date_created = &quot;2024-10-14T08:13:25Z&quot; ;
+		NC_CHAR :history = &quot;File created at 2024-10-14T08:13:25Z using RNetCDF by Luke Marsden&quot; ;
 }
 </pre></div>
 </div>
